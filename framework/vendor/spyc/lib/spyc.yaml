@@ -1,14 +1,15 @@
 #
 #    S P Y C
 #      a simple php yaml class
-#   v0.2(.4)
 #
-# author: [chris wanstrath, chris@ozmm.org]
+# authors: [vlad andersen (vlad.andersen@gmail.com), chris wanstrath (chris@ozmm.org)]
 # websites: [http://www.yaml.org, http://spyc.sourceforge.net/]
 # license: [MIT License, http://www.opensource.org/licenses/mit-license.php]
-# copyright: (c) 2005-2006 Chris Wanstrath
+# copyright: (c) 2005-2006 Chris Wanstrath, 2006-2009 Vlad Andersen
 #
 # spyc.yml - A file containing the YAML that Spyc understands.
+
+---
 
 # Mappings - with proper types
 String: Anyone's name, really.
@@ -113,4 +114,83 @@ all
   javascripts:     [dom1.js, dom.js]
 
 # Added in .2
-1040: Ooo, a numeric key! # And working comments? Wow!
+1040: Ooo, a numeric key! # And working comments? Wow! Colons in comments: a menace (0.3).
+
+hash_1: Hash #and a comment
+hash_2: "Hash #and a comment"
+"hash#3": "Hash (#) can appear in key too"
+
+float_test: 1.0
+float_test_with_quotes: '1.0'
+float_inverse_test: 001
+
+a_really_large_number: 115792089237316195423570985008687907853269984665640564039457584007913129639936 # 2^256
+
+int array: [ 1, 2, 3 ]
+
+array on several lines:
+  [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
+    10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]
+
+morelesskey: "<value>"
+
+array_of_zero: [0]
+sophisticated_array_of_zero: {rx: {tx: [0]} }
+
+switches:
+  - { row: 0, col: 0, func: {tx: [0, 1]} }
+
+empty_sequence: [ ]
+empty_hash: { }
+
+special_characters: "[{]]{{]]"
+
+asterisks: "*"
+
+empty_key:
+  :
+    key: value
+
+trailing_colon: "foo:"
+
+multiline_items:
+  - type: SomeItem
+    values: [blah, blah, blah,
+      blah]
+    ints: [2, 54, 12,
+      2143]
+
+many_lines: |
+  A quick
+  fox
+
+
+  jumped
+  over
+
+
+
+
+
+  a lazy
+
+
+
+  dog
+
+
+werte:
+  1: nummer 1
+  0: Stunde 0
+
+noindent_records:
+- record1: value1
+- record2: value2
+
+"a:1": [1000]
+"a:2":
+  - 2000
+
+# [Endloop]
+endloop: |
+  Does this line in the end indeed make Spyc go to an infinite loop?

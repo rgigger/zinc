@@ -2,7 +2,7 @@
 #
 #    S P Y C
 #      a simple php yaml class
-#   v0.2(.5)
+#   v0.3
 #
 # author: [chris wanstrath, chris@ozmm.org]
 # websites: [http://www.yaml.org, http://spyc.sourceforge.net/]
@@ -18,9 +18,9 @@
 
 error_reporting(E_ALL);
 
-include('spyc.php');
+include('spyc.php4');
 
-$yaml = Spyc::YAMLLoad('spyc.yaml');
+$yaml = Spyc::YAMLLoad('../spyc.yaml');
 
 // print_r ($yaml);
 
@@ -44,7 +44,7 @@ if ($yaml['False'] !== false)
 if ($yaml['Zero'] !== 0)
 	die('Key: Zero failed');
 
-if ($yaml['Null'] !== NULL)
+if (isset($yaml['Null']))
 	die('Key: Null failed');
 
 if ($yaml['Float'] !== 5.34)
@@ -81,7 +81,7 @@ if ($yaml[5] != array("program" => "Adium", "platform" => "OS X",
 	die('Sequence 5 failed');
 
 # A folded block as a mapped value
-if ($yaml['no time'] != "There isn't any time for your tricks! \nDo you understand?")
+if ($yaml['no time'] != "There isn't any time for your tricks!\nDo you understand?")
 	die("Key: 'no time' failed");
 
 # A literal block as a mapped value
@@ -153,6 +153,8 @@ if ($yaml[15] != array( 'name' => "Foo, Bar's", 'age' => 20))
 if ($yaml[16] != array( 0 => "a", 1 => array (0 => 1, 1 => 2), 2 => "b"))
 	die("Sequence 16 failed.");
 
+if ($yaml['endloop'] != "Does this line in the end indeed make Spyc go to an infinite loop?")
+	die("[endloop] failed.");
 
 
 print "spyc.yaml parsed correctly\n";
