@@ -32,6 +32,9 @@ if(php_sapi_name() != "cli")
 	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200)
 	{
 		$uri = $_SERVER['REQUEST_URI'];
+		if($pos = strpos($uri, '?'))
+			$uri = substr($uri, 0, $pos);
+		
 		if( $virtualPath && substr($uri, 0-strlen($virtualPath)) == $virtualPath )
 			$realPath = substr($uri, 0, strlen($uri) - strlen($virtualPath));
 		else
