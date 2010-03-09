@@ -1,6 +1,9 @@
 <?php
 // do some bootstrapping
 
+if(!defined("zoop_dir"))
+	define("zoop_dir", dirname(__file__));
+
 function define_once($name, $value)
 {
 	if(!defined($name))
