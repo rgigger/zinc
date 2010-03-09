@@ -55,6 +55,8 @@ class GuiZone extends Zone
 		
 		if(defined('script_url'))
 			$gui->assign('scriptUrl', script_url);
+		if(defined('base_url'))
+			$gui->assign('baseUrl', base_url);
 		if(defined('virtual_url'))
 			$gui->assign('virtualUrl', virtual_url);
 		$gui->assign('zoneUrl', $this->getUrl());

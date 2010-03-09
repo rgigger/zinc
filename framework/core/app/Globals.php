@@ -17,7 +17,7 @@
 //	3) virtual_url		the url up through index.php and also the virtual path
 //
 //////////////////////////////////////////////
-
+// echo_r($_SERVER);
 if(php_sapi_name() != "cli")
 {
 	if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' )
@@ -26,10 +26,21 @@ if(php_sapi_name() != "cli")
 		$protocol = 'http://';
 
 	$host = $_SERVER['HTTP_HOST'];
-
-	$realPath = $_SERVER['SCRIPT_NAME'];
 	
 	$virtualPath = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+	//	what other situations besides mod_rewrite set this to 200?
+	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200)
+	{
+		$uri = $_SERVER['REQUEST_URI'];
+		if( $virtualPath && substr($uri, 0-strlen($virtualPath)) == $virtualPath )
+			$realPath = substr($uri, 0, strlen($uri) - strlen($virtualPath));
+		else
+			$realPath = $_SERVER['SCRIPT_NAME'];
+	}
+	else
+	{
+		$realPath = $_SERVER['SCRIPT_NAME'];
+	}
 	
 	define('root_url', $protocol . $host);
 	if(defined('script_url'))
@@ -42,6 +53,11 @@ if(php_sapi_name() != "cli")
 	{
 		define('script_url', root_url . $realPath);
 	}
+	
+	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200)
+		define('base_url', script_url . '/');
+	else
+		define('base_url', script_url);
 	
 	define('virtual_path', $virtualPath);
 	define('virtual_url', script_url . virtual_path);
