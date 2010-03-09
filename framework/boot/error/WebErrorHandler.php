@@ -16,6 +16,9 @@ class WebErrorHandler
 	{
 		if(!defined('app_status'))
 			define('app_status', 'dev');
+		
+		if((error_reporting() & $errno) !== $errno)
+			return true;
 			
 		switch(app_status)
 		{
