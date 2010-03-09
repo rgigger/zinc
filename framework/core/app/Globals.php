@@ -27,7 +27,7 @@ if(php_sapi_name() != "cli")
 
 	$host = $_SERVER['HTTP_HOST'];
 	
-	$virtualPath = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+	$virtualPath = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : (isset($_SERVER["ORIG_PATH_INFO"]) ? $_SERVER["ORIG_PATH_INFO"] : '');
 	//	what other situations besides mod_rewrite set this to 200?
 	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200)
 	{
