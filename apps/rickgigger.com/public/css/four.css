@@ -1,0 +1,161 @@
+/* reset all of the spacing stuff */
+html, body, div, span,
+applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dd, dl, dt, li, ol, ul,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: normal 100% Lucida Console, Monaco5, monospace;
+    background: rgba(94, 38, 5, 1);
+}
+
+a {
+	color: rgba(255, 255, 255, 0.6);
+	text-decoration: none;
+}
+
+#page {
+	width: 760px;
+	border: 0px solid black;
+	margin: 0 auto;
+}
+
+.container {
+}
+
+
+#header {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+#header h1 {
+    margin: 30px 0 20px 0;
+    float: right;
+    font-size: 40px;
+}
+
+#header ul {
+}
+
+
+#topnav {
+    margin: 0 0 0 0;
+}
+
+#topnav-inner {
+    float: right;
+}
+
+#topnav li {
+	float: right;
+    padding: 7px 15px 7px 15px;
+}
+
+#topnav li.current {
+    color: rgba(255,255,255,.9);
+    background: rgba(255, 255, 255, .4);
+    border: 1px solid black;
+    border-bottom: 0;
+}
+
+#topnav li a {
+    font-size: 16px;
+    color: rgba(255, 255, 255 , .8);
+}
+
+#header a:hover {
+    color: rgba(0, 0, 0, .9);
+}	
+
+#header li.current a:hover {
+    color: rgba(255, 255, 255, 0.7);
+}	
+
+#panel .container {
+    margin: 0 0 5px 5px;
+}
+
+#body .container {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+#body .container {
+    border: 1px solid black;
+}
+
+
+#main {
+	width: 505px;
+    background: rgba(255, 255, 255, .6);
+	float: right;
+    padding-bottom: 10px;
+}
+
+#main h2 {
+    margin: 20px 0 20px 0;
+    font-size: 20px;
+}
+
+#main h3 {
+    margin: 10px 0 10px 0;
+    font-size: 16px;
+}
+
+#main h4 {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 10px 0 10px 0;
+}
+
+#main a {
+	color: rgba(255, 255, 255, 1);
+	text-decoration: none;
+}
+
+#main ul {
+    list-style-position: inside;
+    list-style-type: square;
+}
+
+#main li {
+    margin: 0 0 3px 0;
+}
+
+#main p {
+    margin: 10px 0 10px 0;
+    text-indent: 0px;
+    line-height: 110%;
+}
+
+#panel {
+    float: left;
+}
+
+#panel .container {
+	width: 180px;
+    background: rgba(255, 255, 255, 0.4);
+    padding-top: 10px;
+}
+
+#panel p {
+    padding: 0 0 10px 0;
+}
+
+#panel h3 {
+    padding: 0 0 10px 0;
+}
+
+od, ul {
+	list-style: none;
+}
+

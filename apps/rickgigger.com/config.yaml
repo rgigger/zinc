@@ -1,0 +1,15 @@
+app:
+    topnav:
+        Home: home
+        About: about
+    topnav_disabled:
+        Articles: articles
+        Software: software
+        Links: links
+        Blog: blog
+zoop:
+    db:
+        default:
+            driver: php_pgsql
+            database: newapp
+            username: postgres
