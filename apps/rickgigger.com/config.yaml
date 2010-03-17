@@ -1,6 +1,7 @@
 app:
     topnav:
         Home: home
+        Contact: contact
         About: about
     topnav_disabled:
         Articles: articles

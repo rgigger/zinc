@@ -125,7 +125,7 @@ a {
 
 #main a:hover {
     background-color: rgba(255, 255, 255, .2);
-    -webkit-box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.3);
+    -webkit-box-shadow: 0px 0px 40px rgba(255, 255, 255, 0.4);
 }
 
 
@@ -142,6 +142,12 @@ a {
     margin: 10px 0 10px 0;
     text-indent: 0px;
     line-height: 110%;
+}
+
+#main blockquote {
+    margin-left: 2px;
+    padding-left: 9px;
+    border-left: 2px solid rgba(255, 255, 255, .3);
 }
 
 #panel {

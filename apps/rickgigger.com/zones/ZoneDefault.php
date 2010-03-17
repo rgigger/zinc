@@ -15,6 +15,10 @@ class ZoneDefault extends AppZone
 	{
 	}
 	
+	public function pageContact($p, $z)
+	{
+	}
+	
 	public function pageLinks($p, $z)
 	{
 	}

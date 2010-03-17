@@ -1,20 +1,46 @@
-<h2>Home</h2>
-<h3>Another attempt at a personal website</h3>
-<h4>Mar 15, 2010</h4>
-<p>
-	I have decided to make a personal website (again).  In the past I usually started because I wanted to try 
-	out a <a target="_new" href="http://www.apple.com/ilife/iweb/">new</a> 
-	<a target="_new" href="http://www.realmacsoftware.com/rapidweaver/">tool</a> 
-	or <a target="_new" href="http://www.apple.com/mobileme/">service</a> for making web content.  I usually ended up hating the tool
-	or service and giving up on maintaining the site.  This time I am coding it by hand and using it as an experiment to whip my html/css
-	skills into shape.  I also plan on using it to showcase <a target="_new" href="http://code.google.com/p/zoop/">my OSS project</a>
-	which I am using for everything on this site.
-</p>
-<p>These are the only other tools that I plan on using:</p>
-<ul>
-	<li><a target="_new" href="http://www.macromates.com">TextMate</a></li>
-	<li><a target="_new" href="http://www.pixelmator.com/">Pixelmator</a></li>
-</ul>
+<div style="margin-bottom: 20px; margin-top: 20px">
+	<h3>Daring Fireball</h3>
+	<h4>Mar 16, 2010 - <a target="_new" href="http://daringfireball.net">I want to go to there</a></h4>
+	<p>
+		As <a target="_new" href="http://daringfireball.net">Daring Fireball</a> is my favorite blog, and for that matter 
+		one of may favorite location on the internet, it's fitting that it should be the first shared link on my blog.
+		He mostly writes about Apple; their products, their competitors, Mac software, related industry news, etc.  My favorite
+		articles on his site though are 
+		<a target="_new" href="http://daringfireball.net/2010/03/iphone_apps_on_the_ipad">his</a>
+		<a target="_new" href="http://daringfireball.net/2010/03/attention_is_the_real_resource">analysis</a>
+		<a target="_new" href="http://daringfireball.net/2010/01/apple_adobe_flash">of</a>
+		<a target="_new" href="http://daringfireball.net/2009/02/untitled_document_syndrome">how</a>
+		<a target="_new" href="http://daringfireball.net/2009/06/copy_and_paste">and</a>
+		<a target="_new" href="http://daringfireball.net/2009/10/pound_the_quality">why</a>
+		<a target="_new" href="http://daringfireball.net/2009/10/congrtlns-osx">things</a>
+		<a target="_new" href="http://daringfireball.net/2009/04/complex">work</a>
+		<a target="_new" href="http://daringfireball.net/2009/02/copying_the_wrong_thing">the</a>
+		<a target="_new" href="http://daringfireball.net/2009/02/apple_google_palm">way</a>
+		<a target="_new" href="http://daringfireball.net/2008/12/busy_being_born">they</a>
+		<a target="_new" href="http://daringfireball.net/2008/12/bang">do</a>.
+	</p>
+	<p>
+		
+	</p>
+</div>
+<div>
+	<h3>Another attempt at a personal website</h3>
+	<h4>Mar 15, 2010</h4>
+	<p>
+		I have decided to make a personal website (again).  In the past I usually started because I wanted to try 
+		out a <a target="_new" href="http://www.apple.com/ilife/iweb/">new</a> 
+		<a target="_new" href="http://www.realmacsoftware.com/rapidweaver/">tool</a> 
+		or <a target="_new" href="http://www.apple.com/mobileme/">service</a> for making web content.  I usually ended up hating the tool
+		or service and giving up on maintaining the site.  This time I am coding it by hand and using it as an experiment to whip my html/css
+		skills into shape.  I also plan on using it to showcase <a target="_new" href="http://code.google.com/p/zoop/">my OSS project</a>
+		which I am using for everything on this site.
+	</p>
+	<p>These are the only other tools that I plan on using:</p>
+	<ul>
+		<li><a target="_new" href="http://www.macromates.com">TextMate</a></li>
+		<li><a target="_new" href="http://www.pixelmator.com/">Pixelmator</a></li>
+	</ul>
+</div>
 
 {*
 <h3>About This Site</h3>

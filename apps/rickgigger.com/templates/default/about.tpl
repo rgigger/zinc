@@ -1,6 +1,7 @@
 <h2>About</h2>
 
 <h3>About Me</h3>
+<p>As you might be able to tell I am a computer programmer and not a graphic designer or for that matter an artist of any kind.</p>
 <h4>Info about me on the Internet</h4>
 <ul>
 	<li><a target="_new" href="http://facebook.com/rickgigger">My Facebook Page</a></li>

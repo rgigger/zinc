@@ -15,7 +15,7 @@
 	<div id="background">
 		<div id="page">
 			<div id="header" class="container">
-				<h1>Rick Gigger</h1>
+				<h1>Rick Gigger</h1> {* it's .net http://www.homestarrunner.com/firsttime.html *}
 				<br style="clear: both"/>
 				<div id="topnav">
 					<div id="topnav-inner">
