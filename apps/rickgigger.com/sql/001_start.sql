@@ -1,7 +1,5 @@
 begin;
 
-drop table entry;
-
 create table entry
 (
     id integer primary key,
