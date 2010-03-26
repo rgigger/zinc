@@ -130,7 +130,9 @@ a {
 
 
 #main ul {
-    list-style-position: inside;
+    border: 0px solid black;
+    list-style-position: outside;
+    margin-left: 15px;
     list-style-type: square;
 }
 
@@ -174,4 +176,12 @@ od, ul {
 
 #body .container {
     -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+hr {
+  border: 0;
+  width: 40%;
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, .2);
+  height: 1px;
 }

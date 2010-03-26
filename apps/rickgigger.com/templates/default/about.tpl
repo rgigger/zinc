@@ -6,6 +6,7 @@
 <ul>
 	<li><a target="_new" href="http://facebook.com/rickgigger">My Facebook Page</a></li>
 	<li><a target="_new" href="http://twitter.com/rgigger">My Twitter Page</a></li>
+	<li><a target="_new" href="http://www.linkedin.com/pub/rick-gigger/14/814/27">My LinkedIn Page</a></li>
 </ul>
 
 {*

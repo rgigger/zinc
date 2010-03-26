@@ -386,7 +386,7 @@ class DbObject extends Object implements Iterator
 			if($row)
 			{
 				//	we might as well save the results
-				$this->assignPersisted();
+				$this->assignPersisted($row);
 				return true;
 			}
 

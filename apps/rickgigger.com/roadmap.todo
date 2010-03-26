@@ -1,0 +1,14 @@
++	move blog content out of the code
+	-	allow you to specify the content directory
+		+	config: app.blog.contentDir
+		+	create the directory structure
+			+	contentDir
+				+	entries
+				+	asssets
+		+	scan the entries directory
+			+	do a gui::fetch on it
+			+	get the metadata
+			+	insert or update it in the database
+			+	cache the results
+			+	metadata
+				+	done or not (publish it or not)

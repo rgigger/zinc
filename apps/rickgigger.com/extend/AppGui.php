@@ -5,7 +5,9 @@ class AppGui extends Gui
 	{
 		$this->assign("TEMPLATE_CONTENT", $tpl_file);
 		
+		$this->assign('loggedInUser', Person::getLoggedInUser());
 		$this->assign('topnav', Config::get('app.topnav'));
+		$this->assign('loginBlock', $this->getLoginBlockMarkup());
 		$this->assign('randomBlock', $this->getRandomBlockMarkup());
 		
 		return parent::fetch('layouts/main.tpl', $cache_id, $compile_id, $display);
@@ -17,5 +19,10 @@ class AppGui extends Gui
 		$choice = array_rand($options);
 		$choice = $options[$choice];
 		return parent::fetch("blocks/{$choice}.tpl");
+	}
+	
+	private function getLoginBlockMarkup()
+	{
+		return parent::fetch("blocks/login.tpl");
 	}
 }
