@@ -30,6 +30,8 @@ $(document).ready(function() {
 		'speedIn'		:	400, 
 		'speedOut'		:	400
 	});
+	
+	$('.entry a').attr('target', '_new');
 });
 {/literal}
 </script>
