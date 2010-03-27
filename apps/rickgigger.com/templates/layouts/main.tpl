@@ -31,7 +31,7 @@ $(document).ready(function() {
 		'speedOut'		:	400
 	});
 	
-	$('.entry a').attr('target', '_new');
+	$('.entry .body a').attr('target', '_new');
 });
 {/literal}
 </script>
