@@ -55,10 +55,14 @@ class GuiZone extends Zone
 		
 		if(defined('script_url'))
 			$gui->assign('scriptUrl', script_url);
+		if(defined('ssl_script_url'))
+			$gui->assign('sslScriptUrl', ssl_script_url);
 		if(defined('base_url'))
 			$gui->assign('baseUrl', base_url);
 		if(defined('virtual_url'))
 			$gui->assign('virtualUrl', virtual_url);
+		if(defined('ssl_virtual_url'))
+			$gui->assign('sslVirtualUrl', ssl_virtual_url);
 		$gui->assign('zoneUrl', $this->getUrl());
  		
 		if(!$this->baseDir)
