@@ -24,6 +24,8 @@ if(php_sapi_name() != "cli")
 		$protocol = 'https://';
 	else
 		$protocol = 'http://';
+	$sslProtocol = 'https://';
+	
 
 	$host = $_SERVER['HTTP_HOST'];
 	
@@ -46,6 +48,7 @@ if(php_sapi_name() != "cli")
 	}
 	
 	define('root_url', $protocol . $host);
+	define('ssl_root_url', $sslProtocol . $host);
 	if(defined('script_url'))
 	{
 		define('back_script_url', root_url . $realPath);
@@ -55,6 +58,7 @@ if(php_sapi_name() != "cli")
 	else
 	{
 		define('script_url', root_url . $realPath);
+		define('ssl_script_url', ssl_root_url . $realPath);
 	}
 	
 	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200)
@@ -64,10 +68,10 @@ if(php_sapi_name() != "cli")
 	
 	define('virtual_path', $virtualPath);
 	define('virtual_url', script_url . virtual_path);
+	define('ssl_virtual_url', ssl_script_url . virtual_path);
 }
 
 if(!defined('E_DEPRECATED'))
 	define('E_DEPRECATED', 8192);
 
 define('version_53', version_compare(PHP_VERSION, '5.3.0') >= 0 ? true : false);
-	
