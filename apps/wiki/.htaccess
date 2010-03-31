@@ -1,0 +1,20 @@
+# .htaccess file for Zoop applications
+# Applies rewrite rules for canonical domain names and sexier URI query strings.
+ 
+<IfModule mod_rewrite.c>
+  RewriteEngine off
+ 
+  # Canonical domain name rewrite
+  # Modify the next two lines to redirect to a canonical domain name.
+  #RewriteCond %{HTTP_HOST} !^example\.com$ [NC]
+  #RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+ 
+  # Modify the RewriteBase if you are using Zoop in a
+  # subdirectory and rewrite rules don't work.
+  RewriteBase /
+   
+  # Rewrite URLs to the form 'index.php/x'.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ ~someuser/example.com/index.php/$1 [L,QSA]
+</IfModule>

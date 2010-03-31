@@ -1,0 +1,9 @@
+app:
+    strings:
+        title: Wiki
+zoop:
+    db:
+        default:
+            driver: php_pgsql
+            database: wiki
+            username: postgres
