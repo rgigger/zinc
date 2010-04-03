@@ -1,0 +1,1 @@
+a:2:{s:8:"sections";a:1:{s:5:"setup";a:1:{s:4:"vars";a:1:{s:4:"bold";b:1;}}}s:4:"vars";a:2:{s:5:"title";s:18:"Welcome to Smarty!";s:11:"cutoff_size";i:40;}}
