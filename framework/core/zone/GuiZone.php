@@ -3,6 +3,8 @@ class GuiZone extends Zone
 {
 	protected $displayed = false;
 	protected $baseDir = NULL;
+	protected $guiClass, $guiDriver, $layout;
+	private $assigns = array();
 	
 	public function init($requestInfo = NULL, $params = array())
 	{
@@ -19,11 +21,21 @@ class GuiZone extends Zone
 		return $this->baseDir;
 	}
 	
-	function chooseGui($type)
+	protected function chooseGui($type)
 	{
-		assert($type === NULL);	//	if they want something different they need to extend this class
-		$tmp = new gui();
-		return $tmp;
+		//	if they want something different they need to extend this class
+		assert($type === NULL);
+		
+		if($this->guiClass)
+			$className = $this->guiClass;
+		else if(Config::get('zoop.gui.class'))
+			$className = Config::get('zoop.gui.class');
+		else if(class_exists('AppGui'))
+			$className = 'AppGui';
+		else
+			$className = 'Gui';
+		
+		return new $className($this->guiDriver);
 	}
 	
 	protected function getTemplateDir()
@@ -33,9 +45,9 @@ class GuiZone extends Zone
 		return $zoneName;
 	}
 	
-	function assign($key, $value)
+	function assign($name, $value)
 	{
-		GuiAssign($key, $value);
+		$this->assigns[$name] = $value;
 	}
 	
 	function displayed()
@@ -46,12 +58,10 @@ class GuiZone extends Zone
 	function display($templateName, $guiType = NULL)
 	{
 		$gui = $this->chooseGui($guiType);
+		$gui->setLayout($this->layout);
 		
-		foreach(GuiGetAssigns() as $name => $value)
+		foreach($this->assigns as $name => $value)
 			$gui->assign($name, $value);
-		
-		foreach(GetTemplateDirs() as $thisDir)
-			$gui->addTemplateDir($thisDir);
 		
 		if(defined('script_url'))
 			$gui->assign('scriptUrl', script_url);

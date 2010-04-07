@@ -1,4 +1,5 @@
 <?php
+die('this file is no longer in use')
 /**
  * Assigns a gui variable independant of a specific gui object
  * 

@@ -1,8 +1,5 @@
 <?php
-class Smarty2
+include dirname(__file__) . '/lib/Smarty.class.php';
+class Smarty2 extends Smarty
 {
-	static public function load()
-	{
-		include dirname(__file__) . '/lib/Smarty.class.php';
-	}
 }

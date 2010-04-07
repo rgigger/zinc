@@ -7,13 +7,13 @@ abstract class ZoopModule
 	
 	final function __construct($path, $lib)
 	{
-		//	second stage (module specific) construction
-		$this->init();
-		
 		//	assign in the paramamters
 		$this->path = $path;
 		$this->lib = $lib;
 		$this->name = strtolower(str_replace('Module', '', get_class($this)));
+		
+		//	second stage (module specific) construction
+		$this->init();
 		
 		$classname = get_class($this);
 		//	load any dependant modules
