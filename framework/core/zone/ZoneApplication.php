@@ -6,7 +6,10 @@ class ZoneApplication
 	function __construct()
 	{
 		if(ini_get('magic_quotes_gpc'))
+		{
 			StripMagicQuotesFromPost();
+			StripMagicQuotesFromGet();
+		}
 	}
 	
 	static function loadZone($name)

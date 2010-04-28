@@ -220,6 +220,10 @@ class Zoop
 	 *
 	 * @param string $className Name of the class to load
 	 */
+	/*
+	
+	moved to ZoopLoader.php
+	
 	static function autoload($className)
 	{
 		if(headers_sent())
@@ -241,6 +245,7 @@ class Zoop
 			require_once(zoop_dir . "/Zend/$modName.php");
 		}
 	}
+	*/
 }
 
 Zoop::registerLib('boot');

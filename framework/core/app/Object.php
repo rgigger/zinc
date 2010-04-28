@@ -26,7 +26,16 @@ class Object
 	
 	public function __isset($name)
 	{
-		trigger_error("I'm not even sure what this should do yet?  Do getters and setters count here or just adhoc attributes");
+		if(isset($this->getters[$name]))
+			return true;
+		
+		if($this->mixinOwner && property_exists($this->mixinOwner, $name))
+			return true;
+		
+		if($this->allowAdhocAttributes && isset($this->adhocAttributes[$name]))
+			return true;
+		
+		return false;
 	}
 	
 	public function __unset($name)

@@ -45,11 +45,13 @@ function smarty_function_input($params, &$smarty)
 	
 	// pass on anything else they put in
 	$extraFields = '';
+	$extraMap = array();
 	foreach($params as $paramName => $paramValue)
 	{
 		if(in_array($paramName, array('type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append')))
 			continue;
 		
+		$extraMap[$paramName] = $paramValue;
 		$extraFields .= ' ' . $paramName . '="' . $paramValue . '"';
 	}
 	
@@ -72,6 +74,13 @@ function smarty_function_input($params, &$smarty)
 			$return .= $value;
 			$return .= '</textarea>';
 			return $return;
+			break;
+		case 'select':
+	    	require_once $smarty->_get_plugin_filepath('function','html_options');
+			$selectParams = $extraMap;
+			$selectParams['name'] = $name;
+			$selectParams['selected'] = $value;
+			return smarty_function_html_options($selectParams, $smarty);
 			break;
 		default:
 			trigger_error("unknown input type: $type");

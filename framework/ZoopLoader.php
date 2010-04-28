@@ -31,9 +31,10 @@ class ZoopLoader
 	
 		if(substr($className, 0, 5) == 'Zend_')
 		{
-			$parts = explode('_', $className);
-			$modName = $parts[1];
-			require_once(zoop_dir . "/vendor/Zend/$modName.php");
+			// $parts = explode('_', $className);
+			// $modName = $parts[1];
+			$shortPath = str_replace('_', '/', $className);
+			require_once(zoop_dir . "/vendor/zend/$shortPath.php");
 		}
 	}
 }

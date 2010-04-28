@@ -295,6 +295,11 @@ function StripMagicQuotesFromPost()
 	_StripMagicQuotes($_POST);
 }
 
+function StripMagicQuotesFromGet()
+{
+	_StripMagicQuotes($_GET);
+}
+
 function _StripMagicQuotes(&$cur)
 {
 	foreach($cur as $key => $val)

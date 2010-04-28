@@ -75,31 +75,34 @@ class BacktraceViewCli
 		$call .= isset($lineInfo['class']) ? ($lineInfo['class'] . $lineInfo['type']) : '';
 		$call .= $lineInfo['function'] . '(';
 		$argStrings = array();
-		foreach($lineInfo['args'] as $thisArg)
+		if(isset($lineInfo['args']))
 		{
-			switch(gettype($thisArg))
+			foreach($lineInfo['args'] as $thisArg)
 			{
-				case 'string':
-					$argStrings[] = '"' . $thisArg . '"';
-					break;
-				case 'integer':
-					$argStrings[] = $thisArg;
-					break;
-				case 'array':
-					$argStrings[] = '<array>';
-					break;
-				case 'resource':
-					$argStrings[] = 'resource: ' . $thisArg;
-					break;
-				case 'boolean':
-					$argStrings[] = 'boolean: -' . $thisArg . '-';
-					break;
-				case 'NULL':
-					$argStrings[] = 'NULL';
-					break;
-				default:
-					die('unhandled type ' . gettype($thisArg));
-					break;
+				switch(gettype($thisArg))
+				{
+					case 'string':
+						$argStrings[] = '"' . $thisArg . '"';
+						break;
+					case 'integer':
+						$argStrings[] = $thisArg;
+						break;
+					case 'array':
+						$argStrings[] = '<array>';
+						break;
+					case 'resource':
+						$argStrings[] = 'resource: ' . $thisArg;
+						break;
+					case 'boolean':
+						$argStrings[] = 'boolean: -' . $thisArg . '-';
+						break;
+					case 'NULL':
+						$argStrings[] = 'NULL';
+						break;
+					default:
+						die('unhandled type ' . gettype($thisArg));
+						break;
+				}
 			}
 		}
 

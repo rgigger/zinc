@@ -537,6 +537,10 @@ class DbObject extends Object implements Iterator
 	 */
 	public function __get($varname)
 	{
+		// check on inherited getters, setters, and mixins from Object
+		if(parent::__isset($varname))
+			return parent::__get($varname);
+		
 		if($this->hasRelationship($varname))
 			return $this->getRelationshipInfo($varname);
 
@@ -764,10 +768,10 @@ class DbObject extends Object implements Iterator
 	 * @param assoc_array $conditions $field => $value for generating the where clause to
 	 * @return DbObject
 	 */
-	static public function _getOne($className, $conditions = NULL)
+	static public function _getOne($className, $conditions = NULL, $default = NULL)
 	{
 		$tableName = DbObject::_getTableName($className);
-		$row = self::_getConnection($className)->selsertRow($tableName, "*", $conditions);
+		$row = self::_getConnection($className)->selsertRow($tableName, "*", $conditions, $default);
 		return new $className($row);
 	}
 

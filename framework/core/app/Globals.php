@@ -61,6 +61,8 @@ if(php_sapi_name() != "cli")
 		define('ssl_script_url', ssl_root_url . $realPath);
 	}
 	
+	define('app_url', dirname(script_url));
+	
 	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200)
 		define('base_url', script_url . '/');
 	else

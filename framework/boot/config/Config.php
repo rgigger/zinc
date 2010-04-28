@@ -22,8 +22,12 @@ class Config
 	
 	static public function insist($file, $prefix = NULL)
 	{
-		$root = $prefix ? self::getReference($prefix) : self::$info;
-		self::$info = self::mergeArray($root, Yaml::read($file));
+		if($prefix)
+			$root = &self::getReference($prefix);
+		else
+			$root = &self::$info;
+		
+		$root = self::mergeArray($root, Yaml::read($file));
 	}
 	
 	static public function mergeArray($suggested, $insisted)
@@ -78,6 +82,9 @@ class Config
 	 */
 	static function get($path)
 	{
+		if($path === '')
+			return self::$info;
+		
 		$parts = explode('.', $path);
 		$cur = self::$info;
 		
