@@ -16,11 +16,62 @@ class ZoneDefault extends AppZone
 			$this->redirect('list');
 	}
 	
-	public function pageList()
+	public function pageList($p, $z)
 	{
-		// echo_r($this->loggedInUser->getPermittedRequests());
+		$filterId = isset($p[1]) ? $p[1] : '';
+		$filter = $filterId ? new Filter($filterId) : null;
+		// if($filterId)
+		// 	echo_r(json_decode($filter->content));
+		
 		$this->assign('requests', $this->loggedInUser->getPermittedRequests());
-		$this->display('list');
+		$this->assign('config', Config::get('app.filter'));
+		
+		//	do any database lookups that need to be done to fill out the config data
+		$config = Config::get('app.filter');		
+		foreach($config['fields'] as $fieldName => $fieldInfo)
+		{
+			if($fieldInfo['type'] == 'discreet' && !isset($fieldInfo['list']))
+				$config['fields'][$fieldName]['list'] = SqlFetchSimpleMap("SELECT id, :nameField:identifier FROM :tableName:identifier", 'id', $fieldInfo['display_field'],
+					array('nameField' => $fieldInfo['display_field'], 'tableName' => $fieldInfo['references']));
+		}
+		$this->assign('config', $config);
+		
+		$filterList = array('' => '');
+		$options = SqlFetchSimpleMap("SELECT id, name from filter order by name", 'id', 'name', array());
+		foreach($options as $key => $val)
+			$filterList[$key] = $val;
+		// echo_r(json_decode($filter->content));
+		$this->assign('filter', $filter);
+		$this->assign('filterId', $filterId);
+		$this->assign('filterList', $filterList);
+	}
+	
+	public function pageListBody($p, $z)
+	{
+		$where = Filter::jsonToSql($_GET['filterData']);
+		$sql = "SELECT
+					*
+				from
+					request
+				where
+					$where";
+		$requests = DbObject::_findBySql('request', $sql, array());
+		$this->assign('requests', $requests);
+		
+		$this->layout = false;
+		$this->display('list_body');
+	}
+	
+	public function postSaveFilter($p, $z)
+	{
+		$filterId = $_POST['id'] ? $_POST['id'] : null;
+		$filter = new Filter($filterId);
+		if(isset($_POST['name']))
+			$filter->name = $_POST['name'];
+		$filter->content = json_encode(json_decode($_POST['content'])->subs[0]);
+		$filter->save();
+		
+		echo json_encode(array('id' => $filter->id));
 	}
 	
 	public function pageEdit($p)

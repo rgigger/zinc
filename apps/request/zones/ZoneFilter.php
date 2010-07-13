@@ -8,19 +8,6 @@ class ZoneFilter extends AppZone
 	
 	public function pageEdit($p, $z)
 	{
-		// +1. get the config from the yaml file
-		// +2. Update the real table with the row from the template table
-		// +3. populate the list of fields
-		// +4. populate the initial list of operators for the default field
-		// +5. update the operators menu when they change the field type
-		// +6. update the operand paramater fields to match the operator and field
-		// -7. make the .. button work
-		// -7. save the output somehow
-		// -8. reload the output
-		// -9. converit it to sql
-		
-		// echo_r(Config::get('app.filter'));
-		
 		$config = Config::get('app.filter');
 		
 		//	do any database lookups that need to be done to fill out the config data
@@ -36,6 +23,8 @@ class ZoneFilter extends AppZone
 	
 	public function postEdit($p, $z)
 	{
+		echo $_POST['filterData'];
+		die();
 		$data = json_decode($_POST['filterData'])->subs[0];
 		echo_r($data);
 		echo_r(sqlify($data));

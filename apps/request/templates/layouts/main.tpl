@@ -3,37 +3,22 @@
 <head>
 
 <BASE HREF="{$scriptUrl}">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-{*
-<script src="public/js/jquery.table.addrow.js"></script>
-*}
+<!-- the jquery stuff -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<link type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/ui.all.css" rel="stylesheet" />
+
+<!-- the tablesorter stuff -->
+<link rel="stylesheet" href="http://tablesorter.com/themes/blue/style.css" type="text/css" media="print, projection, screen" />
+<script type="text/javascript" src="http://tablesorter.com/jquery.tablesorter.js"></script>
 <script>
 var scriptUrl = '{$scriptUrl}';
 var virtualUrl = '{$scriptUrl}';
 var zoneUrl = '{$scriptUrl}';
 </script>	
 	
-{*
-<script>
-{literal}
-function submitForm(action)
-{
-	document.main_form.actionField.value = action;
-	document.main_form.submit();
-}
-{/literal}
-</script>
-*}
-
 <link rel="stylesheet" href="public/css/request.css" type="text/css">
 </head>
-{*
-{if isset($fileUpload) && $fileUpload}
-	<form action="{$virtualUrl}" enctype="multipart/form-data" name="main_form" method="post">
-{else}
-	<form action="{$virtualUrl}" name="main_form" method="post">
-{/if}
-*}
 <form action="{$virtualUrl}" name="main_form" method="post">
 <table border="0" cellspacing="0" cellpadding="0" width="100%" height="100%">
 <tr>
