@@ -63,8 +63,10 @@ $(document).ready(function() {
 					<!-- End main content area -->
 				</div>
 				<div id="panel">
-					<div class="container">{$loginBlock}</div>
-					<div class="container">{$randomBlock}</div>
+					<div class="container">{include file="blocks/login.tpl"}</div>
+					{foreach from=$randoms item=choice}
+						<div class="container">{include file="blocks/$choice.tpl"}</div>
+					{/foreach}
 				</div>
 			</div>
 			<div id="footer">

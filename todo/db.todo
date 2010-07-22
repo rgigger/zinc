@@ -1,4 +1,8 @@
 +	lazy connections to the database
+-	schemaless objects (exotic)
+	-	have one table for objects with just (id, type) where type could be a class name
+	-	have one table for fields with (object_id, field, value)
+	-	have an index on (field, value) (so everything is indexed basically)
 -	free memory from result sets after queries you've pulled all the data out
 -	support for sequences
 -	paginated result sets

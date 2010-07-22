@@ -1,3 +1,34 @@
+new
+---
+-	engines
+	+	smarty2
+	+	smarty3
+	-	some standardish templates
+	-	try some crazy ones
+		-	haml
+			-	http://haml-lang.com/
+			-	http://phphaml.sourceforge.net/
+			-	http://en.wikipedia.org/wiki/PHAML
+			-	http://wiki.github.com/dxw/Fammel/
+			-	http://code.google.com/p/phamlp/
+		-	css scaffolding
+			-	http://github.com/anthonyshort/csscaffold
+	-	make them configurable (zoop.gui)
+-	filters
+	-	xml/pdf
+	-	markdown
+	-	other wiki syntax formats
+	-	syntax hilight
+	-	also allow all engines to be used as filters
+	-	get header metadata
+-	asset manager
+	-	concatenate js and css files
+	-	minify
+
+	
+
+old
+---
 -	turn smarty->use_sub_dirs on by default (set it equal to true)
 -	misc
 	-	fix html_dboptions

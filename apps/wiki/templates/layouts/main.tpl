@@ -11,7 +11,7 @@
 <link type="text/css" rel="stylesheet" href="public/css/{if isset($cssFile)}{$cssFile}{else}main.css{/if}" />
 
 <!-- jQuery (http://jquery.com) -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
 <!-- fancybox (http://fancybox.net) -->
 <script type="text/javascript" src="public/fancybox/jquery.fancybox-1.3.1.pack.js"></script>
@@ -39,7 +39,7 @@ $(document).ready(function() {
 	<div id="background">
 		<div id="page">
 			<div id="header" class="container">
-				<h1>{$strings.title}</h1>
+				<h1><a style="color: black" href="{$scriptUrl}">{$strings.title}</a></h1>
 				<br style="clear: both"/>
 				{*
 				<div id="topnav">

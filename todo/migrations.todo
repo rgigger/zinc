@@ -1,3 +1,13 @@
+-	newer
+	-	types
+		-	php
+			-	DbConnection methods
+			-	chainable sql generation calls (php sql dsl)
+			-	template based
+		-	sql: put metadata inside sql comments
+			-	execute with psql
+			-	execute within php
+
 -	new
 	-	functions
 		-	initialize database

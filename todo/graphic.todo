@@ -84,11 +84,15 @@
 	-	tables
 		-	borders
 		-	padding
-		-	spacing
+		-	margin
+		-	spacing - what is this margin and padding are both different kinds of spacing
 		-	colspan
 		-	rowspan
 		-	breaking across pages
 		-	widow / orphan support
+		-	columns widths need to be consistent across rows even if they are not explicitly specified or are specified in rows
+			other than the first one
+	-	allow you to use lists and divs instead of tables for layout and association (including for widow / orphan support)
 	-	debugging
 		-	make it easy to spit out:
 			-	the produced xml file

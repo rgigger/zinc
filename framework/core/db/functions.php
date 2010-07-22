@@ -243,6 +243,11 @@ function SqlUpdateRow($sql, $params)
 	return DbModule::getDefaultConnection()->updateRow($sql, $params);
 }
 
+function SqlUpdateRows($sql, $params)
+{
+	return DbModule::getDefaultConnection()->updateRows($sql, $params);
+}
+
 function SqlSelsertRow($tableName, $fieldNames, $conditions, $defaults = NULL, $lock = 0)
 {
 	return DbModule::getDefaultConnection()->selsertRow($tableName, $fieldNames, $conditions, $defaults, $lock);
