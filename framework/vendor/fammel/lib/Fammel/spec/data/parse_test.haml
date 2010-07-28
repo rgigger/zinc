@@ -1,0 +1,36 @@
+-# A HAML comment. Shouldn't be rendered
+/ An HTML comment. Should be rendered
+%p = $foo1
+  %p bar
+  %p
+  = $foo2
+  bar
+/
+  A multline
+  comment
+%p
+  foo
+  = $bar3
+%p
+  foo
+  bar
+  
+%p.bob
+  %p#bill
+    %p#bill.bob
+
+    .foo{:asd => "asd", :qwe => "qwe"}
+    #bar{:asd => "asd", :qwe => "qwe"}= $foo
+    #foo.bar{:asd => "asd", :qwe => "qwe"} bar
+    
+    - if(true)
+      %p true
+    - elseif($badgers)
+      %p It's a badger!
+    - else
+      %p = "false"
+      
+Some text
+  Some indented text. What should that do?
+    
+

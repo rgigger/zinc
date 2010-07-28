@@ -1,0 +1,42 @@
+
+<?php if(true) { ?>
+  <p>
+    true
+    <?php if(true) { ?>
+      <p>
+        true
+        <?php if(true) { ?>
+          <p>
+            true
+            <?php if(true) { ?>
+              <p>
+                true
+              </p>
+            <?php }  ?>
+          </p>
+        <?php } else { ?>
+          <p>
+            false
+          </p>
+        <?php }  ?>
+      </p>
+    <?php } elseif($foo) { ?>
+      <p>
+        foo
+      </p>
+    <?php } else { ?>
+      <p>
+        false
+      </p>
+    <?php }  ?>
+  </p>
+<?php } else { ?>
+  <p>
+    false
+  </p>
+<?php }  ?>
+
+<p>
+  end
+</p>
+
