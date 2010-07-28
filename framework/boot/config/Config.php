@@ -70,8 +70,8 @@ class Config
 			self::setConfigFile(app_dir . '/config.yaml');
 		self::insist(self::$file);
 		
-		if(defined('instance_config') && instance_config)
-			self::insist(instance_config);
+		if(defined('instance_dir') && instance_dir)
+			self::insist(instance_dir . '/config.yaml');
 	}
 	
 	/**

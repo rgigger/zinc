@@ -18,7 +18,7 @@ class Migration
 	//	static
 	function getAllMigrationNames()
 	{
-		$filenames = ListDir(getcwd() . '/migrations', array('extentions' => array('php')));
+		$filenames = ListDir(app_dir . '/migrations', array('extentions' => array('php')));
 		$versions = array();
 		foreach($filenames as $thisFilename)
 		{
@@ -33,7 +33,7 @@ class Migration
 	//	static
 	function filenameFromVersion($version)
 	{
-		$filenames = ListDir(getcwd() . '/migrations', array('extentions' => array('php')));
+		$filenames = ListDir(app_dir . '/migrations', array('extentions' => array('php')));
 		
 		foreach($filenames as $thisFilename)
 		{
@@ -55,7 +55,7 @@ class Migration
 	//	static
 	function apply($filename, $name)
 	{
-		include_once(getcwd() . '/migrations/' . $filename);
+		include_once(app_dir . '/migrations/' . $filename);
 		
 		$className = 'Migration_' . str_replace('.', '_', $name);
 		$migration = new $className();
@@ -70,7 +70,7 @@ class Migration
 	//	static
 	function undo($filename, $name)
 	{
-		include_once(getcwd() . '/migrations/' . $filename);
+		include_once(app_dir . '/migrations/' . $filename);
 		$className = 'Migration_' . str_replace('.', '_', $name);
 		$migration = new $className();
 		$migration->down();

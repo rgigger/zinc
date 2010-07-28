@@ -1,7 +1,5 @@
 <?php
-//	todo:	I think that this should extend Application.
-//	Application calls session_start, we need to figure out if that should be handled there or not before we extend it
-class ZoneApplication
+class ZoneApplication extends Application
 {
 	function __construct()
 	{
@@ -18,8 +16,10 @@ class ZoneApplication
 		include(app_dir . "/zones/Zone$name.php");
 	}
 	
-	function run()
+	function handleRequest()
 	{
+		self::loadZone('default');
+		
 		//	get the path parts
 		$pathParts = explode('/', virtual_path);
 		array_shift($pathParts);
@@ -38,13 +38,6 @@ class ZoneApplication
 		}
 	}
 	
-	static function handleRequest()
-	{
-		global $app;
-		self::loadZone('default');
-		$app->run();
-	}
-	
 	function handleStaticFile($pathParts)
 	{
 		array_shift($pathParts);
@@ -57,6 +50,3 @@ class ZoneApplication
 		EchoStaticFile($filePath);
 	}
 }
-
-global $app;
-$app = new ZoneApplication();

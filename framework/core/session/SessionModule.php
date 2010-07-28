@@ -22,5 +22,6 @@ class SessionModule extends ZoopModule
 	{
 		$params = $this->getConfig();
 		self::$engine = SessionFactory::getEngine($params);
+		Session::start();
 	}
 }

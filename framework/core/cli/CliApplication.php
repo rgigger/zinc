@@ -48,7 +48,7 @@ class CliApplication
 		if(!isset($params[1]))
 		{
 			echo "usages:\n";
-			echo "zap apply migrations:\n";
+			echo "zn apply migrations:\n";
 			die();
 		}
 		
