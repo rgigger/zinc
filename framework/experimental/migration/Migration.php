@@ -19,6 +19,7 @@ class Migration
 	function getAllMigrationNames()
 	{
 		$filenames = ListDir(app_dir . '/migrations', array('extentions' => array('php')));
+		sort($filenames);
 		$versions = array();
 		foreach($filenames as $thisFilename)
 		{

@@ -14,6 +14,8 @@ class ZoneDefault extends AppZone
 	{
 		if(RequestApp::auth($_POST['username'], $_POST['password']))
 			$this->redirect('list');
+		else
+			die('authentication failed');
 	}
 	
 	public function pageList($p, $z)
