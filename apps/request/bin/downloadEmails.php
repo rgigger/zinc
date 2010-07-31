@@ -1,19 +1,20 @@
 <?php
-include('config.php');
-include('includes.php');
+// include('config.php');
+// include('includes.php');
 
 Zoop::loadLib('zend');
 
-$mail = new Zend_Mail_Storage_Pop3(array('host'     => 'pop.gmail.com',
-                                         'user'     => 'request_test@rickgigger.com',
-                                         'password' => 'requestx0ring',
-                                         'ssl'      => 'SSL'));
+$mailConfig = Config::get('app.importer');
+$mail = new Zend_Mail_Storage_Pop3(array('host'     => $mailConfig['host'],
+                                         'user'     => $mailConfig['username'],
+                                         'password' => $mailConfig['password'],
+                                         'ssl'      => $mailConfig['ssl'] ? 'SSL' : ''));
 
-// $mail = new Zend_Mail_Storage_Imap(array('host'     => 'imap.gmail.com',
-//                                          'user'     => 'request_test@rickgigger.com',
-//                                          'password' => 'requestx0ring',
-//                                          'ssl'      => 'SSL'));
-var_dump($mail);
+// $mail = new Zend_Mail_Storage_Imap(array('host'     => $mailConfig['host'],
+//                                          'user'     => $mailConfig['username'],
+//                                          'password' => $mailConfig['password'],
+//                                          'ssl'      => $mailConfig['ssl'] ? 'SSL' : ''));
+// var_dump($mail);
 
 var_dump($count = $mail->countMessages());
 
@@ -23,16 +24,25 @@ foreach($mail as $message)
 	// $message = $mail->getMessage($i);
 	// print_r($message);
 	// echo "$i {$message->from} {$message->to} {$message->subject}\n";
-	echo "{$message->from} {$message->to} {$message->subject}\n";
+	echo "{$message->from}: {$message->to}: {$message->subject}\n";
 	
-	$res = preg_match('/([\w ]+)<(\w+)@([\w.]+)>/' , $message->from, $matches);
-	$name = trim($matches[1]);
-	$parts = explode(' ', $name);
-	$firstname = array_shift($parts);
-	$lastname = array_pop($parts);
-	$user = trim($matches[2]);
-	$domain = trim($matches[3]);
-	$username = $email = "$user@$domain";
+	//	see if the from field is like "John Doe <someuser@example.com>" 
+	//	and if it is parse out the individual fields
+	$res = preg_match('/([\w ]*)<(\w.+)@([\w.]+)>/' , $message->from, $matches);
+	print_r($matches);
+	
+	if(count($matches) == 4)
+	{
+		$name = trim($matches[1]);
+		$parts = explode(' ', $name);
+		$firstname = array_shift($parts);
+		$lastname = array_pop($parts);
+		$user = trim($matches[2]);
+		$domain = trim($matches[3]);
+		$username = $email = "$user@$domain";
+	}
+	else
+		die("unhandled address format in the 'From' field\n\n");
 	
 	$sender = DbObject::_getOne('Person', array('username' => $username), array(
 		'firstname' => $firstname, 'lastname' => $lastname, 'email' => $email
@@ -42,10 +52,15 @@ foreach($mail as $message)
 	
 	preg_match('/<([^>]+)>/' , trim($message->messageId), $matches);
 	$messageId = $matches[1];
+	// SqlEchoOn();
 	if(SqlFetchCell("SELECT count(*) from request where message_id = :messageId", array('messageId' => $messageId)))
-		continue;
+		$request = Request::findOne(array('message_id' => $messageId));
+		// continue;
+	else
+		$request = new Request();
 	
-	$request = new Request();
+	echo 'CLASS NAME = ' . get_class($request) . "\n\n";
+	
 	$request->owner_id = $sender->id;
 	$request->name = trim($message->subject);
 	$request->message_id = $messageId;
@@ -69,31 +84,45 @@ foreach($mail as $message)
 	
 	if($message->isMultipart())
 	{
-	    foreach($message as $part)
-		{
-			print_r($part->getContent());
-			var_dump($part->contentType);
-			$start = strpos($part->contentType, '/');
-			var_dump($start);
-			$end = strpos($part->contentType, ';');
-			var_dump($end);
-			var_dump($end - $start);
-			$type = substr($part->contentType, $start + 1, $end - $start - 1);
-			var_dump($type);
-			
-			if($type == 'text')
-				$request->text_desc = $part->getContent();
-			else if($type == 'html')
-				$request->html_desc = $part->getContent();
-		}
-		// die();
+		$parts = getMessageParts($message);
+		print_r($parts);
+		$request->text_desc = $parts['text'];
+		$request->html_desc = $parts['html'];
 	}
 	else
 		$request->text_desc = $message->getContent();
 	
+	print_r($request);
 	$request->save();
 	// break;
 }
+
+function getMessageParts($message)
+{
+	$parts = array('text' => null, 'html' => null, 'attachments' => array());
+	_getMessageParts($message, $parts);
+	return $parts;
+}
+
+function _getMessageParts($message, &$parts)
+{
+	foreach($message as $part)
+	{
+		// echo "CONTENT TYPE = $part->contentType\n\n";
+		if($part->isMultipart())
+			_getMessageParts($part, $parts);
+		else
+		{
+			$res = preg_match('/([\w ]+)\/(\w+);.*/' , $part->contentType, $matches);
+			
+			if($matches[1] == 'text' && $matches[2] == 'plain')
+				$parts['text'] = mb_convert_encoding(quoted_printable_decode($part->getContent()), 'UTF-8');
+			else if($matches[1] == 'text' && $matches[2] == 'html')
+				$parts['html'] = mb_convert_encoding(quoted_printable_decode($part->getContent()), 'UTF-8');
+		}
+	}
+}
+
 
 // echo_r(Config::get('app.allowedDomains'));
 

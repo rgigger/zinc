@@ -76,6 +76,12 @@ class ZoneDefault extends AppZone
 		echo json_encode(array('id' => $filter->id));
 	}
 	
+	public function pageView($p)
+	{
+		$request = isset($p[1]) && $p[1] ? new Request($p[1]) : new Request();
+		$this->assign('request', $request);
+	}
+	
 	public function pageEdit($p)
 	{
 		$request = isset($p[1]) && $p[1] ? new Request($p[1]) : new Request();
@@ -100,12 +106,12 @@ class ZoneDefault extends AppZone
 		$this->redirect('list');
 	}
 	
-	public function pageView($p)
-	{
-		$file = $p[1];
-		$this->assign('filename', $file);
-		$this->display('view');
-	}
+	// public function pageView($p)
+	// {
+	// 	$file = $p[1];
+	// 	$this->assign('filename', $file);
+	// 	$this->display('view');
+	// }
 	
 	public function postSetField($p, $z)
 	{

@@ -5,6 +5,11 @@ zoop:
             database: request
             username: postgres
 app:
+    importer:
+        host: pop.example.com
+        username: example-username
+        password: example-password
+        ssl: yes
     filter:
         fields:
             priority:

@@ -1,7 +1,7 @@
 {foreach from=$requests item=thisRequest}
 	<tr>
 		<td>{$thisRequest->id}</td>
-		<td><a href="{$zoneUrl}/edit/{$thisRequest->id}">{$thisRequest->name}</a></td>
+		<td><a href="{$zoneUrl}/view/{$thisRequest->id}">{$thisRequest->name}</a></td>
 		<td>{$thisRequest->description}</td>
 		<td>{$thisRequest->priority}</td>
 		<td>{$thisRequest->Person->getName()}</td>
