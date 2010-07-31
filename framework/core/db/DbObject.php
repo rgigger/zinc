@@ -726,6 +726,12 @@ class DbObject extends Object implements Iterator
 		return self::_findBySql($className, "select * from $tableName where $where", $params);
 	}
 
+	static public function find($conditions = NULL, $params = NULL)
+	{
+		$className = get_called_class();
+		return self::_find($className, $conditions, $params);
+	}
+	
 	/**
 	 * Searches the database and returns an array of DbObjects each representing a record in the resultset
 	 *
@@ -741,7 +747,13 @@ class DbObject extends Object implements Iterator
 		$selectInfo = self::_getConnection($className)->generateSelectInfo($tableName, '*', $conditions, $params);
 		return self::_findBySql($className, $selectInfo['sql'], $selectInfo['params']);
 	}
-
+	
+	static public function findOne($conditions = NULL, $params = null)
+	{
+		$className = get_called_class();
+		return self::_findOne($className, $conditions, $params);
+	}
+	
 	/**
 	 * Retrieve one object from the database and map it to an object.  Throws an error if more than one row is returned.
 	 *
@@ -749,9 +761,9 @@ class DbObject extends Object implements Iterator
 	 * @param array $conditions Key value pair for the fields you want to look up
 	 * @return DbObject
 	 */
-	static public function _findOne($className, $conditions = NULL)
+	static public function _findOne($className, $conditions = NULL, $params = null)
 	{
-		$a = DbObject::_find($className, $conditions);
+		$a = DbObject::_find($className, $conditions, $params);
 		if(!$a)
 			return false;
 
