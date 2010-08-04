@@ -1,8 +1,16 @@
 <?php
-// do some bootstrapping
+// for backwards compatibility
+include_once __dir__ . '/Zoop.php';
 
-if(!defined("zoop_dir"))
-	define("zoop_dir", dirname(__file__));
+// do some bootstrapping
+if(!defined("zinc_dir"))
+	define("zinc_dir", dirname(__file__));
+else
+	trigger_error("zinc dir should be defined by including Zinc.php");
+
+// for backwards compatibility
+define('zoop_dir', zinc_dir);
+
 
 function define_once($name, $value)
 {
@@ -24,7 +32,7 @@ include(zoop_dir . '/ZoopLoader.php');
  * * Configuring auto-loading of zones and modules
  * * Loading libraries and domains
  */
-class Zoop
+class Zinc
 {
 	// static private $loaded = array(), $registered = array();
 	static private $libs = array();
@@ -248,8 +256,8 @@ class Zoop
 	*/
 }
 
-Zoop::registerLib('boot');
-Zoop::registerLib('core');
-Zoop::registerLib('experimental');
-Zoop::registerLib('vendor');
-Zoop::loadLib('boot');
+Zinc::registerLib('boot');
+Zinc::registerLib('core');
+Zinc::registerLib('experimental');
+Zinc::registerLib('vendor');
+Zinc::loadLib('boot');
