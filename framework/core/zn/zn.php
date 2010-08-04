@@ -17,27 +17,38 @@ Config::suggest(__dir__ . '/config.yaml');
 $args = $argv;
 array_shift($args);
 $wordlist = Config::get('zn.commands');
-foreach($args as $arg)
+
+$counts = array();
+foreach(Config::get('zn.commands') as $commandName => $keywords)
 {
-	foreach(Config::get('zn.commands') as $commandName => $keywords)
+	$count = 0;
+	foreach($keywords as $word)
 	{
-		foreach($keywords as $word)
-		{
-			if(($index = array_search($word, $wordlist[$commandName])) !== false)
-				unset($wordlist[$commandName][$index]);
-			
-			//	all of the keywords were in the arg list
-			if(count($wordlist[$commandName]) == 0)
-			{
-				$className = "Command$commandName";
-				include __dir__ . "/commands/Command$commandName.php";
-				$command = new $className();
-				$command->handleRequest($argv);
-				die();
-			}
-		}
-		
+		if(in_array($word, $args))
+			$count++;
 	}
+	$counts[$commandName] = $count;
+}
+
+$highestCommand = false;
+$highestCount = 0;
+foreach($counts as $commandName => $count)
+{
+	if($count && $count > $highestCount)
+	{
+		$highestCommand = $commandName;
+		$highestCount = $count;
+	}
+}
+
+if($highestCommand)
+{
+	$className = "Command$highestCommand";
+	include __dir__ . "/commands/$className.php";
+	$command = new $className();
+	$command->handleRequest($argv);
+	echo "\n\n";
+	die();
 }
 
 die("error: no command found\n");

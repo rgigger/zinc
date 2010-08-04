@@ -9,6 +9,7 @@ class CommandScript
 		
 		$command = $p[2];
 		$filepath = app_dir . "/bin/$command.php";
+		echo "executing $filepath\n";
 		if(file_exists($filepath))
 			include $filepath;
 		else
