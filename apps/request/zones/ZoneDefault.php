@@ -131,4 +131,12 @@ class ZoneDefault extends AppZone
 		//	this is sent back and thus placed in the table cell
 		echo $_POST['update_value'];
 	}
+	
+	public function pageAttachment($p, $z)
+	{
+		$attachment = new Attachment($p[1]);
+		// echo_r($attachment);
+		$attachment->stream();
+		die();
+	}
 }

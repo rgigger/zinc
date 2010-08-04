@@ -17,6 +17,8 @@ class App extends ZoneApplication
 		Zoop::registerClass('Person', dirname(__file__) . '/domain/Person.php');
 		Zoop::registerClass('Request', dirname(__file__) . '/domain/Request.php');
 		Zoop::registerClass('Filter', dirname(__file__) . '/domain/Filter.php');
+		Zoop::registerClass('Attachment', dirname(__file__) . '/domain/Attachment.php');
+		Zoop::registerClass('Comment', dirname(__file__) . '/domain/Comment.php');
 
 		//	register the zones
 		Zoop::registerClass('ZoneFilter', dirname(__file__) . '/zones/ZoneFilter.php');
