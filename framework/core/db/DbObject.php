@@ -772,7 +772,13 @@ class DbObject extends Object implements Iterator
 
 		return current($a);
 	}
-
+	
+	static public function getOne($conditions = NULL, $defaults = null)
+	{
+		$className = get_called_class();
+		return self::_getOne($className, $conditions, $defaults);
+	}
+	
 	/**
 	 * Retrieves a DbObject from the given table with a row in it, creating the row if neccesary
 	 *
