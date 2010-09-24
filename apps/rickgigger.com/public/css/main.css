@@ -109,7 +109,12 @@ a {
 
 #main h3 {
     margin: 10px 0 10px 0;
-    font-size: 16px;
+    font-size: 18px;
+}
+
+#main h3 a {
+	color: black;
+	text-decoration: underline;
 }
 
 #main h4 {
