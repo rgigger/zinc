@@ -1,5 +1,5 @@
 <?php
-class FormModule extends ZoopModule
+class FormModule extends ZincModule
 {
 	public function init()
 	{

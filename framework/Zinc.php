@@ -44,7 +44,7 @@ class Zinc
 	static public function registerLib($libName, $path = null)
 	{
 		if(!$path)
-			$path = zoop_dir . '/' . $libName;
+			$path = zinc_dir . '/' . $libName;
 		
 		if(isset(self::$libs[$libName]))
 			return;
@@ -81,11 +81,22 @@ class Zinc
 		trigger_error("mod '$modName' not found");
 	}
 	
+	static public function getMod($modName)
+	{
+		foreach(self::$libs as $lib)
+		{
+			if($lib->hasMod($modName))
+				return $lib->getMod($modName);
+		}
+		
+		trigger_error("mod '$modName' not found");
+	}
+	
 	static public function expandPath($path)
 	{
 		if($path[0] == '/')
 			return $path;
-			
+		
 		return app_dir . '/' . $path;
 	}
 	
