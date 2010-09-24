@@ -7,7 +7,7 @@ zn apply migrations [Migrations]
 zn redo migration [Migrations]
 zn create module [Stationary]
 zn build [Build]
-zn dbshell [Db]
+zn dbshell [Db] (try using this http://us2.php.net/manual/en/function.proc-open.php)
 zn about zinc [About]
 zn about app [About]
 zn about instance [About]
@@ -15,3 +15,8 @@ zn about db [About]
 zn edit app [Edit]
 zn edit config [Edit]
 zn edit instance [Edit]
+
+
+zn create migration migration_name [migration_id] [FROM module]
+zn create app app_name
+zn create instance instance_name path_to_app

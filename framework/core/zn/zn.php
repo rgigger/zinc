@@ -1,18 +1,16 @@
 <?php
-include 'init.php';
+// if we are in an instance load zinc through the instance
+// other wise load it through
+if(file_exists('./init.php'))
+	include 'init.php';
+else
+{
+	include dirname(dirname(__dir__)) . '/Zinc.php';
+	Zinc::registerLib('core');
+	Zinc::loadMod('cli');
+}
+
 Config::suggest(__dir__ . '/config.yaml');
-
-// $classMap = array();
-// foreach(glob(__dir__ . '/words/Word*.php') as $fullpath)
-// {
-// 	$info = pathinfo($fullpath);
-// 	$classMap[strtolower(substr($info['filename'], 4))] = $fullpath;
-// }  
-
-// print_r($classMap);
-// 
-// print_r( $argv );
-// print_r(Config::get('zn.commands'));
 
 $args = $argv;
 array_shift($args);
@@ -44,6 +42,7 @@ foreach($counts as $commandName => $count)
 if($highestCommand)
 {
 	$className = "Command$highestCommand";
+	// echo __dir__ . "/commands/$className.php\n";
 	include __dir__ . "/commands/$className.php";
 	$command = new $className();
 	$command->handleRequest($argv);
@@ -51,4 +50,12 @@ if($highestCommand)
 	die();
 }
 
-die("error: no command found\n");
+if(defined('instance_dir'))
+	echo "zn COMMAND [ARGS]\n";
+else
+{
+	echo "usage: zn create instance INSTANCE_NAME\n";
+	// echo "   create app APP_NAME\n";
+	// echo "   create module MODULE_NAME\n";
+	echo "\n";
+}

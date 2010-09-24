@@ -2,5 +2,5 @@ zn:
     commands:
         Script: [ex]
         Migrations: [migration, migrations, apply, redo]
-        Stationary: [create]
+        Stationary: [create, migration, update, stationary, config]
         Edit: [edit]
