@@ -8,7 +8,7 @@
 class Config
 {
 	private static $info = array();
-	private static $file;
+	// private static $file;
 	
 	static public function suggest($file, $prefix = NULL)
 	{
@@ -53,10 +53,10 @@ class Config
 	 *
 	 * @param string $file Path and filename of the config file to use
 	 */
-	static function setConfigFile($file)
-	{
-		self::$file = $file;
-	}
+	// static function setConfigFile($file)
+	// {
+	// 	self::$file = $file;
+	// }
 	
 	/**
 	 * Loads the config file specified by the $file member variable (or app_dir/config.yaml) 
@@ -64,11 +64,14 @@ class Config
 	 */
 	static function load()
 	{
-		self::suggest(zoop_dir . '/config.yaml', 'zoop');
+		self::suggest(zinc_dir . '/config.yaml', 'zoop');
 		
-		if(!self::$file)
-			self::setConfigFile(app_dir . '/config.yaml');
-		self::insist(self::$file);
+		// if(!self::$file)
+		// 	self::setConfigFile(app_dir . '/config.yaml');
+		// self::insist(self::$file);
+		
+		if(defined('app_dir') && app_dir)
+			self::insist(app_dir . '/config.yaml');
 		
 		if(defined('instance_dir') && instance_dir)
 			self::insist(instance_dir . '/config.yaml');
