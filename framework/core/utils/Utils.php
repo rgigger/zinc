@@ -265,6 +265,39 @@ function ListDir($path, $params)
 	return $entries;
 }
 
+function WalkDir($dir, $action)
+{
+	trigger_error("this function is not done");
+	$d = dir($dir);
+	while (false !== ($entry = $d->read()))
+	{
+		if($entry == '.' || $entry == '..')
+			continue;
+		
+		echo $entry."\n";
+		$action($entry);
+	}
+	$d->close();
+}
+
+function dir_r($path, $action)
+{
+	$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+	// $bytestotal=0;
+	// $nbfiles=0;
+	foreach($it as $filename => $cur)
+	{
+		// $filesize = $cur->getSize();
+		// $bytestotal += $filesize;
+		// $nbfiles++;
+		// $subPath = $it->getSubPathName();
+		// echo "$subPath => $filesize\n";
+		$action($it, $cur);
+	}
+
+	// $bytestotal=number_format($bytestotal);
+	// echo "Total: $nbfiles files, $bytestotal bytes\n";
+}
 
 /**
  * Return the extension of the given filename
