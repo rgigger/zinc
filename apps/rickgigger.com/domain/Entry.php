@@ -15,13 +15,26 @@ class Entry extends DbObject
 	
 	public function getBasePath()
 	{
+		$simple = $this->postgresBoolToPhp($this->simple);
+		if($simple)
+			return false;
+		
 		$id = str_pad($this->id, 4, '0', STR_PAD_LEFT);
 		return Config::get('app.blog.contentDir') . "/{$id}_{$this->name}";
 	}
 	
 	public function getContentPath()
 	{
-		return $this->getBasePath() . '/content.md'; 
+		$simple = $this->postgresBoolToPhp($this->simple);
+		if($simple)
+		{
+			$id = str_pad($this->id, 4, '0', STR_PAD_LEFT);
+			return Config::get('app.blog.contentDir') . "/{$id}_{$this->name}.md";
+		}
+		else
+		{
+			return $this->getBasePath() . '/content.md'; 
+		}
 	}
 	
 	public function getCacheDir()
@@ -114,7 +127,7 @@ class Entry extends DbObject
 				$filter->assetBaseUrl = 'index.php/entry/asset/' . $this->id;
 				
 				$filter->assetSrcDir = $this->getBasePath();
-				if($cacheResults)
+				if($filter->assetSrcDir && $cacheResults)
 				{
 					$filter->assetCacheDir = $cacheDir;
 				}
@@ -134,5 +147,12 @@ class Entry extends DbObject
 	public function cacheContent()
 	{
 		$this->getContent(true);
+	}
+	
+	public function save()
+	{
+		if($this->simple != 't' && $this->simple != 'f')
+			$this->simple = $this->phpBoolToPostgres($this->simple);
+		parent::save();
 	}
 }

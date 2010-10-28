@@ -4,7 +4,7 @@ class Content
 	static public function scan()
 	{
 		$dir = Config::get('app.blog.contentDir');
-		$entries = glob($dir . '/*/content.md');
+		$entries = array_merge(glob($dir . '/*/content.md'), glob($dir . '/*.md'));
 		
 		foreach($entries as $entry)
 		{
@@ -17,11 +17,26 @@ class Content
 	static public function importEntry($path)
 	{
 		$parts = explode('/', $path);
-		$info = explode('_', $parts[count($parts) - 2]);
+		if($parts[count($parts) - 1] == 'content.md')
+		{
+			$infoPart = $parts[count($parts) - 2];
+			$simple = false;
+		}
+		else
+		{
+			$infoPart = $parts[count($parts) - 1];
+			$simple = true;
+		}
+		
+		$info = pathinfo($infoPart);
+		$infoPart = $info['filename'];		
+		$id = substr($infoPart, 0, strpos($infoPart, '_'));
+		$name = substr($infoPart, strpos($infoPart, '_') + 1);
 		
 		//	do the database part
-		$entry = new Entry((int)$info[0]);
-		$entry->name = $info[1];
+		$entry = new Entry((int)$id);
+		$entry->name = $name;
+		$entry->simple = $simple;
 		$entry->assignHeaders();
 		$entry->save();
 		
