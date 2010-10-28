@@ -1,6 +1,8 @@
 <?php
 class Filter extends DbObject
 {
+	
+	
 	static public function jsonToSql($json)
 	{
 		return self::sqlify(json_decode($json)->subs[0]);

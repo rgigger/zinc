@@ -7,6 +7,7 @@ class App extends ZoneApplication
 		Zoop::loadLib('db');
 		Zoop::loadLib('session');
 		Zoop::loadLib('zend');
+		Zoop::loadLib('form');
 
 		//	register classess in the application that extend Zoop classes
 		Zoop::registerClass('AppZone', dirname(__file__) . '/extend/AppZone.php');

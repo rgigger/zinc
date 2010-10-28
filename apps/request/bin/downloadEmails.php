@@ -99,7 +99,7 @@ foreach($mail as $message)
 		if(!$request)
 			$request = new Request();
 		
-		$request->owner_id = $sender->id;
+		$request->creator_id = $sender->id;
 		$request->name = trim($message->subject);
 		$request->message_id = $messageId;
 		$request->text_desc = $messageParts['text'];

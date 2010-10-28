@@ -1,5 +1,5 @@
 <?php
-class Migration_[[$version]] extends Migration
+class Migration_[[ $version ]] extends Migration
 {
 	function up()
 	{

@@ -3,10 +3,11 @@ class Request extends DbObject
 {
 	protected function init()
 	{
-		$this->belongsTo('Person', array('local_field' => 'owner_id'));
+		$this->belongsTo('Creator', array('local_field' => 'creator_id', 'class' => 'Person'));
 		$this->hasMany('Comment');
 		$this->fieldOptions('priority');
 		$this->addGetter('htmlDescription');
+		$this->fieldOptions('status');
 	}
 	
 	public function getHtmlDescription()

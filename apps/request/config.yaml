@@ -26,17 +26,23 @@ app:
                 references: person
                 display_field: username
                 display: Owner
-            completed:
-                type: discreet
-                table: request
-                field: completed
-                list: {t: "Yes", f: "No"}
-                display: Completed
+            # completed:
+            #     type: discreet
+            #     table: request
+            #     field: completed
+            #     list: {t: "Yes", f: "No"}
+            #     display: Completed
             last_update:
                 type: date
                 table: request
                 field: last_update
                 display: Last Update
+            status:
+                type: discreet
+                table: request
+                field: status_id
+                list: {1: new, 4: resolved}
+                display: Status
         types:
             discreet: {operators: [is, in, is_not, not_in]}
             ordered: {operators: [is, in, is_not, not_in, less_than, greater_than, less_than_equal, greater_than_equal, in_the_range]}

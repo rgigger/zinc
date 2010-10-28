@@ -1,4 +1,11 @@
--	0.1
+-	0.1 [Ready for John and I to use]
+	-	list the creator on the view and edit pages
+	-	edit page
+		-	assign to a person
+		-	set the status	
+	-	merge a request into the comment list of another request
+	-	list all attachments for each request/comment
+-	0.2
 	+	save filters
 	/	load filters
 		/	load the 2nd operand properly
@@ -10,9 +17,8 @@
 	+	filter the results
 	+	put filters at the top of the list
 	+	make saving, loading, applying filters work on the list page
-	-	tie into email system
-	-	deploy it
--	0.2
+	+	tie into email system
+-	0.3
 	-	remember what filter you were on
 	-	clients and a client_id field
 	-	permissions

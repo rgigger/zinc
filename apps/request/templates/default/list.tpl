@@ -136,7 +136,7 @@ $(document).ready(function() {
 		<th>desc</th>
 		<th width="60">priority</th>
 		<th width="60">owner</th>
-		<th width="80">completed</th>
+		<th width="80">status</th>
 	</tr>
 	</thead>
 	<tbody>

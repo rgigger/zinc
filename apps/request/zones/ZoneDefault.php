@@ -92,9 +92,11 @@ class ZoneDefault extends AppZone
 	{
 		if($_POST['submitAction'] == 'Save')
 		{
-			$request = isset($p[1]) && $p[1] ? new Request($p[1]) : new Request();
-			$request->setFields(array_merge($_POST['_record'], array('owner_id' => $this->loggedInUser->id)));
-			$request->save();
+			Form::save();
+			
+			// $request = isset($p[1]) && $p[1] ? new Request($p[1]) : new Request();
+			// $request->setFields(array_merge($_POST['_record'], array('owner_id' => $this->loggedInUser->id)));
+			// $request->save();
 		}
 		else if($_POST['submitAction'] == 'Delete')
 		{

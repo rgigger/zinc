@@ -1,3 +1,4 @@
+<a href="{$zoneUrl}/edit/{$request->id}">edit</a>
 <table border="1">
 	<tr>
 		<td>name:</td>
@@ -5,12 +6,19 @@
 	</tr>
 	<tr>
 		<td>description:</td>
-		{*<td>{if $request->html_desc}{$request->html_desc}{else}{$request->text_desc|nl2br}{/if}</td>*}
 		<td>{$request->htmlDescription}</td>		
+	</tr>
+	<tr>
+		<td>creator:</td>
+		<td>{$request->Creator->getName()}</td>
 	</tr>
 	<tr>
 		<td>priority:</td>
 		<td>{$request->priority}</td>
+	</tr>
+	<tr>
+		<td>priority:</td>
+		<td>{$request->status}</td>
 	</tr>
 </table>
 
