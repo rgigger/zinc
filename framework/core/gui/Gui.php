@@ -1,7 +1,7 @@
 <?php
 class Gui
 {
-	private $driver;
+	public $driver;
 	
 	function __construct($driverName = null)
 	{

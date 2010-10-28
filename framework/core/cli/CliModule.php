@@ -1,9 +1,12 @@
 <?php
 class CliModule extends ZoopModule
 {
-	function getClasses()
+	protected function init()
 	{
-		return array('CsvImporter', 'Importer', 'CliApplication');
+		$this->addInclude('utils.php');
+		$this->addClass('Importer');
+		$this->addClass('CsvImporter');
+		$this->addClass('CliApplication');
 	}
 }
 

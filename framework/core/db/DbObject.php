@@ -302,7 +302,17 @@ class DbObject extends Object implements Iterator
 		}
 	}
 	*/
-
+	
+	public function phpBoolToPostgres($curval)
+	{
+		return $curval && $curval != 'f' ? 't' : 'f';
+	}
+	
+	public function postgresBoolToPhp($curval)
+	{
+		return $curval !== 'f' && $curval !== false ? true : false;
+	}
+	
 	/**
 	 * Accepts a $field => $value array containing fields and their values to be set in this DbObject
 	 *

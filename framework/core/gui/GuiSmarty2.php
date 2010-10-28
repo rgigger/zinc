@@ -27,6 +27,7 @@ class GuiSmarty2 extends Smarty2
 		
 		//	set the compile directory
 		$modTmpDir = $tmpPath . '/smarty2';
+		
 		if(!is_dir($modTmpDir))
 			mkdir($modTmpDir);
 		$this->setCompileDir($modTmpDir);

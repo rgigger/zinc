@@ -118,6 +118,13 @@ function _cd($path)
 
 function _ln($target, $link)
 {
+	_status("trying to link '$link' to '$target'");
+	if(file_exists($link))
+	{
+		_status("There is already a file at $link");
+		return;
+	}
+	
 	_status("linking '$link' to '$target'");
 	symlink($target, $link);
 }
