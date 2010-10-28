@@ -15,8 +15,7 @@ class Migration
 		}
 	}
 	
-	//	static
-	function getAllMigrationNames()
+	static function getAllMigrationNames()
 	{
 		$filenames = ListDir(app_dir . '/migrations', array('extentions' => array('php')));
 		sort($filenames);
@@ -31,8 +30,17 @@ class Migration
 		return $versions;
 	}
 	
-	//	static
-	function filenameFromVersion($version)
+	static public function getMaxMigration()
+	{
+		$ms = self::getAllMigrationNames();
+		$max = 0;
+		foreach($ms as $num)
+			if($num > $max)
+				$max = $num;
+		return $max;
+	}
+	
+	static function filenameFromVersion($version)
 	{
 		$filenames = ListDir(app_dir . '/migrations', array('extentions' => array('php')));
 		
@@ -47,14 +55,12 @@ class Migration
 		trigger_error("version not found: " . $version);
 	}
 	
-	//	static
-	function getAllAppiedMigrationNames()
+	static function getAllAppiedMigrationNames()
 	{
 		return SqlFetchColumn("select name from migration where applied = 1", array());
 	}
 	
-	//	static
-	function apply($filename, $name)
+	static function apply($filename, $name)
 	{
 		include_once(app_dir . '/migrations/' . $filename);
 		
@@ -68,8 +74,7 @@ class Migration
 		print_r($migration);
 	}
 	
-	//	static
-	function undo($filename, $name)
+	static function undo($filename, $name)
 	{
 		include_once(app_dir . '/migrations/' . $filename);
 		$className = 'Migration_' . str_replace('.', '_', $name);
