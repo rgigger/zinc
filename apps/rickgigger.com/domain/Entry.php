@@ -82,8 +82,16 @@ class Entry extends DbObject
 			$this->link_text = $headers['link-text'];
 	}
 	
-	public function getContent($cacheResults = false)
+	public function getIntro($cacheResults = false)
 	{
+		return $this->getContent(array('introOnly' => true));
+	}
+	
+	public function getContent($params = array())
+	{
+		$cacheResults = isset($params['cacheResults']) ? $params['cacheResults'] : false;
+		$introOnly = isset($params['introOnly']) ? $params['introOnly'] : false;
+		
 		$pre = file($this->getContentPath());
 		$headers = array();
 		$inHeaders = true;
@@ -105,6 +113,25 @@ class Entry extends DbObject
 			}
 			else
 				$content .= $line;
+		}
+		
+		$shortened = false;
+		$strpos = strpos($content, "\n==\n");
+		if($strpos !== false)
+		{
+			if($introOnly)
+			{
+				$content = substr($content, 0, $strpos);
+				$shortened = true;
+			}
+			else
+			{
+				// echo $content;
+				$content = substr_replace($content, '', $strpos + 1, 2);
+				// echo '<br>===========================<br>';
+				// echo $content;
+				// die('here');
+			}
 		}
 		
 		if($cacheResults)
@@ -135,13 +162,21 @@ class Entry extends DbObject
 			}
 		}
 		
-		if($cacheResults)
+		//	we shoudl fix this later so that intros are also cached
+		//	also, I don't see anywhere where it actually pulls fom the cache,
+		//	or does anything with it except store stuff in it
+		if($cacheResults && !$introOnly)
 		{
 			$filename = "$cacheDir/{$this->name}.html";
 			file_put_contents($filename, $this->getContent());
 		}
 		
-		return $content;
+		if($introOnly)
+			$res = array('content' => $content, 'shortened' => $shortened);
+		else
+			$res = $content;
+		
+		return $res;
 	}
 	
 	public function cacheContent()

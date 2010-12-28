@@ -1,1 +1,1 @@
-{include file="shared/entry.tpl"}
+{include file="shared/entry.tpl" short=false}
