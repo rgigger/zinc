@@ -8,13 +8,17 @@ class ZoneDefault extends AppZone
 	
 	public function pageDefault()
 	{
-		$this->redirect('home');
+		$maxPage = Content::getMaxPages();
+		$this->redirect("home/$maxPage");
 	}
 	
-	public function pageHome()
+	public function pageHome($p)
 	{
+		$page = $p[1];
+		$maxPage = Content::getMaxPages();
+		$this->assign('pages', array_reverse(range(0, $maxPage)));
 		$this->assign('isList', true);
-		$this->assign('entries', Content::getPageOfEntries());
+		$this->assign('entries', Content::getPageOfEntries($page));
 	}
 	
 	public function pageContact($p, $z)

@@ -11,6 +11,12 @@ class Content
 			echo "$entry<br>";
 			self::importEntry($entry);
 		}
+		
+		$sql = "UPDATE entry
+				SET published_order = orders.rank
+				FROM (SELECT id, row_number() over (order by published_date, id) as rank from entry where published_date is not null) orders
+				WHERE orders.id = entry.id";
+		SqlUpdateRows($sql, array());
 		die();
 	}
 	
@@ -44,10 +50,19 @@ class Content
 		$entry->cacheContent();
 	}
 	
-	static public function getPageOfEntries($pageNum = 1)
+	static public function getMaxPages()
 	{
-		$sql = "SELECT * from entry where published_date is not null order by published_date desc limit 10";
+		return SqlFetchCell("SELECT ceil(max(published_order)/10) FROM entry", array());
+	}
+	
+	static public function getPageOfEntries($page)
+	{
+		$min = $page * 10 + 1;
+		$max = $min + 9;
+		// SqlEchoOn();
+		$sql = "SELECT * from entry where published_order >= $min and published_order <= $max order by published_date desc";
 		$entries = DbObject::_findBySql('Entry', $sql, array());
+		// SqlEchoOff();
 		return $entries;
 	}
 

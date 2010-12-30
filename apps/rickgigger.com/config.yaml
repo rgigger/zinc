@@ -1,6 +1,6 @@
 app:
     topnav:
-        Home: {link: home}
+        Home: {link: ''}
         Contact: {link: contact}
         About: {link: about}
         Admin: {link: drafts, requireLogin: true}
