@@ -1,4 +1,4 @@
-<div class="entry" style="margin-bottom: 20px; margin-top: 20px">
+<div class="entry" style="margin-bottom: 30px; margin-top: 20px">
 	{if $isList}
 		<h3><a href="{$scriptUrl}/entry/1/{$entry->getDateNameUrl()}">{$entry->title}</a></h3>
 	{else}
