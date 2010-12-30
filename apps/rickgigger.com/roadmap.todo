@@ -5,16 +5,15 @@
 		-	request the changes on the server
 		-	create a bin command to do the refresh
 		-	run that command remotely
--	get those youtube entries out of there
 +	add the ability to only show part of the blog entry on the home page
 	+	add in a marker to the entry
 	+	only display that part on the home page with a "read more..." link
 	+	keep showing the whole thing on the entry page
--	pageinate the home page
-	-	count the total number of relevant entries, and divide it by 10
-	-	the oldest page is page 0 and it counts up from there
-	-	each entry is always on the same page
-	-	when you go to the home page always redirect to the real page number
++	pageinate the home page
+	+	count the total number of relevant entries, and divide it by 10
+	+	the oldest page is page 0 and it counts up from there
+	+	each entry is always on the same page
+	+	when you go to the home page always redirect to the real page number
 +	move blog content out of the code
 	+	allow you to specify the content directory
 		+	config: app.blog.contentDir
@@ -29,3 +28,6 @@
 			+	cache the results
 			+	metadata
 				+	done or not (publish it or not)
++	stabalize the home page list order.  right now if entries are on the same day the order can change
+-	implement a permissions system
+	-	if an entry hasn't been published yet, verify that you are an admin before you can see it
