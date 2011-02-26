@@ -1,16 +1,44 @@
 <?php
 class Content
 {
+	static public function newEntry($name)
+	{
+		$newId = self::getMaxId() + 1;
+		$idString = str_pad($newId, 4, "0", STR_PAD_LEFT);
+		$filename = "{$idString}_{$name}.md";
+		$path = Config::get('app.blog.contentDir') . '/' . $filename;
+		$stationaryFilename = app_dir . "/stationary/entry.tpl";
+		file_put_contents($path, file_get_contents($stationaryFilename));
+	}
+	
+	static public function getMaxId()
+	{
+		$maxId = -1;
+		self::each(function($path) use (&$maxId) {
+			$info = Content::parsePath($path);
+			$id = (int)$info['id'];
+			if($id > $maxId)
+				$maxId = $id;
+		});
+		
+		return $maxId;
+	}
+	
 	static public function scan()
 	{
-		$dir = Config::get('app.blog.contentDir');
-		$entries = array_merge(glob($dir . '/*/content.md'), glob($dir . '/*.md'));
+		// $dir = Config::get('app.blog.contentDir');
+		// $entries = array_merge(glob($dir . '/*/content.md'), glob($dir . '/*.md'));
+		// 
+		// foreach($entries as $entry)
+		// {
+		// 	echo "$entry<br>";
+		// 	self::importEntry($entry);
+		// }
 		
-		foreach($entries as $entry)
-		{
+		self::each(function($entry) {
 			echo "$entry<br>";
-			self::importEntry($entry);
-		}
+			Content::importEntry($entry);
+		});
 		
 		$sql = "UPDATE entry
 				SET published_order = orders.rank
@@ -20,29 +48,48 @@ class Content
 		die();
 	}
 	
-	static public function importEntry($path)
+	static public function each($op)
 	{
+		$dir = Config::get('app.blog.contentDir');
+		$entries = array_merge(glob($dir . '/*/content.md'), glob($dir . '/*.md'));
+		
+		foreach($entries as $entry)
+		{
+			$op($entry);
+		}
+	}
+	
+	static public function parsePath($path)
+	{
+		$info = array();
 		$parts = explode('/', $path);
 		if($parts[count($parts) - 1] == 'content.md')
 		{
 			$infoPart = $parts[count($parts) - 2];
-			$simple = false;
+			$info['simple'] = false;
 		}
 		else
 		{
 			$infoPart = $parts[count($parts) - 1];
-			$simple = true;
+			$info['simple'] = true;
 		}
 		
-		$info = pathinfo($infoPart);
-		$infoPart = $info['filename'];		
-		$id = substr($infoPart, 0, strpos($infoPart, '_'));
-		$name = substr($infoPart, strpos($infoPart, '_') + 1);
+		$pathInfo = pathinfo($infoPart);
+		$infoPart = $pathInfo['filename'];		
+		$info['id'] = substr($infoPart, 0, strpos($infoPart, '_'));
+		$info['name'] = substr($infoPart, strpos($infoPart, '_') + 1);
+		
+		return $info;
+	}
+	
+	static public function importEntry($path)
+	{
+		$info = self::parsePath($path);
 		
 		//	do the database part
-		$entry = new Entry((int)$id);
-		$entry->name = $name;
-		$entry->simple = $simple;
+		$entry = new Entry((int)$info['id']);
+		$entry->name = $info['name'];
+		$entry->simple = $info['simple'];
 		$entry->assignHeaders();
 		$entry->save();
 		

@@ -72,7 +72,7 @@ class Entry extends DbObject
 	public function assignHeaders()
 	{
 		$headers = $this->getHeaders();
-		if(isset($headers['archived-publish-date']))
+		if(isset($headers['archived-publish-date']) && $headers['archived-publish-date'])
 			$this->published_date = $headers['archived-publish-date'];
 		if(isset($headers['title']))
 			$this->title = $headers['title'];
@@ -147,6 +147,9 @@ class Entry extends DbObject
 			$filterList = explode(',', $headers['filters']);
 			foreach($filterList as $filterName)
 			{
+				if(!$filterName)
+					continue;
+				
 				$filterName = trim($filterName);
 				include_once app_dir . "/domain/filters/$filterName.php";
 				$className = ucfirst($filterName) . 'Filter';
@@ -181,7 +184,7 @@ class Entry extends DbObject
 	
 	public function cacheContent()
 	{
-		$this->getContent(true);
+		$this->getContent(array('cacheResults' => true));
 	}
 	
 	public function save()
