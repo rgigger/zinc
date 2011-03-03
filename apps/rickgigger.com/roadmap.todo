@@ -31,3 +31,11 @@
 +	stabalize the home page list order.  right now if entries are on the same day the order can change
 -	implement a permissions system
 	-	if an entry hasn't been published yet, verify that you are an admin before you can see it
+-	blocks
+	-	twitter favorites
+	-	rss feeds from select blogs
+		-	maybe just favorites from these blogs?
+	-	maybe have a bookmarklet for favorite/sharable stuff that doesn't end up making it into having a regular entry
+-	make it so you can watch youtube videos without using youtube
+	-	try modifying this extention to run on your site and convert all youtube videos to H.264
+		-	http://www.verticalforest.com/2010/10/27/youtube5-version-2/
