@@ -33,7 +33,7 @@ class DbPgsql extends DbConnection
 	
 	function _query($sql)
 	{
-		self::connect();	
+		self::connect();
 		$result = pg_query($this->connection, $sql);
 		return new DbPgResult($this->connection, $result);
 	}
