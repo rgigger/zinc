@@ -49,7 +49,7 @@ var zoneUrl = '{$scriptUrl}';
 </div>
 
 <div id="footer">
-Built with <a target="_external" href="http://code.google.com/p/zoop">Zoop Framework</a>
+Built with <a target="_external" href="https://github.com/rgigger/zinc/wiki/">Zinc Framework</a>
 </div>
 </body>
 </html>

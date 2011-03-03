@@ -1,4 +1,10 @@
--	to zinc 0.1
+-	0.1
+	-	make it easy to create a new project
+		-	zn create project
+			-	update the basic stationary
+			-	cp -R it
+			-	run a build script to set up permissions, etc
+-	0.2
 	-	get all the examples working out of the box
 		-	figure out how to get the permissions correct when they do the checkout from svn
 		-	see site.todo
@@ -40,7 +46,7 @@
 		-	multiple inheritance with Object
 		-	graphic
 		-	...
-	-	change the name to zinc
+	/	change the name to zinc
 	-	straighten out the licencing
 	-	do some basic marketing
 -	old stuff

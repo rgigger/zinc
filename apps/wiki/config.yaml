@@ -1,7 +1,7 @@
 app:
     strings:
         title: Wiki
-zoop:
+zinc:
     db:
         default:
             driver: php_pgsql

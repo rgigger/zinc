@@ -1,4 +1,4 @@
-zoop:
+zinc:
     db:
         default:
             driver: php_pgsql

@@ -67,12 +67,12 @@ abstract class ZincModule
 	
 	private function loadConfig()
 	{
-		Config::suggest($this->path . '/' . 'config.yaml', 'zoop.' . $this->getConfigPath());
+		Config::suggest($this->path . '/' . 'config.yaml', 'zinc.' . $this->getConfigPath());
 	}
 	
 	/**
 	 * Returns the configuration options using the Config class.
-	 * Returns config options from "zoop.<modulename>.<path>"
+	 * Returns config options from "zinc.<modulename>.<path>"
 	 * Path is optional and may be omitted.
 	 *
 	 * @param string $path
@@ -80,7 +80,7 @@ abstract class ZincModule
 	 */
 	function getConfig($path = '')
 	{
-		$config = Config::get('zoop.' . $this->getConfigPath() . $path);
+		$config = Config::get('zinc.' . $this->getConfigPath() . $path);
 		return $config;
 	}
 	

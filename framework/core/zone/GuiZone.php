@@ -28,8 +28,8 @@ class GuiZone extends Zone
 		
 		if($this->guiClass)
 			$className = $this->guiClass;
-		else if(Config::get('zoop.gui.class'))
-			$className = Config::get('zoop.gui.class');
+		else if(Config::get('zinc.gui.class'))
+			$className = Config::get('zinc.gui.class');
 		else if(class_exists('AppGui'))
 			$className = 'AppGui';
 		else

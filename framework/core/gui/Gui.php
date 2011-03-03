@@ -6,7 +6,7 @@ class Gui
 	function __construct($driverName = null)
 	{
 		if(!$driverName)
-			$driverName = Config::get('zoop.gui.driver');
+			$driverName = Config::get('zinc.gui.driver');
 		
 		$className = 'Gui' . ucfirst($driverName);
 		$this->driver = new $className();

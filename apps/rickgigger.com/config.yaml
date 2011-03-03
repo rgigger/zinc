@@ -9,7 +9,7 @@ app:
         Software: software
         Links: links
         Blog: blog
-zoop:
+zinc:
     db:
         default:
             driver: php_pgsql

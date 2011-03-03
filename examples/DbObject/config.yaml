@@ -1,4 +1,4 @@
-zoop:
+zinc:
     tmpDir: /tmp/zoop/examples/DbObject
     db:
         default:

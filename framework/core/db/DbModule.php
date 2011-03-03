@@ -1,5 +1,5 @@
 <?php
-class DbModule extends ZoopModule
+class DbModule extends ZincModule
 {
 	private static $connections = array();
 	
@@ -27,7 +27,7 @@ class DbModule extends ZoopModule
 	}
 	
 	/**
-	 * This method is overridden to tell zoop which files to include with this module
+	 * This method is overridden to tell zinc which files to include with this module
 	 *
 	 * @return array of filenames to include
 	 */
@@ -37,7 +37,7 @@ class DbModule extends ZoopModule
 	}
 	
 	/**
-	 * This method is overridden to tell zoop which classes exist as part of this module
+	 * This method is overridden to tell zinc which classes exist as part of this module
 	 * so that they can be added to the autoloader
 	 *
 	 * @return unknown
