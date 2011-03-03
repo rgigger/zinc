@@ -11,10 +11,11 @@ class CommandStationary
 		// $p1 = strtolower($p[1]);
 		// if($p1 == 'create')
 		// {
-			
-		$methodName = "handle" . $p[2];
+		
+		if(isset($p[2]))
+			$methodName = "handle" . $p[2];
 
-		if(method_exists($this, $methodName))
+		if(isset($p[2]) && method_exists($this, $methodName))
 			$this->$methodName($p);
 		else
 		{
@@ -24,9 +25,8 @@ class CommandStationary
 			}
 			else
 			{
-				echo "usage: zn create instance INSTANCE_NAME\n";
-				// echo "                 app APP_NAME\n";
-				// echo "                 module MODULE_NAME\n";
+				echo "usage: zn create instance INSTANCE_NAME APP_DIR\n";
+				echo "       zn create app APP_NAME\n";
 			}
 		}
 		
@@ -40,40 +40,29 @@ class CommandStationary
 		// }
 	}
 	
+	/**
+	 * todo:
+	 * 	make it so that running this on an existing directory won't do anything
+	 * 		without a -f flag in which case it will overwrite everything
+	 */
+	
+	public function handleApp($p)
+	{
+		Zinc::loadLib('build');
+		
+		$appDir = $p[3];
+		self::gen_r($appDir, 'basic', array());
+		
+		// set up the tmp dir
+		mkdir($appDir . '/tmp/Smarty2', 0777, true);
+		_chmod($appDir . '/tmp', 0777, true);
+	}
+	
 	public function handleInstance($p)
 	{
-		Zinc::loadMod('app');
-		Zinc::loadMod('gui');
-		
 		$instanceName = $p[3];
 		$appDir = $p[4];
-		$statPath = dirname(zinc_dir) . '/stationary/instance';
-		
-		// get a list of all the files that need to be processed as templates
-		$raw = file_get_contents($statPath . '/stationary');
-		$stripped = preg_replace('/[\s,;:]+/' , ' ', $raw);
-		$templateFiles = explode(' ', $stripped);
-		
-		if(!file_exists($instanceName))
-			mkdir($instanceName);
-		
-		// go through each file, if it is a template process it, otherwise just copy it
-		dir_r($statPath, function($it, $info) use ($templateFiles, $statPath, $instanceName, $appDir) {
-			$filename = $it->getSubPathName();
-			if($filename == 'stationary')
-				return;
-			
-			if(in_array($filename, $templateFiles))
-			{
-				echo "processing template $filename\n";
-				CommandStationary::gen("$statPath/$filename", "$instanceName/$filename", $appDir);
-			}
-			else
-			{
-				echo "copying file $filename\n";
-				copy("$statPath/$filename", "$instanceName/$filename");
-			}
-		});
+		self::gen_r($instanceName, 'instance', array('appDir' => $appDir));
 		
 		// set up a symlink for public
 		if(!file_exists("$instanceName/public"))
@@ -83,28 +72,25 @@ class CommandStationary
 	public function handleMigration($p)
 	{
 		Zinc::loadLib('migration');
+		Zinc::loadLib('utils');
 		
-		$name = $p[3];
 		$max = Migration::getMaxMigration();
 		
 		$version = $max + 1;
 		$moduleName = false;
 		
 		if($p[count($p) - 2] == 'from')
+		{
 			$moduleName = $p[count($p) - 1];
+			$name = 'init' . ucfirst($moduleName);
+		}
+		else
+			$name = $p[3];
 		
 		$stationaryFilename = 'migration.tpl';
 		
-		$gui = new GuiSmarty2();
-		$gui->left_delimiter = '[[';
-		$gui->right_delimiter = ']]';
-		
 		if($moduleName)
-		{
-			Zinc::loadMod($moduleName);
-			$mod = Zinc::getMod($moduleName);
-			$stationaryFilename = Zinc::getMod($moduleName)->path . "/stationary/$stationaryFilename";			
-		}
+			$stationaryFilename = Zinc::getModDir($moduleName) . "/stationary/$stationaryFilename";			
 		else
 			$stationaryFilename = app_dir . "/stationary/$stationaryFilename";
 		
@@ -114,19 +100,18 @@ class CommandStationary
 			return;
 		}
 		
-		$gui->assign('version', str_replace('.', '_', $version));
-		echo "fetching stationary from $stationaryFilename\n";
-		$contents = $gui->fetch('file:' . $stationaryFilename);
+		$params = array();
+		$params['version'] = str_replace('.', '_', $version);
 		
 		$dir = app_dir . '/migrations';
 		$newFilename = $dir . '/' . $version . '_' . $name . '.php';
-		if(!file_exists($dir))
-			mkdir($dir, 0775, true);
-		echo "storing file contents in $newFilename\n";
-		file_put_contents($newFilename, $contents);
+		self::gen($stationaryFilename, $newFilename, $params);
 	}
 	
-	static function gen($src, $dst, $appDir)
+	/**
+	 * gen handles processing one template file at $src and stores the result in at $dst
+	 */
+	static function gen($src, $dst, $params)
 	{
 		// set up the smarty object using /tmp
 		$gui = new Smarty2();
@@ -145,7 +130,8 @@ class CommandStationary
 		}
 		
 		// get the content
-		$gui->assign('appDir', $appDir);
+		foreach($params as $key => $val)
+			$gui->assign($key, $val);
 		$gui->assign('zincDir', zinc_dir);
 		echo "fetching stationary from $stationaryFilename\n";
 		$contents = $gui->fetch('file:' . $stationaryFilename);
@@ -157,6 +143,45 @@ class CommandStationary
 			mkdir($dir, 0775, true);
 		echo "storing file contents in $dst\n";
 		file_put_contents($dst, $contents);
+	}
+	
+	static public function gen_r($name, $statName, $params)
+	{
+		Zinc::loadMod('app');
+		Zinc::loadMod('gui');
+		
+		$statPath = dirname(zinc_dir) . "/stationary/{$statName}";
+		
+		// get a list of all the files that need to be processed as templates
+		$raw = file_get_contents($statPath . '/stationary');
+		// replace any separators that may have been used with just single spaces
+		$stripped = preg_replace('/[\s,;:]+/' , ' ', $raw);
+		$templateFiles = explode(' ', $stripped);
+		
+		if(!file_exists($name))
+			mkdir($name);
+		
+		// go through each file, if it is a template process it, otherwise just copy it
+		dir_r($statPath, function($it, $info) use ($templateFiles, $statPath, $name, $params) {
+			$filename = $it->getSubPathName();
+			if($filename == 'stationary' && $it->isFile())
+				return;
+			
+			$path = "$name/" . $it->getSubPath();
+			if($path && !file_exists($path))
+				mkdir($path, 0775, true);
+			
+			if(in_array($filename, $templateFiles))
+			{
+				echo "processing template $filename\n";
+				CommandStationary::gen("$statPath/$filename", "$name/$filename", $params);
+			}
+			else
+			{
+				echo "copying file $filename\n";
+				copy("$statPath/$filename", "$name/$filename");
+			}
+		});
 	}
 	
 	// public function handleUpdateStationaryConfig($p)
