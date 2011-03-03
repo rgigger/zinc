@@ -81,6 +81,17 @@ class Zinc
 		trigger_error("mod '$modName' not found");
 	}
 	
+	static public function getModDir($modName)
+	{
+		foreach(self::$libs as $lib)
+		{
+			if($lib->hasMod($modName))
+				return $lib->getModDir($modName);
+		}
+		
+		trigger_error("mod '$modName' not found");
+	}
+	
 	static public function getMod($modName)
 	{
 		foreach(self::$libs as $lib)

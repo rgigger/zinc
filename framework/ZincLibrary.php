@@ -37,16 +37,23 @@ abstract class ZincLibrary
 		return $this->mods[$name];
 	}
 	
+	public function getModDir($modName)
+	{
+		if(!$this->hasMod($modName))
+			trigger_error("mod $modName not found");
+		return "$this->path/$modName";
+	}
+	
 	public function loadMod($name)
 	{
-		//	if this library doesn't have this module then Zoop will have to figure out which one does
+		//	if this library doesn't have this module then Zinc will have to figure out which one does
 		if(!$this->hasMod($name))
-			return Zoop::loadMod($name);
+			return Zinc::loadMod($name);
 		
 		if(isset($this->mods[$name]) && $this->mods[$name])
 			return;
 		$modName = ucfirst($name) . 'Module';
-		include("$this->path/$name/$modName.php");
+		include($this->getModDir($name) . "/$modName.php");
 		$this->mods[$name] = new $modName("$this->path/$name", $this);
 	}
 	
