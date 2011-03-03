@@ -59,12 +59,13 @@ class Config
 	// }
 	
 	/**
-	 * Loads the config file specified by the $file member variable (or app_dir/config.yaml) 
-	 *
+	 * Loads the config files
+	 *	app_dir/config.yaml
+	 * 	instance_dir/config.yaml	
 	 */
 	static function load()
 	{
-		self::suggest(zinc_dir . '/config.yaml', 'zoop');
+		self::suggest(zinc_dir . '/config.yaml', 'zinc');
 		
 		// if(!self::$file)
 		// 	self::setConfigFile(app_dir . '/config.yaml');
