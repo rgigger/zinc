@@ -69,3 +69,11 @@
 	-	project voldemort
 	-	lightcloud
 -	forms
+-	garbage collection
+	-	use PHPs randomized method
+	-	run it on every request but use some clever logic to do it more intelligently
+		-	how much garbage is there
+		-	how much garbage is there relative to non-garbage
+		-	how much time has passed since the last collection
+		-	is anything else trying to collect right now
+	-	find a good way to just cron it
