@@ -18,4 +18,6 @@ interface with the web server. It goes in the public_html or Sites directory.
 
 	zn create instance hello /path/to/the/application/hello
 	
-Go to the the URL cooresponding to the instance in a browser.
+Go to the the URL cooresponding to the instance in a browser. The page should look something like this:
+
+![Screenshot of working app](http://rgigger.github.com/firstscreen.png)
