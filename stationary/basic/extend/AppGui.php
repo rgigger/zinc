@@ -1,11 +1,9 @@
 <?php
 class AppGui extends Gui
 {
-	function fetch($tpl_file, $cache_id = null, $compile_id = null, $display = false)
+	public function display($templateName)
 	{
-		$this->assign("TEMPLATE_CONTENT", $tpl_file);
-		
-		return parent::fetch('layouts/main.tpl', $cache_id, $compile_id, $display);
+		// do global assigns here
+		parent::display($templateName);
 	}
-	
 }
