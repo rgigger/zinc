@@ -102,7 +102,7 @@ class Zinc
 	
 	static public function getTmpDir()
 	{
-		return Config::getFilePath('zoop.tmpDir');;
+		return Config::getFilePath('zinc.tmpDir');;
 	}
 	
 	//	deprecated stuff
