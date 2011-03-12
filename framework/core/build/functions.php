@@ -118,11 +118,29 @@ function _cd($path)
 
 function _ln($target, $link)
 {
+	global $FORCEGEN;
 	_status("trying to link '$link' to '$target'");
+	
 	if(file_exists($link))
 	{
-		_status("There is already a file at $link");
-		return;
+		if($FORCEGEN)
+		{
+			if(is_link($link))
+			{
+				_status("Removing existing symlink at at $link");
+				unlink($link);
+			}
+			else
+			{
+				_status("There is already a non-symlink file at $link");
+				return;
+			}
+		}
+		else
+		{
+			_status("There is already a file at $link");
+			return;
+		}
 	}
 	
 	_status("linking '$link' to '$target'");
