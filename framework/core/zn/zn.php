@@ -67,7 +67,8 @@ if(defined('instance_dir'))
 	echo "zn COMMAND [ARGS]\n";
 else
 {
-	echo "usage: zn create instance INSTANCE_NAME APP_DIR\n";
+	echo "usage: zn create app APP_NAME\n";
+	echo "       zn create instance INSTANCE_NAME APP_DIR\n";
 	// echo "   create app APP_NAME\n";
 	// echo "   create module MODULE_NAME\n";
 	echo "\n";
