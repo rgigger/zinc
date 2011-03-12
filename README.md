@@ -21,3 +21,7 @@ interface with the web server. It goes in the public_html or Sites directory.
 Go to the the URL cooresponding to the instance in a browser. The page should look something like this:
 
 ![Screenshot of working app](http://rgigger.github.com/firstscreen.png)
+
+Continue on to [the wiki][1] for more information.
+
+[1]: https://github.com/rgigger/zinc/wiki
