@@ -60,14 +60,18 @@
 		-	sequence info
 -	storage backends
 	-	files
-	-	mysql
-	-	pgsql
-	-	sqlite
-	-	msession
-	-	my daemon
-	-	pear session server
-	-	project voldemort
-	-	lightcloud
+	-	encrypted cookies
+	-	sql
+		-	mysql
+		-	pgsql
+		-	sqlite
+	-	nosql databases
+	-	exotic
+		-	msession
+		-	my daemon
+		-	pear session server
+		-	project voldemort
+		-	lightcloud
 -	forms
 -	garbage collection
 	-	use PHPs randomized method
