@@ -97,7 +97,7 @@ abstract class DbConnection
 
 	public function alterSchema($sql)
 	{
-		return $this->_query($sql);
+		return $this->_queryWrapper($sql);
 	}
 
 	public function getSchema()
@@ -108,7 +108,21 @@ abstract class DbConnection
 	abstract public function tableExists($name);
 	abstract public function getTableNames();
 	abstract public function getTableFieldInfo($tableName);
-
+	
+	
+	public function _queryWrapper($sql)
+	{
+		if($this->echo)
+		{
+			if(php_sapi_name() == "cli")
+				echo $sql . "\n";
+			else
+				echo $sql . '<br>';
+		}
+		
+		return $this->_query($sql);
+	}
+	
 	/**
 	 * Executes the passed in SQL statement on the database and returns a result set
 	 *
@@ -127,17 +141,17 @@ abstract class DbConnection
 
 	public function beginTransaction()
 	{
-		$this->_query('begin');
+		$this->_queryWrapper('begin');
 	}
 
 	public function commitTransaction()
 	{
-		$this->_query('commit');
+		$this->_queryWrapper('commit');
 	}
 
 	public function rollbackTransaction()
 	{
-		$this->_query('rollback');
+		$this->_queryWrapper('rollback');
 	}
 
 	//
@@ -164,6 +178,15 @@ abstract class DbConnection
 	 */
 	public function query($sql, $params)
 	{
+		//	get the vars into the sql string
+		$sql = $this->subinVars($sql, $params);
+		
+		//	actually do the query
+		return $this->_queryWrapper($sql);
+	}
+	
+	public function subinVars($sql, $params)
+	{
 		//	do all of the variable replacements
 		$this->queryParams = array();
 		foreach($params as $key => $value)
@@ -175,19 +198,7 @@ abstract class DbConnection
 		}
 		// TODO: indication here how to escape options in here
 		// $sql = preg_replace_callback("/:([[:alpha:]_\d]+):([[:alpha:]_]+)|[^:]:([[:alpha:]_\d]+)/", array($this, 'queryCallback'), $sql);
-		$sql = preg_replace_callback("/:([[:alpha:]_\d]+):([[:alpha:]_]+)|:([[:alpha:]_\d]+)/", array($this, 'queryCallback'), $sql);
-		
-		if($this->echo)
-		{
-			if(php_sapi_name() == "cli")
-				echo $sql . "\n";
-			else
-				echo $sql . '<br>';
-		}
-			
-
-		//	actually do the query
-		return $this->_query($sql);
+		return preg_replace_callback("/:([[:alpha:]_\d]+):([[:alpha:]_]+)|:([[:alpha:]_\d]+)/", array($this, 'queryCallback'), $sql);
 	}
 
 	/**
