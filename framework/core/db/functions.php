@@ -36,6 +36,11 @@ function SqlCommitTransaction()
 	return DbModule::getDefaultConnection()->commitTransaction();
 }
 
+function SqlRollbackTransaction()
+{
+	return DbModule::getDefaultConnection()->rollbackTransaction();
+}
+
 /**
  * Executes a database query.  $params must be a $key => $value array of values to substitute into $sql
  *
@@ -46,6 +51,11 @@ function SqlCommitTransaction()
 function SqlQuery($sql, $params)
 {
 	return DbModule::getDefaultConnection()->query($sql, $params);
+}
+
+function SqlSubinVars($sql, $params)
+{
+	return DbModule::getDefaultConnection()->subinVars($sql, $params);
 }
 
 /**
