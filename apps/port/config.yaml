@@ -1,0 +1,8 @@
+zinc:
+    db:
+        default:
+            driver: php_pgsql
+            database: port
+            username: postgres
+    debug:
+        echorShowBacktrace: false
