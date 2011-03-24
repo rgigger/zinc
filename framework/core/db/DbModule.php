@@ -64,6 +64,11 @@ class DbModule extends ZincModule
 			{
 				self::$connections[$name] = DbFactory::getConnection($params, $name);
 			}
-		}
-	}	
+		}		
+	}
+}
+
+function db($connectionName)
+{
+	return DbModule::getConnection($connectionName);
 }
