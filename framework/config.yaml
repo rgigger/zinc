@@ -1,1 +1,3 @@
 tmpDir: tmp
+debug:
+    echorShowBacktrace: false

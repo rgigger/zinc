@@ -79,10 +79,14 @@ function GetPostDate($name)
  * @param mixed $var Variable to print
  * @param boolean $supressBacktrace True if you wish to suppress the backtrace (default: False)
  */
-function echo_r($var, $supressBacktrace = 0)
+function echo_r($var, $showBacktrace = NULL)
 {
-	if(!$supressBacktrace)
+	if(is_null($showBacktrace))
+		$showBacktrace = Config::get('zinc.debug.echorShowBacktrace');
+	
+	if($showBacktrace)
 		EchoBacktrace();
+	
 	echo '<pre>';
 	print_r($var);
 	echo '</pre>';
