@@ -28,12 +28,10 @@ class Port
 					}
 				}
 				$id = db('import')->insertArray($tableName, $values);
-				$automap[$tableName]['id'][$row['id']] = $id;
+				if(isset($row['id']))
+					$automap[$tableName]['id'][$row['id']] = $id;
 			}
 		}
-		echo_r(db('import')->fetchRows("select * from pm_category_group", array()));
-		echo_r(db('import')->fetchRows("select * from pm_category", array()));
-		echo_r(db('import')->fetchRows("select * from default_objective", array()));
 		db('import')->rollbackTransaction();
 	}
 }
