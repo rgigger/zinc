@@ -697,7 +697,13 @@ class DbObject extends Object implements Iterator
 	{
 		self::_getConnection($className)->insertArray(self::_getTableName($className), $values, false);
 	}
-
+	
+	static public function findBySql($sql, $params)
+	{
+		$className = get_called_class();
+		return self::_findBySql($className, $sql, $params);
+	}
+	
 	/**
 	 * Returns an array of DbObjects each representing a row in the database returned by the given SQL statement
 	 *
