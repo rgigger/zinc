@@ -25,8 +25,9 @@ class CommandStationary
 			}
 			else
 			{
-				echo "usage: zn create instance INSTANCE_NAME APP_DIR\n";
-				echo "       zn create app APP_NAME\n";
+				echo "usage: zn create app APP_NAME\n";
+				echo "       zn create instance INSTANCE_NAME APP_DIR\n";
+				echo "       zn create pub PUB_NAME INSTANCE_DIR\n";
 			}
 		}
 		
@@ -63,10 +64,19 @@ class CommandStationary
 		$instanceName = $p[3];
 		$appDir = $p[4];
 		self::gen_r($instanceName, 'instance', array('appDir' => $appDir));
+	}
+	
+	public function handlePub($p)
+	{
+		$pubName = $p[3];
+		$instanceDir = $p[4];
+		include($instanceDir . '/const.php');
+		
+		self::gen_r($pubName, 'pub', array('instanceDir' => instance_dir));
 		
 		// set up a symlink for public
-		if(!file_exists("$instanceName/public"))
-			symlink("$appDir/public", "$instanceName/public");
+		if(!file_exists("$pubName/public"))
+			symlink(app_dir . '/public', "$pubName/public");
 	}
 	
 	public function handleMigration($p)

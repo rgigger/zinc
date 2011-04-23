@@ -69,6 +69,7 @@ else
 {
 	echo "usage: zn create app APP_NAME\n";
 	echo "       zn create instance INSTANCE_NAME APP_DIR\n";
+	echo "       zn create pub PUB_NAME INSTANCE_DIR\n";
 	// echo "   create app APP_NAME\n";
 	// echo "   create module MODULE_NAME\n";
 	echo "\n";
