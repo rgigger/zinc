@@ -105,7 +105,7 @@ function _gen($path, $filePath = '', $params = array())
 	    $forcegen = false;
 	
 	if(file_exists($filePath) && !$forcegen)
-		trigger_error("file $filePath already exists");
+		_status("There is already a file at $filePath");
 	
 	file_put_contents($filePath, $content);
 }
