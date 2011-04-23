@@ -8,8 +8,8 @@ class App extends ZoneApplication
 		// if(php_sapi_name() != "cli" || $name != 'session')
 		// 	Zoop::loadLib('session');
 
-		//	register classess in the application that extend Zoop classes
-		Zoop::registerClass('AppZone', dirname(__file__) . '/extend/AppZone.php');
-		Zoop::registerClass('AppGui', dirname(__file__) . '/extend/AppGui.php');
+		//	register classess
+		Zoop::registerClass('AppZone', __dir__ . '/domain/AppZone.php');
+		Zoop::registerClass('AppGui', __dir__ . '/domain/AppGui.php');
 	}
 }
