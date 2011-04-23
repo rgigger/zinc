@@ -59,12 +59,8 @@ class DbModule extends ZincModule
 	{
 		$connections = $this->getConfig();
 		if($connections)
-		{
 			foreach($connections as $name => $params)
-			{
 				self::$connections[$name] = DbFactory::getConnection($params, $name);
-			}
-		}		
 	}
 }
 

@@ -1,5 +1,4 @@
 <?php
-//	this all needs to be thought out better and redone
 class DbFactory
 {
 	private static $classMap = array('php_pgsql' => 'DbPgsql', 'php_mysql' => 'DbMysql', 
