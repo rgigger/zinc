@@ -14,6 +14,15 @@ new
 		-	css scaffolding
 			-	http://github.com/anthonyshort/csscaffold
 	-	make them configurable (zoop.gui)
+	-	dom based engines
+		-	http://code.google.com/p/querytemplates/
+		-	make your own based on phpQuery: http://code.google.com/p/querytemplates/
+		-	make one based on the PHP DomDocument: http://php.net/manual/en/class.domdocument.php
+		-	make one based on simple_html_dom
+		-	or http://php.net/manual/en/book.dom.php
+		-	additional info
+			-	http://www.ibm.com/developerworks/opensource/library/os-xmldomphp/
+			
 -	filters
 	-	xml/pdf
 	-	markdown

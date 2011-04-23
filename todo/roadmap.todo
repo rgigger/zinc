@@ -1,16 +1,25 @@
--	0.1
-	-	make it easy to create a new project
-		-	zn create project
-			-	update the basic stationary
-			-	cp -R it
-			-	run a build script to set up permissions, etc
++	0.1
+	+	make it easy to create a new project
+		+	zn create project
+			+	update the basic stationary
+			+	cp -R it
+			+	run a build script to set up permissions, etc
+		+	zn create application
+		+	zn create instance
 -	0.2
-	-	get all the examples working out of the box
-		-	figure out how to get the permissions correct when they do the checkout from svn
-		-	see site.todo
-	-	make it easy to get the apps working
-		-	create build scripts
-		-	maybe make it so they can all work with sqlite
+	-	infrastructure
+		-	get all the examples working out of the box
+			-	figure out how to get the permissions correct when they do the checkout from svn
+			-	see site.todo
+		-	make it easy to get the apps working
+			-	create build scripts
+			-	maybe make it so they can all work with sqlite
+	-	code
+		-	form validation
+		-	migrations
+			-	raw sql
+			+	php
+-	later
 	-	get the following modules ready
 		-	forms
 			/	data mapping/binding
