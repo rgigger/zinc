@@ -4,7 +4,7 @@ include_once __dir__ . '/Zoop.php';
 
 // do some bootstrapping
 if(!defined("zinc_dir"))
-	define("zinc_dir", dirname(__file__));
+	define("zinc_dir", __dir__);
 else
 	trigger_error("zinc dir should be defined by including Zinc.php");
 
