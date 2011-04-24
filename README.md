@@ -13,12 +13,18 @@ Create a new application.
 
 	zn create app APP_NAME
 
-Create the instance of the application. The instance has it's own configuraion and is the
-interface with the web server. It goes in the public_html or Sites directory.
+Create the instance of the application. The instance has it's own configuration, and it's own area for storing data. It
+should never be stored under the root web directory.
 
 	zn create instance hello /path/to/the/application/hello
-	
-Go to the the URL cooresponding to the instance in a browser. The page should look something like this:
+
+Create the public directory for the application. It is the interface with the web server and must be stored under the 
+root web directory.
+
+	zn create pub hello /path/to/the/isntance/hello
+
+Go in your browser to the the URL corresponding to the pubic directory you just created. The page should look something
+like this:
 
 ![Screenshot of working app](http://rgigger.github.com/firstscreen.png)
 
