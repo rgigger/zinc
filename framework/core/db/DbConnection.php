@@ -265,7 +265,7 @@ abstract class DbConnection
 	{
 		$row = $this->fetchRow($sql, $params);
 		if(!$row)
-			return NULL;
+			return false;
 		return current($row);
 	}
 
