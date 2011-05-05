@@ -1,0 +1,8 @@
+-	each module registers keywords
+	-if any keyword is found as a paramter then that module
+		-	that module is executed
+		-	and all the paramaters are passed in
+-	modules
+	-	migrations
+		-	apply migrations
+		-	get migrations from module
