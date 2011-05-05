@@ -7,6 +7,11 @@
 		+	zn create application
 		+	zn create instance
 -	0.2
+	-	documentation
+	-	zn
+		-	creation of zones
+		-	creation of models
+		-	creation of templates
 	-	infrastructure
 		-	get all the examples working out of the box
 			-	figure out how to get the permissions correct when they do the checkout from svn
@@ -19,6 +24,9 @@
 		-	migrations
 			-	raw sql
 			+	php
+		-	files
+			-	make it easy to store them in the instance
+			-	should tmp files be moved to the instance? is there any time when smarty would need this?
 -	later
 	-	get the following modules ready
 		-	forms

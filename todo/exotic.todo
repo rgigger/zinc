@@ -5,3 +5,16 @@
 	-	objective-c
 	-	D
 	-	javascript
+-	create a pure PHP PHP parser
+	-	use http://www.php.net/manual/en/tokenizer.examples.php to tokenize
+	-	or just use this: https://github.com/nikic/PHP-Parser
+	-	compile PHP into javascript
+		-	use the same language in both places
+	-	use the tokenizer to parse the PHP and create new methods with zn
+		-	zn create page - or a textmate plugin
+			-	create the page and post functions
+				-	this could use zn to alter the underlying file
+					-	this could conflict with unsaved changes in the editor
+				-	or run a command that inserts the text at the insertion point and also creates the template file
+				-	or maybe it could run a command that runs a snippet and creates the template file
+			-	create the template
