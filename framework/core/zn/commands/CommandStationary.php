@@ -174,7 +174,7 @@ class CommandStationary
 		// go through each file, if it is a template process it, otherwise just copy it
 		dir_r($statPath, function($it, $info) use ($templateFiles, $statPath, $name, $params) {
 			$filename = $it->getSubPathName();
-			if( ($filename == 'stationary' && $it->isFile()) || $filename == '..' || $filename == '.' )
+			if( ($filename == 'stationary' && $it->isFile()) || $it->isDot() )
 				return;
 			
 			$path = "$name/" . $it->getSubPath();
