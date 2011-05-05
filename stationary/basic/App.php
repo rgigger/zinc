@@ -5,7 +5,7 @@ class App extends ZoneApplication
 	{
 		Zoop::loadLib('zone');
 		Zoop::loadLib('db');
-		// if(php_sapi_name() != "cli" || $name != 'session')
+		// if(php_sapi_name() != "cli")
 		// 	Zoop::loadLib('session');
 
 		//	register classess
