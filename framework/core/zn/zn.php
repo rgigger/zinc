@@ -8,12 +8,7 @@
 
 // 2-4 above not done
 
-// if we are in an instance load zinc through the instance
-// other wise load it through
-
-// //	don't create the instance or the app, we just want bare bones functionality
-// define('app_simple', true);
-
+// include the basic Zinc stuff
 if(file_exists('./init.php'))
 	include 'init.php';
 else
@@ -23,8 +18,10 @@ else
 	Zinc::loadMod('cli');
 }
 
+// load the default zn config
 Config::suggest(__dir__ . '/config.yaml');
 
+// process the command line args and determine which Command* class to use
 $args = $argv;
 array_shift($args);
 $wordlist = Config::get('zn.commands');
@@ -52,10 +49,10 @@ foreach($counts as $commandName => $count)
 	}
 }
 
+// if we found a class to use then pass on the request info to it
 if($highestCommand)
 {
 	$className = "Command$highestCommand";
-	// echo __dir__ . "/commands/$className.php\n";
 	include __dir__ . "/commands/$className.php";
 	$command = new $className();
 	$command->handleRequest($argv);
@@ -63,6 +60,7 @@ if($highestCommand)
 	die();
 }
 
+// if we didn't match the command args up with a class just give the usage info
 if(defined('instance_dir'))
 	echo "zn COMMAND [ARGS]\n";
 else
@@ -70,7 +68,5 @@ else
 	echo "usage: zn create app APP_NAME\n";
 	echo "       zn create instance INSTANCE_NAME APP_DIR\n";
 	echo "       zn create pub PUB_NAME INSTANCE_DIR\n";
-	// echo "   create app APP_NAME\n";
-	// echo "   create module MODULE_NAME\n";
 	echo "\n";
 }
