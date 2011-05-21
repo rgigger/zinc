@@ -46,6 +46,13 @@ class ImagesFilter extends ContentFilter
 				$imageFunctionName = 'imagepng';
 				$extention = '.png';
 			}
+			else if($type == IMAGETYPE_JPEG)
+			{
+				$createFunctionName = 'imagecreatefromjpeg';
+				$imageFunctionName = 'imagejpeg';
+				$extention = '.jpg';
+			}
+			
 			
 			$newWidth = $params['width'];
 			$percent = $newWidth / $width;
