@@ -99,7 +99,7 @@ class Content
 	
 	static public function getMaxPages()
 	{
-		return SqlFetchCell("SELECT ceil(max(published_order)/10) FROM entry", array());
+		return SqlFetchCell("SELECT ceil((max(published_order)-1)/10) FROM entry", array());
 	}
 	
 	static public function getPageOfEntries($page)
