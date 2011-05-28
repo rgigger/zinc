@@ -21,7 +21,7 @@ should never be stored under the root web directory.
 Create the public directory for the application. It is the interface with the web server and must be stored under the 
 root web directory.
 
-	zn create pub hello /path/to/the/isntance/hello
+	zn create pub hello /path/to/the/instance/hello
 
 Go in your browser to the the URL corresponding to the pubic directory you just created. The page should look something
 like this:
