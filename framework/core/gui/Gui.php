@@ -29,6 +29,17 @@ class Gui
 	
 	public function display($templateName)
 	{
+		if(defined('script_url'))
+			$this->assign('scriptUrl', script_url);
+		if(defined('ssl_script_url'))
+			$this->assign('sslScriptUrl', ssl_script_url);
+		if(defined('base_url'))
+			$this->assign('baseUrl', base_url);
+		if(defined('virtual_url'))
+			$this->assign('virtualUrl', virtual_url);
+		if(defined('ssl_virtual_url'))
+			$this->assign('sslVirtualUrl', ssl_virtual_url);
+		
 		$this->driver->display($templateName);
 	}
 	
