@@ -1,9 +1,11 @@
 <?php
+Zinc::loadMod('sfyaml');
 class Yaml
 {
 	static function read($filename)
 	{
-		return Spyc::YAMLLoad($filename);
+		return sfYaml::load(file_get_contents($filename));
+		// return Spyc::YAMLLoad($filename);
 	}
 	
 	static function write($filename, $data)
