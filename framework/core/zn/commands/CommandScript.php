@@ -3,7 +3,8 @@ class CommandScript
 {
 	public function handleRequest($p)
 	{
-		print_r($p);
+		global $argv; // this is so it will be available within the included script file
+		
 		if(count($p) < 3)
 			die("error: no script specified\n\n");
 		
@@ -14,5 +15,7 @@ class CommandScript
 			include $filepath;
 		else
 			die("error: command $command not found\n\n");
+		
+		die();
 	}
 }
