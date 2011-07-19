@@ -22,11 +22,11 @@ class Config
 	
 	static public function insist($file, $prefix = NULL)
 	{
+		// echo "inisting: $file<br>";
 		if($prefix)
 			$root = &self::getReference($prefix);
 		else
 			$root = &self::$info;
-		
 		$root = self::mergeArray($root, Yaml::read($file));
 	}
 	
@@ -37,12 +37,15 @@ class Config
 	
 	static public function _mergeArray(&$suggested, &$insisted)
 	{
-		foreach($insisted as $key => $val)
+		if(is_array($insisted))
 		{
-			if(is_array($val))
-				self::_mergeArray($suggested[$key], $insisted[$key]);
-			else
-				$suggested[$key] = $val;
+			foreach($insisted as $key => $val)
+			{
+				if(is_array($val))
+					self::_mergeArray($suggested[$key], $insisted[$key]);
+				else
+					$suggested[$key] = $val;
+			}
 		}
 		
 		return $suggested;
@@ -84,7 +87,7 @@ class Config
 	 * @param string $path Path for which to fetch options
 	 * @return array of configuration values
 	 */
-	static function get($path)
+	static function get($path = '')
 	{
 		if($path === '')
 			return self::$info;
