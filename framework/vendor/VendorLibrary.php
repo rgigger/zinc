@@ -10,5 +10,6 @@ class VendorLibrary extends ZoopLibrary
 		$this->registerMod('spyc');
 		$this->registerMod('zend');
 		$this->registerMod('swift');
+		$this->registerMod('sfyaml');
 	}
 }
