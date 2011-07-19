@@ -11,9 +11,9 @@ class Form
 		$this->sessionId = session_id();
 	}
 	
-	public function addBinding($class, $id, $field)
+	public function addBinding($object, $field)
 	{
-		$newBinding = new FormBinding($class, $id, $field);
+		$newBinding = new FormBinding($object, $field);
 		$this->bindings[] = $newBinding;
 		return $newBinding->getName();
 	}
@@ -32,7 +32,7 @@ class Form
 	
 	static public function appendBindings($newBindings)
 	{
-		$formId = getPostInt('_zoop_form_id');
+		$formId = getPostInt('_zinc_form_id');
 		$sessionId = session_id();
 		//	IMPORTANT SECURITY NOTE:
 		//		even though session.id is going to be a unique identifier we still need to check to make sure that it 
@@ -47,7 +47,7 @@ class Form
 		foreach($newBindings as $thisBinding)
 		{
 			if(is_array($thisBinding))
-				$bindingObject = new FormBinding($thisBinding['class'], $thisBinding['id'], $thisBinding['field']);
+				$bindingObject = new FormBinding($thisBinding['object'], $thisBinding['field']);
 			else
 				$bindingObject = $thisBinding;
 			$parts[] = $bindingObject->getString();
@@ -61,15 +61,15 @@ class Form
 	
 	public function getTagInfo()
 	{
-		return array('_zoop_form_id', $this->id);
+		return array('_zinc_form_id', $this->id);
 	}
 	
 	static public function save()
 	{
-		if(!isset($_POST['_zoop_form_id']) || !$_POST['_zoop_form_id'])
+		if(!isset($_POST['_zinc_form_id']) || !$_POST['_zinc_form_id'])
 			return;
 		
-		$formId = $_POST['_zoop_form_id'];
+		$formId = $_POST['_zinc_form_id'];
 		$sessionId = session_id();
 		//	IMPORTANT SECURITY NOTE:
 		//		even though session.id is going to be a unique identifier we still need to check to make sure that it 
@@ -83,14 +83,21 @@ class Form
 		$objects = array();
 		foreach(explode(',', $fieldString) as $thisFieldString)
 		{
-			list($class, $id, $field) = explode(':', $thisFieldString);
-			if(!isset($_POST['_zoop_form_element'][$class][$id][$field]))
+			list($class, $temp, $id, $field) = explode(':', $thisFieldString);
+			if(!isset($_POST['_zinc_form_element'][$class][$id][$field]))
 				continue;
 			$objectId = "$class:$id";
 			if(!isset($objects[$objectId]))
-				$objects[$objectId] = new $class($id);
+			{
+				if($temp == 'temp')
+					$objects[$objectId] = new $class();
+				else if($temp == 'perm')
+					$objects[$objectId] = new $class($id);
+				else
+					trigger_error('invalid temp value: ' . $temp);
+			}
 			
-			$objects[$objectId]->$field = $_POST['_zoop_form_element'][$class][$id][$field];
+			$objects[$objectId]->$field = $_POST['_zinc_form_element'][$class][$id][$field];
 		}
 		
 		foreach($objects as $thisObject)

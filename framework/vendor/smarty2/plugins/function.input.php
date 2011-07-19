@@ -15,12 +15,12 @@ function smarty_function_input($params, &$smarty)
 		if(!isset($params['append']) || $params['append'] == false)
 		{
 			if(!isset($smarty->zoop->form))
-				trigger_error("gui:input: if you specifiy a data object you must first use the 'init_form' tag");
-			$name = $smarty->zoop->form->addBinding(get_class($object), $object->getId(), $field);
+				trigger_error("gui:input: if you specifiy a data object you must first use the 'openform' tag");
+			$name = $smarty->zoop->form->addBinding($object, $field);
 		}
 		else
 		{
-			$binding = new FormBinding(get_class($object), $object->getId(), $field);
+			$binding = new FormBinding($object, $field);
 			Form::appendBindings(array($binding));
 			$name = $binding->getName();
 		}
@@ -58,10 +58,13 @@ function smarty_function_input($params, &$smarty)
 	switch($type)
 	{
 		case 'text':
-		case 'password':
 		case 'checkbox':
 		case 'submit':
+		case 'hidden':
 			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields>";
+			break;
+		case 'password':
+			return '<input type="' . $type . '"' . " $namePart $extraFields>";
 			break;
 		case 'radio':
 			// var_dump($value);
