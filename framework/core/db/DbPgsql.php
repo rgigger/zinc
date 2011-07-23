@@ -13,6 +13,8 @@ class DbPgsql extends DbConnection
 			$connString .= ' host=' . $this->params['host'];
 		if(isset($this->params['port']))
 			$connString .= ' port=' . $this->params['port'];
+		if(isset($this->params['password']))
+			$connString .= ' password=' . $this->params['password'];
 		
 		$this->connectionString = $connString;
 	}
