@@ -14,20 +14,24 @@ class WebErrorHandler
 	
 	static function handleError($errno, $errstr, $errfile, $errline, $context, $backtrace = NULL)
 	{
-		if(!defined('app_status'))
-			define('app_status', 'dev');
-		
 		if((error_reporting() & $errno) !== $errno)
 			return true;
 			
-		switch(app_status)
+		if(!defined('app_status'))
+			define('app_status', 'dev');
+		
+		$configStatus = Config::get('zinc.error.reportStatus');
+		$errorStatus = $configStatus ? $configStatus : app_status;
+		
+		switch($errorStatus)
 		{
 			case 'dev':
 				self::handleDevError($errno, $errstr, $errfile, $errline, $context, $backtrace);
 				break;
 			
 			case 'test':
-				trigger_error('status not handled:' . app_status);
+				self::handleTestError($errno, $errstr, $errfile, $errline, $context, $backtrace);
+				// trigger_error('status not handled:' . app_status);
 				break;
 			
 			case 'live':
@@ -40,13 +44,36 @@ class WebErrorHandler
 		}
 	}
 	
-	function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtrace)
+	function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
 	{
-		$errorLine = self::formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context, $backtrace);
+		$errorLine = self::formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context, $backtraceInfo);
 		echo '<p>' . $errorLine . '</p>';
-		$backtrace = $backtrace ? $backtrace : debug_backtrace();
-		// array_shift($backtrace);
-		FormatBacktraceHtml($backtrace);
+		$backtraceInfo = $backtraceInfo ? $backtraceInfo : debug_backtrace();
+		$backtrace = new Backtrace($backtraceInfo);
+		$backtrace->display();
+	}
+	
+	function handleTestError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
+	{
+		// generate a unique id for this entry in the error log
+		$errorId = uniqid();
+		
+		// format the backtrace and log the error
+		$errorLine = self::formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context, $backtraceInfo);
+		error_log("<p>error #{$errorId}:</p>", 3, instance_dir . '/var/log/error.html');
+		error_log('<p>' . $errorLine . '</p>', 3, instance_dir . '/var/log/error.html');
+		$backtraceInfo = $backtraceInfo ? $backtraceInfo : debug_backtrace();
+		$backtrace = new Backtrace($backtraceInfo);
+		error_log($backtrace->toHtml(), 3, instance_dir . '/var/log/error.html');
+		
+		// wipe out all output buffers
+		while (ob_get_level()) { 
+			ob_end_clean(); 
+		}
+		
+		// display the error code 
+		echo "error #{$errorId}";
+		die();
 	}
 	
 	function formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context)

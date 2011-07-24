@@ -1,3 +1,5 @@
 tmpDir: tmp
 debug:
     echorShowBacktrace: false
+error:
+    reportStatus: test

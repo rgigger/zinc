@@ -7,5 +7,6 @@ class ErrorModule extends ZoopModule
 		$this->addClass('ZoopException');
 		$this->addClass('WebErrorHandler');
 		$this->addClass('CliErrorHandler');
+		$this->addClass('Backtrace');
 	}
 }
