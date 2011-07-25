@@ -84,10 +84,15 @@ function smarty_function_input($params, &$smarty)
 			$selectParams['name'] = $name;
 			$selectParams['selected'] = $value;
 			$nameField = 'name';
-			$tableName = $extraMap['option_table'];
-			$selectParams['options'] = SqlFetchSimpleMap("SELECT id, :nameField AS name FROM :tableName:identifier order by id", 'id', 'name', 
-											array('nameField:identifier' => $nameField, 'tableName' => $tableName));
-		    
+			if($extraMap['option_table'])
+			{
+				$tableName = $extraMap['option_table'];
+				$selectParams['options'] = SqlFetchSimpleMap("SELECT id, :nameField AS name FROM :tableName:identifier order by id", 'id', 'name', 
+												array('nameField:identifier' => $nameField, 'tableName' => $tableName));
+			}
+			else if($extraMap['options'])
+				$selectParams['options'] = $extraMap['options'];
+			
 			return smarty_function_html_options($selectParams, $smarty);
 			break;
 		default:
