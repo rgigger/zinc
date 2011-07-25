@@ -114,7 +114,17 @@ class DbObject extends Object implements Iterator
 		assert(count($this->primaryKey) == 1);
 		return $this->scalars[$this->primaryKey[0]];
 	}
-
+	
+	public function getTempId()
+	{
+		return spl_object_hash($this);
+	}
+	
+	public function getBound()
+	{
+		return $this->bound;
+	}
+	
 	/**
 	 * Returns the field name(s) in the primary key in an array
 	 *
