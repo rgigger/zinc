@@ -27,8 +27,7 @@ function smarty_function_input($params, &$smarty)
 		if(isset($params['default']) && ($object->$field === '' || $object->$field === NULL))
 			$value = $params['default'];
 		else
-			$value = $object->$field;
-		
+			$value = isset($params['value']) ? $params['value'] : $object->$field;
 		$namePart = ' name="' . $name . '"';
 		if($type == 'radio')
 			$valuePart = ' value="' . $valueAtt . '"';
@@ -42,7 +41,6 @@ function smarty_function_input($params, &$smarty)
 		$valuePart = isset($params['value']) ? ' value="' . $params['value'] . '"' : '';
 	}
 	
-	
 	// pass on anything else they put in
 	$extraFields = '';
 	$extraMap = array();
@@ -55,20 +53,29 @@ function smarty_function_input($params, &$smarty)
 		$extraFields .= ' ' . $paramName . '="' . $paramValue . '"';
 	}
 	
+	$required = isset($params['required']) && $params['required'];
+	if($required)
+		$extraFields .= ' data-constraint="required"';
+	
+	if(isset($params['sameas']))
+		$extraFields .= ' data-constraint="sameas" data-sameas="' . $params['sameas'] . '"';
+	
 	switch($type)
 	{
 		case 'text':
-		case 'checkbox':
 		case 'submit':
 		case 'hidden':
 			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields>";
+			break;
+		case 'checkbox':
+			$return = '<input value="f" type="hidden"' . " $namePart $valuePart $extraFields>";
+			$return .= '<input value="t" type="' . $type . '"' . " $namePart $valuePart $extraFields>";
+			return $return;
 			break;
 		case 'password':
 			return '<input type="' . $type . '"' . " $namePart $extraFields>";
 			break;
 		case 'radio':
-			// var_dump($value);
-			// var_dump($valueAtt);
 			$checked = $valueAtt == $value ? ' checked' : '';
 			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields $checked>";
 			break;
@@ -100,5 +107,3 @@ function smarty_function_input($params, &$smarty)
 			break;
 	}
 }
-
-
