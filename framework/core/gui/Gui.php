@@ -24,10 +24,17 @@ class Gui
 	
 	public function fetch($templateName)
 	{
+		$this->assignUrlInfo();
 		return $this->driver->fetch($templateName);
 	}
 	
 	public function display($templateName)
+	{
+		$this->assignUrlInfo();
+		$this->driver->display($templateName);
+	}
+	
+	private function assignUrlInfo()
 	{
 		if(defined('script_url'))
 			$this->assign('scriptUrl', script_url);
@@ -39,8 +46,6 @@ class Gui
 			$this->assign('virtualUrl', virtual_url);
 		if(defined('ssl_virtual_url'))
 			$this->assign('sslVirtualUrl', ssl_virtual_url);
-		
-		$this->driver->display($templateName);
 	}
 	
 	public function assign($name, $value)
