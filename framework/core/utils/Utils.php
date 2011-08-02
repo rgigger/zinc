@@ -305,6 +305,12 @@ function GetFileExtention($filename)
 	return array_pop($parts);
 }
 
+function ext($filename)
+{
+	$info = pathinfo($filename);
+	return $info['extension'];
+}
+
 /**
  * Appends a prefix to a string, if given prefix doesn't already exist
  *
@@ -364,4 +370,18 @@ function GetRandomBytes($count, $allowFallback = false)
 	}
 
 	return $output;
+}
+
+function GetNonEmptyLines($text)
+{
+	$lines = array();
+	$text = str_replace("\r", "\n", $text);
+	$allLines = explode("\n", $text);
+	foreach($allLines as $line)
+	{
+		if($line)
+			$lines[] = $line;
+	}
+	
+	return $lines;
 }
