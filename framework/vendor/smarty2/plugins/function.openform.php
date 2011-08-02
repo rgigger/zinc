@@ -3,7 +3,7 @@ function smarty_function_openform($params, &$smarty)
 {
 	//	get the paramaters
 	$method = isset($params['method']) && $params['method'] ? $params['method'] : 'POST';
-	$action = $params['action'];
+	$action = isset($params['action']) ? $params['action'] : virtual_url;
 	
 	//	create the form object and store it in the smarty object
 	$smarty->zoop->form = new Form();
