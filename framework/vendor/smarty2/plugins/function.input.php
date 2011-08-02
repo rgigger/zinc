@@ -37,6 +37,7 @@ function smarty_function_input($params, &$smarty)
 	else
 	{
 		$value = $valueAtt;
+		$name = isset($params['name']) ? $params['name'] : '';
 		$namePart = isset($params['name']) ? ' name="' . $params['name'] . '"' : '';
 		$valuePart = isset($params['value']) ? ' value="' . $params['value'] . '"' : '';
 	}
@@ -80,7 +81,7 @@ function smarty_function_input($params, &$smarty)
 			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields $checked>";
 			break;
 		case 'textarea':			
-			$return = '<textarea name="' . $name . '" ' . $extraFields . '>';
+			$return = '<textarea ' . $namePart . ' ' . $extraFields . '>';
 			$return .= $value;
 			$return .= '</textarea>';
 			return $return;
@@ -91,7 +92,7 @@ function smarty_function_input($params, &$smarty)
 			$selectParams['name'] = $name;
 			$selectParams['selected'] = $value;
 			$nameField = 'name';
-			if($extraMap['option_table'])
+			if(isset($extraMap['option_table']) && $extraMap['option_table'])
 			{
 				$tableName = $extraMap['option_table'];
 				$selectParams['options'] = SqlFetchSimpleMap("SELECT id, :nameField AS name FROM :tableName:identifier order by id", 'id', 'name', 
