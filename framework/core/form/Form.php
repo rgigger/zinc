@@ -102,5 +102,8 @@ class Form
 		
 		foreach($objects as $thisObject)
 			$thisObject->save();
+		
+		reset($objects);
+		return $objects;
 	}
 }
