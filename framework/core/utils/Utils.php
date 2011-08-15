@@ -385,3 +385,20 @@ function GetNonEmptyLines($text)
 	
 	return $lines;
 }
+
+function ForceSSL()
+{
+	if(!IsSSL())
+		Redirect(ssl_virtual_url);
+}
+
+function ForcePlain()
+{
+	if(IsSSL())
+		Redirect(plain_virtual_url);
+}
+
+function IsSSL()
+{
+	return if($_SERVER[HTTPS] == "on");
+}
