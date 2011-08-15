@@ -400,5 +400,5 @@ function ForcePlain()
 
 function IsSSL()
 {
-	return if($_SERVER[HTTPS] == "on");
+	return $_SERVER[HTTPS] == "on";
 }
