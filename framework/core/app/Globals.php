@@ -17,7 +17,7 @@
 //	3) virtual_url		the url up through index.php and also the virtual path
 //
 //////////////////////////////////////////////
-// echo_r($_SERVER);
+
 if(php_sapi_name() != "cli")
 {
 	if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' )
@@ -25,6 +25,7 @@ if(php_sapi_name() != "cli")
 	else
 		$protocol = 'http://';
 	$sslProtocol = 'https://';
+	$plainProtocol = 'http://';
 	
 
 	$host = $_SERVER['HTTP_HOST'];
@@ -49,6 +50,9 @@ if(php_sapi_name() != "cli")
 	
 	define('root_url', $protocol . $host);
 	define('ssl_root_url', $sslProtocol . $host);
+	define('plain_root_url', $plainProtocol . $host);
+	
+	// under what conditions would this already be defined???
 	if(defined('script_url'))
 	{
 		define('back_script_url', root_url . $realPath);
@@ -59,6 +63,7 @@ if(php_sapi_name() != "cli")
 	{
 		define('script_url', root_url . $realPath);
 		define('ssl_script_url', ssl_root_url . $realPath);
+		define('plain_script_url', plain_root_url . $realPath);
 	}
 	
 	define('app_url', dirname(script_url));
@@ -71,6 +76,7 @@ if(php_sapi_name() != "cli")
 	define('virtual_path', $virtualPath);
 	define('virtual_url', script_url . virtual_path);
 	define('ssl_virtual_url', ssl_script_url . virtual_path);
+	define('plain_virtual_url', plain_script_url . virtual_path);
 }
 
 if(!defined('E_DEPRECATED'))
