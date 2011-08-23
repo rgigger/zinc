@@ -97,7 +97,7 @@ class Form
 					trigger_error('invalid temp value: ' . $temp);
 			}
 			
-			$objects[$objectId]->$field = $_POST['_zinc_form_element'][$class][$id][$field];
+			$objects[$objectId]->$field = trim($_POST['_zinc_form_element'][$class][$id][$field]);
 		}
 		
 		foreach($objects as $thisObject)
