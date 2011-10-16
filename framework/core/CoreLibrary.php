@@ -7,6 +7,7 @@ class CoreLibrary extends ZoopLibrary
 		$this->registerMod('build');
 		$this->registerMod('cli');
 		$this->registerMod('db');
+		$this->registerMod('ex');
 		$this->registerMod('form');
 		$this->registerMod('gui');
 		$this->registerMod('session');
