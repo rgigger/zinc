@@ -39,6 +39,13 @@ function RequestIsDelete()
 	return $_SERVER['REQUEST_METHOD'] == 'DELETE' ? 1 : 0;
 }
 
+function GetJsonData()
+{
+	$input = file_get_contents("php://input", 1000000);
+	$value = json_decode($input, true);
+	return $value;
+}
+
 /**
  * Evaluates the POST variables and creates a standard "year-month-day Hour24:minute:second -7:00" date from a POSTed form
  * The fields in the form should be as follows:
