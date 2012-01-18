@@ -4,6 +4,7 @@ class Form
 	private $id;
 	private $bindings;
 	private $sessionId;
+	static private $setters = array();
 	
 	function __construct()
 	{
@@ -64,6 +65,11 @@ class Form
 		return array('_zinc_form_id', $this->id);
 	}
 	
+	static public function set($class, $setter)
+	{
+		self::$setters[$class] = $setter;
+	}
+	
 	static public function save()
 	{
 		if(!isset($_POST['_zinc_form_id']) || !$_POST['_zinc_form_id'])
@@ -101,7 +107,16 @@ class Form
 		}
 		
 		foreach($objects as $thisObject)
+		{
+			if(isset(self::$setters[get_class($thisObject)]))
+			{
+				$setter = self::$setters[get_class($thisObject)];
+				$setter($thisObject);
+			}
+			
+			// echo_r($thisObject);
 			$thisObject->save();
+		}
 		
 		reset($objects);
 		return $objects;
