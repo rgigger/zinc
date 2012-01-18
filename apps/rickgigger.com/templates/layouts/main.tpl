@@ -59,7 +59,7 @@ $(document).ready(function() {
 			<div id="body">
 				<div id="main" class="container">
 					<!-- Begin main content area -->
-					{ $contentOutput }
+					{$contentOutput}
 					<!-- End main content area -->
 				</div>
 				<div id="panel">
