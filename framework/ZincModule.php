@@ -17,11 +17,12 @@ abstract class ZincModule
 		$this->init();
 		
 		$classname = get_class($this);
+		
 		//	load any dependant modules
 		if($this->getDepends())
 			foreach($this->getDepends() as $thisDepends)
 				$this->lib->loadMod($thisDepends);
-		
+			
 		//	include any normal files that need to be included
 		if($this->getIncludes())
 		{
@@ -36,14 +37,14 @@ abstract class ZincModule
 		
 		//	register any class files
 		if($classes = $this->getClasses())
-			foreach($classes as $thisClass)
-				ZoopLoader::addClass($thisClass, $this->path . '/' . $thisClass . '.php');
+			foreach($classes as $className => $classPath)
+				ZincLoader::addClass($className, $this->path . '/' . $classPath);
 		
 		if($this->hasConfig)
 			$this->loadConfig();
 		
 		//	handle configuration
-		$this->configure();		
+		$this->configure();
 	}
 	
 	protected function init() {}
@@ -89,9 +90,22 @@ abstract class ZincModule
 	 *
 	 * @return array(list of files to include) or false;
 	 */
-	protected function addClass($className)
+	protected function addClass($className, $classPath = null)
 	{
-		$this->classes[] = $className;
+		if(!$classPath)
+			$classPath = $className . '.php';
+		$this->classes[$className] = $classPath;
+	}
+	
+	protected function addClasses($classes)
+	{
+		foreach($classes as $key => $val)
+		{
+			if(is_int($key))
+				$this->addClass($val);
+			else
+				$this->addClass($key, $val);
+		}
 	}
 	
 	protected function getClasses()
