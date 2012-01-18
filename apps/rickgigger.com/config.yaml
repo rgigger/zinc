@@ -10,8 +10,6 @@ app:
         Links: links
         Blog: blog
 zinc:
-    db:
+    gui:
         default:
-            driver: php_pgsql
-            database: content
-            username: postgres
+            driver: smarty3
