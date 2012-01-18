@@ -36,20 +36,32 @@ class DbModule extends ZincModule
 		return array('functions.php');
 	}
 	
-	/**
-	 * This method is overridden to tell zinc which classes exist as part of this module
-	 * so that they can be added to the autoloader
-	 *
-	 * @return unknown
-	 */
-	function getClasses()
+	protected function init()
 	{
-		return array('DbConnection', 'DbFactory', 'DbSchema', 'DbObject', 'DbZone', 'DbTable', 'DbField',
-						'DbPdo', 'DbPdoResult', 'DbPgsql', 'DbPgResult', 'DbMysql', 'DbMysqlResult',
-						'DbMssql', 'DbMssqlResult', 'DbResultSet', 'DbRelationshipBelongsTo', 'DbRelationshipBasic'
-						, 'DbRelationship', 'DbRelationshipHasMany', 'DbRelationshipHasOne', 'DbRelationshipOptions');
+		$this->addClass('DbConnection');
+		$this->addClass('DbFactory');
+		$this->addClass('DbSchema');
+		$this->addClass('DbObject');
+		$this->addClass('DbZone');
+		$this->addClass('DbTable');
+		$this->addClass('DbField');
+		$this->addClass('DbPdo');
+		$this->addClass('DbPdoResult');
+		$this->addClass('DbPgsql');
+		$this->addClass('DbPgResult');
+		$this->addClass('DbMysql');
+		$this->addClass('DbMysqlResult');
+		$this->addClass('DbMssql');
+		$this->addClass('DbMssqlResult');
+		$this->addClass('DbResultSet');
+		$this->addClass('DbRelationshipBelongsTo');
+		$this->addClass('DbRelationshipBasic');
+		$this->addClass('DbRelationship');
+		$this->addClass('DbRelationshipHasMany');
+		$this->addClass('DbRelationshipHasOne');
+		$this->addClass('DbRelationshipOptions');
 	}
-	
+		
 	/**
 	 * This method reads the configuration options (using the getConfig method)
 	 * and initializes the database connections.
