@@ -4,18 +4,18 @@
  * presentation logic
  *
  */
-class GuiSmarty2 extends Smarty2
+class GuiSmarty2 extends GuiDriver
 {
-	private $layout;
-	 
-	function __construct()
+	private $layout, $smarty;
+	
+	function init()
 	{
-		$config = GuiModule::sGetConfig();
-		$tmpPath = Zoop::getTmpDir();
+		$this->smarty = new Smarty2();
 		
-		//	call the parent contructor
-		$this->Smarty();
-		$this->template_dir = array();
+		$config = $this->params;
+		$tmpPath = Zinc::getTmpDir();
+		
+		$this->smarty->template_dir = array();
    		
    		//	set the default for the base template dir
 		//	this should be using the new config stuff, not defines
@@ -44,6 +44,10 @@ class GuiSmarty2 extends Smarty2
 		$this->addPluginDir(zoop_dir . '/vendor/smarty2/plugins');	//	one for plugins added into gui
 		$this->addPluginDir(app_dir . "/guiplugins");			//	one or plugins specific to the app
 		
+//		$this->smarty->default_modifiers = array('escape:"htmlall"');
+		
+		$this->smarty->error_reporting = E_ALL;
+		
 		//	we shouldn't use the blanket app_status define any more, we should use specific varabiles
 		//	for each behavior, and it should use the new config system
 		// $smarty->debugging = defined('app_status') && app_status == 'dev' ? true : false;
@@ -55,37 +59,47 @@ class GuiSmarty2 extends Smarty2
 		//	unfortunately this filters everything.  The entire contents if the template.  I think it is escaping include.
 		//	If we can get it to not do that then we can put this back in.
 		//
-		//$this->autoload_filters = array('pre' => array("strip_html"));
+		//$this->smarty->autoload_filters = array('pre' => array("strip_html"));
+	}
+	
+	public function getRequireds()
+	{
+		return array();
+	}
+	
+	public function getDefaults()
+	{
+		return array();
 	}
 	
 	function setTemplateDir($inDir)
 	{
-		$this->template_dir = $inDir;
+		$this->smarty->template_dir = $inDir;
 	}
 	
 	function addTemplateDir($inDir)
 	{
-		$this->template_dir[] = $inDir;
+		$this->smarty->template_dir[] = $inDir;
 	}
 	
 	function setCompileDir($inDir)
 	{
-		$this->compile_dir = $inDir;
+		$this->smarty->compile_dir = $inDir;
 	}
 	
 	function setCacheDir($inDir)
 	{
-		$this->cache_dir = $inDir;
+		$this->smarty->cache_dir = $inDir;
 	}
 	
 	function setConfigDir($inDir)
 	{
-		$this->config_dir = $inDir;
+		$this->smarty->config_dir = $inDir;
 	}
 	
 	function addPluginDir($inDir)
 	{
-		$this->plugins_dir[] = $inDir;
+		$this->smarty->plugins_dir[] = $inDir;
 	}
 	
 	public function setLayout($layout)
@@ -93,14 +107,24 @@ class GuiSmarty2 extends Smarty2
 		$this->layout = $layout;
 	}
 	
-	function fetch($tpl_file, $cache_id = null, $compile_id = null, $display = false)
+	public function assign($name, $value)
+	{
+		$this->smarty->assign($name, $value);
+	}
+	
+	public function fetch($tpl_file, $cache_id = null, $compile_id = null, $display = false)
 	{
 		if($this->layout)
 		{
-			$this->assign("TEMPLATE_CONTENT", $tpl_file);
-			return parent::fetch("layouts/{$this->layout}.tpl", $cache_id, $compile_id, $display);
+			$this->smarty->assign("TEMPLATE_CONTENT", $tpl_file);
+			return $this->smarty->fetch("layouts/{$this->layout}.tpl", $cache_id, $compile_id, $display);
 		}
 		
-		return parent::fetch($tpl_file, $cache_id, $compile_id, $display);
+		return $this->smarty->fetch($tpl_file, $cache_id, $compile_id, $display);
 	}
+	
+    function display($resource_name, $cache_id = null, $compile_id = null)
+    {
+        $this->fetch($resource_name, $cache_id, $compile_id, true);
+    }
 }

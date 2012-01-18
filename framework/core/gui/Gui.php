@@ -3,14 +3,14 @@ class Gui
 {
 	public $driver;
 	
-	function __construct($driverName = null)
+	function __construct($driverSpec = 'default')
 	{
-		if(!$driverName)
-			$driverName = Config::get('zinc.gui.driver');
-		
-		$className = 'Gui' . ucfirst($driverName);
-		$this->driver = new $className();
-		$this->init();
+		if(is_string($driverSpec))
+			$this->driver = GuiModule::getInstance($driverSpec);
+		else if($driverSpec instanceof GuiDriver)
+			$this->driver = $driverSpec;
+		else
+			$this->driver = GuiModule::getInstance();
 	}
 	
 	public function init()
