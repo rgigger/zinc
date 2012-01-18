@@ -20,12 +20,39 @@ function RequestIsPost()
 }
 
 /**
+ * Returns true if the current page was requested with the POST method
+ *
+ * @return boolean
+ */
+function RequestIsPut()
+{
+	return $_SERVER['REQUEST_METHOD'] == 'PUT' ? 1 : 0;
+}
+
+/**
+ * Returns true if the current page was requested with the POST method
+ *
+ * @return boolean
+ */
+function RequestIsDelete()
+{
+	return $_SERVER['REQUEST_METHOD'] == 'DELETE' ? 1 : 0;
+}
+
+function GetJsonData()
+{
+	$input = file_get_contents("php://input", 1000000);
+	$value = json_decode($input, true);
+	return $value;
+}
+
+/**
  * Evaluates the POST variables and creates a standard "year-month-day Hour24:minute:second -7:00" date from a POSTed form
  * The fields in the form should be as follows:
  * <name>Month, <name>Day, <name>Year
  * <name>Hour, <name>Minute, <name>Second
  * <name>Meridian (<-- "am" or "pm")
- * 
+ *
  * @param $name Prefix of the POST variables to evaluate
  * @return string Date string
  */
@@ -34,7 +61,7 @@ function GetFormDate($name, $src = null)
 {
 	if(!$src)
 		$src = $_POST;
-	
+
 	if(is_array($src[$name]))
 	{
 		$year = $src[$name]['Date_Year'];
@@ -48,7 +75,7 @@ function GetFormDate($name, $src = null)
 		$day = $src[$name . 'Day'];
 		$year = $src[$name . 'Year'];
 	}
-	
+
 	return "$year-$month-$day";
 }
 
@@ -65,9 +92,9 @@ function GetPostDate($name)
 	$minute = $_POST[$name . 'Minute'];
 	$second = $_POST[$name . 'Second'];
 	$meridian = $_POST[$name . 'Meridian'];
-	
+
 	$hour = $meridian == 'pm' ? ($hour + 12) : $hour;
-	
+
 	return "$year-$month-$day $hour:$minute:$second -7:00";
 }
 */
@@ -83,10 +110,10 @@ function echo_r($var, $showBacktrace = NULL)
 {
 	if(is_null($showBacktrace))
 		$showBacktrace = Config::get('zinc.debug.echorShowBacktrace');
-	
+
 	if($showBacktrace)
 		EchoBacktrace();
-	
+
 	echo '<pre>';
 	print_r($var);
 	echo '</pre>';
@@ -142,7 +169,7 @@ function FormatBacktraceHtml($backtraceInfo)
 	<tr>
 		<th>File</th><th>Line</th><th>Function</th>
 	</tr>
-	<?php  foreach($backtraceInfo as $thisRow): 
+	<?php  foreach($backtraceInfo as $thisRow):
 		$lineInfo = FormateBacktraceLineHtml($thisRow);
 	?><tr>
 		<td><?php echo $lineInfo['file']; ?></td>
@@ -173,7 +200,7 @@ function FormatBacktraceFunctionCellHtml($lineInfo)
 	$call .= isset($lineInfo['class']) ? ($lineInfo['class'] . $lineInfo['type']) : '';
 	$call .= $lineInfo['function'] . '(';
 	$argStrings = array();
-	
+
 	if(isset($lineInfo['args']))
 	foreach($lineInfo['args'] as $thisArg)
 	{
@@ -207,14 +234,14 @@ function FormatBacktraceFunctionCellHtml($lineInfo)
 				die('unhandled type ' . gettype($thisArg));
 				break;
 		}
-		
+
 //		echo '<strong>call = ' . $call . '</strong><br>';
 	}
-	
+
 	$call .= implode(', ', $argStrings);
-	
+
 	$call .= ')';
-	
+
 	return $call;
 }
 
@@ -261,11 +288,11 @@ function RandString($chars)
 function EchoStaticFile($filename)
 {
 	$fp = fopen($filename, 'rb');
-	
+
 	//	send the headers
 	//header("Content-Type: image/png");	//	figure out what should really be done here
 	header("Content-Length: " . filesize($filename));	//	also we want to be able to properly set the cache headers here
-	
+
 	fpassthru($fp);
 }
 
@@ -288,17 +315,17 @@ function ListDir($path, $params)
 		{
 			$keep = 0;
 			$extention = GetFileExtention($entry);
-			
+
 			if(in_array($extention, $params['extentions']))
 				//echo $extention . "\n";
 				$keep = 1;
 		}
-		
+
 		if($keep)
 			$entries[] = $entry;
 	}
 	$d->close();
-	
+
 	return $entries;
 }
 
@@ -310,7 +337,7 @@ function WalkDir($dir, $action)
 	{
 		if($entry == '.' || $entry == '..')
 			continue;
-		
+
 		echo $entry."\n";
 		$action($entry);
 	}
@@ -391,7 +418,7 @@ function GetRandomBytes($count, $allowFallback = false)
 	{
 		if(!$allowFallback)
 			trigger_error('system could not generate enough random data');
-		
+
 		$output = '';
 		for ($i = 0; $i < $count; $i += 16) {
 			$this->random_state =
@@ -415,7 +442,7 @@ function GetNonEmptyLines($text)
 		if($line)
 			$lines[] = $line;
 	}
-	
+
 	return $lines;
 }
 

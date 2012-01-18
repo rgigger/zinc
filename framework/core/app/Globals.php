@@ -22,6 +22,8 @@ if(php_sapi_name() != "cli")
 {
 	if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' )
 		$protocol = 'https://';
+    elseif ( isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on')
+        $protocol = 'https://';                                                           
 	else
 		$protocol = 'http://';
 	$sslProtocol = 'https://';
@@ -34,7 +36,7 @@ if(php_sapi_name() != "cli")
 	//	what other situations besides mod_rewrite set this to 200?
 	if(isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == 200)
 	{
-		$uri = $_SERVER['REQUEST_URI'];
+		$uri = urldecode($_SERVER['REQUEST_URI']);
 		if($pos = strpos($uri, '?'))
 			$uri = substr($uri, 0, $pos);
 		
