@@ -1,8 +1,8 @@
 <?php
-class Smarty2Module extends ZoopModule
+class Smarty2Module extends ZincModule
 {
 	protected function init()
 	{
-		$this->addClass('Smarty2');
+		$this->addClass('Smarty2', 'lib/Smarty.class.php');
 	}
 }

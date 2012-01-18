@@ -13,6 +13,12 @@ function smarty_function_printr($params, &$smarty)
 {
     extract($params);
 	
+	if(is_null($params['var']))
+	{
+		echo "NULL";
+		return;
+	}
+	
     if(!isset($var))
     {
         $smarty->trigger_error("assign: missing 'var' parameter");
@@ -21,6 +27,7 @@ function smarty_function_printr($params, &$smarty)
 	
 	echo "<pre>";
 	print_r($var);
+	// var_dump($var);
 	echo "</pre>";
 }
 

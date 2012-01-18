@@ -47,6 +47,9 @@ function smarty_function_input($params, &$smarty)
 	$extraMap = array();
 	foreach($params as $paramName => $paramValue)
 	{
+		// if($paramName == 'name' && !isset($params['id']))
+		// 	$params['id'] = $paramValue;
+		
 		if(in_array($paramName, array('type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append')))
 			continue;
 		
@@ -68,9 +71,16 @@ function smarty_function_input($params, &$smarty)
 		case 'hidden':
 			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields>";
 			break;
+		case 'button':
+			if(isset($params['href']))
+				return '<a href="' . $params['href'] . " $extraFields>";
+			else
+				return "<button $namePart $valuePart $extraFields>";
+			break;
 		case 'checkbox':
-			$return = '<input value="f" type="hidden"' . " $namePart $valuePart $extraFields>";
-			$return .= '<input value="t" type="' . $type . '"' . " $namePart $valuePart $extraFields>";
+			$checked = $value == 't' ? ' checked' : '';
+			$return = '<input value="f" type="hidden"' . " $namePart $extraFields $checked>";
+			$return .= '<input value="t" type="' . $type . '"' . " $namePart $extraFields $checked>";
 			return $return;
 			break;
 		case 'password':
