@@ -219,6 +219,39 @@ function FormatBacktraceFunctionCellHtml($lineInfo)
 }
 
 
+function FormatBytes($bytes, $precision = 1)
+{
+	$base = log($bytes) / log(1024);
+	$suffixes = array('B', 'KB', 'MB', 'GB', 'TB');	 
+	
+	return number_format(round(pow(1024, $base - floor($base)), $precision), $precision, '.', '') . ' ' . $suffixes[floor($base)];
+}
+
+
+function UniqueId($prefix = "")
+{
+	return str_replace('.', '', uniqid($prefix, true));
+}
+
+function RandString($chars)
+{
+	$final = '';
+	$charsLeft = $chars;
+	
+	do {
+		$readChars = $chars;
+		$handle = fopen('/dev/random', "r");
+		$contents = fread($handle, $charsLeft);
+		fclose($handle);
+		
+		$contents = preg_replace('/[^a-zA-Z0-9]+/', '', base64_encode($contents));
+		$final .= substr($contents, 0, $charsLeft);
+		$charsLeft = $chars - strlen($final);
+	}
+	while($charsLeft);
+	
+	return $final;
+}
 
 /**
  * Given a filename, outputs the contents of the file to the client
@@ -388,17 +421,18 @@ function GetNonEmptyLines($text)
 
 function ForceSSL()
 {
-	if(!IsSSL())
-		Redirect(ssl_virtual_url);
+	// if(!IsSSL())
+	// 	Redirect(ssl_virtual_url);
 }
 
 function ForcePlain()
 {
-	if(IsSSL())
-		Redirect(plain_virtual_url);
+	// if(IsSSL())
+	// 	Redirect(plain_virtual_url);
 }
 
 function IsSSL()
 {
+	return true;
 	return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on";
 }
