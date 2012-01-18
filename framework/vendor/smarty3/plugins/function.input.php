@@ -14,9 +14,10 @@ function smarty_function_input($params, &$smarty)
 		$field = $params['data_field'];
 		if(!isset($params['append']) || $params['append'] == false)
 		{
-			if(!isset($smarty->zoop->form))
+			$form = $smarty->getTemplateVars('__zinc');
+			if(!$form)
 				trigger_error("gui:input: if you specifiy a data object you must first use the 'openform' tag");
-			$name = $smarty->zoop->form->addBinding($object, $field);
+			$name = $form->addBinding($object, $field);
 		}
 		else
 		{
