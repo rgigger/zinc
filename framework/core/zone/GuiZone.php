@@ -21,21 +21,21 @@ class GuiZone extends Zone
 		return $this->baseDir;
 	}
 	
-	protected function chooseGui($type)
+	protected function chooseGui()
 	{
-		//	if they want something different they need to extend this class
-		assert($type === NULL);
+		return new AppGui();
 		
-		if($this->guiClass)
-			$className = $this->guiClass;
-		else if(Config::get('zinc.gui.class'))
-			$className = Config::get('zinc.gui.class');
-		else if(class_exists('AppGui'))
-			$className = 'AppGui';
-		else
-			$className = 'Gui';
-		
-		return new $className($this->guiDriver);
+		// I will put this back in once we actually run into a situation where we want this flexibility and understand
+		// better how we want it to be implemented
+		// 
+		// if($this->guiClass)
+		// 	$className = $this->guiClass;
+		// else if(class_exists('AppGui'))
+		// 	$className = 'AppGui';
+		// else
+		// 	$className = 'Gui';
+		// 
+		// return new $className($this->guiDriver);
 	}
 	
 	protected function getTemplateDir()
@@ -55,9 +55,12 @@ class GuiZone extends Zone
 		return $this->displayed;
 	}
 	
-	function display($templateName, $guiType = NULL)
+	function display($templateName, $depricated = NULL)
 	{
-		$gui = $this->chooseGui($guiType);
+		// this is a depricated paramater so throw and error if someone is still using it
+		assert($depricated === NULL);
+		
+		$gui = $this->chooseGui();
 		$gui->setLayout($this->layout);
 		
 		foreach($this->assigns as $name => $value)
