@@ -4,7 +4,7 @@
 	{else}
 		<h3>{$entry->title}</h3>
 	{/if}
-	<h4>{$entry->published_date|date_format}{if $entry->link} - <a target="_new" href="{$entry->link}">{if $entry->link_text}{$entry->link_text}{else}I want to go to there{/if}</a>{/if}</h4>
+	<h4>{$entry->published_date|date_format}{if $entry->link} - <a target="_new" href="{$entry->link}">{if $entry->link_text}{$entry->link_text}{else}the link{/if}</a>{/if}</h4>
 	<div class="body">
 		{if $short}
 			{assign var="intro" value=$entry->getIntro()}
