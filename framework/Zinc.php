@@ -164,10 +164,37 @@ class Zinc
 	 * @param string $className
 	 * @param string $fullPath
 	 */
-	static function registerClass($className, $fullPath)
+	static public function registerClass($className, $fullPath)
 	{
-		ZoopLoader::addClass($className, $fullPath);
+		ZincLoader::addClass($className, $fullPath);
 	}
+	
+	static public function registerClasses($classes)
+	{
+		foreach($classes as $key => $val)
+		{
+			if(is_int($key))
+				self::reg($val);
+			else
+				self::reg($key, $val);
+		}
+	}
+	
+	static public function reg($className, $dirPath = null)
+	{
+		if($dirPath)
+		{
+			if($dirPath[0] == '/')
+				$fullPath = "$dirPath/$className.php";
+			else
+				$fullPath = app_dir . "/$dirPath/$className.php";
+		}
+		else
+			$fullPath = app_dir . "/$className.php";
+		
+		self::registerClass($className, $fullPath);
+	}
+	
 	
 	/**
 	 * Register a "domain" class for autoload (a domain class is a
