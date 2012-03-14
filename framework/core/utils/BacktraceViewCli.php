@@ -90,6 +90,9 @@ class BacktraceViewCli
 					case 'array':
 						$argStrings[] = '<array>';
 						break;
+					case 'object':
+						$argStrings[] = '{object}';
+						break;
 					case 'resource':
 						$argStrings[] = 'resource: ' . $thisArg;
 						break;
