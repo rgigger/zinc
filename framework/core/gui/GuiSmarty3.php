@@ -1,12 +1,7 @@
 <?php
-/**
- * Object extends the Smarty templating system to allow easy separation of business and
- * presentation logic
- *
- */
 class GuiSmarty3 extends GuiDriver
 {
-	private $layout, $smarty;
+	private $layout, $smarty, $assigns = array(), $autoInheritance = false;
 	
 	function init()
 	{
@@ -41,12 +36,15 @@ class GuiSmarty3 extends GuiDriver
 		$this->setConfigDir(app_dir . "/guiconfig");
 		
 		//	set the plugin directories
-		$this->addPluginDir(zoop_dir . '/vendor/smarty3/plugins');	//	one for plugins added into gui
+		$this->addPluginDir(zinc_dir . '/vendor/smarty3/plugins');	//	one for plugins added into gui
+		$this->addPluginDir(app_dir . "/helpers/smarty3");		//	one or plugins specific to the app
 		$this->addPluginDir(app_dir . "/guiplugins");			//	one or plugins specific to the app
 		
 //		$this->smarty->default_modifiers = array('escape:"htmlall"');
 		
 		$this->smarty->error_reporting = E_ALL;
+		
+		$this->smarty->template_class = 'SmartyCustomInternalTemplate';
 		
 		//	we shouldn't use the blanket app_status define any more, we should use specific varabiles
 		//	for each behavior, and it should use the new config system
@@ -60,6 +58,11 @@ class GuiSmarty3 extends GuiDriver
 		//	If we can get it to not do that then we can put this back in.
 		//
 		//$this->smarty->autoload_filters = array('pre' => array("strip_html"));
+	}
+	
+	public function autoInherit()
+	{
+		$this->autoInheritance = true;
 	}
 	
 	public function getRequireds()
@@ -109,22 +112,38 @@ class GuiSmarty3 extends GuiDriver
 	
 	public function assign($name, $value)
 	{
-		$this->smarty->assign($name, $value);
+		$this->assigns[$name] = $value;
+		// $this->smarty->assign($name, $value);
 	}
 	
-	public function fetch($tpl_file, $cache_id = null, $compile_id = null, $display = false)
+	public function fetch($tpl_file)
 	{
-		if($this->layout)
+		if($this->autoInheritance && $this->layout)
 		{
-			$this->smarty->assign("TEMPLATE_CONTENT", $tpl_file);
-			return $this->smarty->fetch("layouts/{$this->layout}.tpl", $cache_id, $compile_id, null, $display);
-		}
+			$tpl = $this->smarty->createTemplate("extends:layouts/{$this->layout}.tpl|$tpl_file");
+			foreach($this->assigns as $name => $value)
+				$tpl->assign($name, $value);
+			return $tpl->fetch();
 		
-		return $this->smarty->fetch($tpl_file, $cache_id, $compile_id, null, $display);
+		// return $this->smarty->fetch("extends:layouts/{$this->layout}.tpl|$tpl_file", $cache_id, $compile_id, null, $display);
+		}
+		else
+		{
+			foreach($this->assigns as $name => $value)
+				$this->smarty->assign($name, $value);
+			
+			if($this->layout)
+			{
+				$this->smarty->assign("TEMPLATE_CONTENT", $tpl_file);
+				return $this->smarty->fetch("layouts/{$this->layout}.tpl");
+			}
+			
+			return $this->smarty->fetch($tpl_file);
+		}
 	}
 	
-    function display($resource_name, $cache_id = null, $compile_id = null)
+    function display($tpl_file)
     {
-        $this->fetch($resource_name, $cache_id, $compile_id, true);
-    }
+		echo $this->fetch($tpl_file);
+	}
 }

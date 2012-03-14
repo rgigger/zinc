@@ -36,6 +36,8 @@ class GuiModule extends ZoopModule
 		$this->addClass('GuiDriver');
 		$this->addClass('GuiSmarty2');
 		$this->addClass('GuiSmarty3');
+		$this->addClass('LayoutHandler');
+		$this->addClass('SmartyCustomInternalTemplate');
 		$this->hasConfig = true;
 	}
 	

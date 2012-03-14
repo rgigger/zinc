@@ -22,16 +22,9 @@ class Gui
 		$this->driver->setLayout($layout);
 	}
 	
-	public function fetch($templateName)
+	public function autoInherit()
 	{
-		$this->assignUrlInfo();
-		return $this->driver->fetch($templateName);
-	}
-	
-	public function display($templateName)
-	{
-		$this->assignUrlInfo();
-		$this->driver->display($templateName);
+		$this->driver->autoInherit();
 	}
 	
 	private function assignUrlInfo()
@@ -46,6 +39,18 @@ class Gui
 			$this->assign('virtualUrl', virtual_url);
 		if(defined('ssl_virtual_url'))
 			$this->assign('sslVirtualUrl', ssl_virtual_url);
+	}
+	
+	public function fetch($templateName)
+	{
+		$this->assignUrlInfo();
+		return $this->driver->fetch($templateName);
+	}
+	
+	public function display($templateName)
+	{
+		$this->assignUrlInfo();
+		$this->driver->display($templateName);
 	}
 	
 	public function assign($name, $value)
