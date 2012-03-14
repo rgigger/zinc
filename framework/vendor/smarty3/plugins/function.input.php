@@ -51,7 +51,7 @@ function smarty_function_input($params, &$smarty)
 		// if($paramName == 'name' && !isset($params['id']))
 		// 	$params['id'] = $paramValue;
 		
-		if(in_array($paramName, array('id', 'type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append')))
+		if(in_array($paramName, array('type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append')))
 			continue;
 		
 		if(substr($paramName, 0, 5) == 'data_')
@@ -60,12 +60,7 @@ function smarty_function_input($params, &$smarty)
 		$extraMap[$paramName] = $paramValue;
 		$extraFields .= ' ' . $paramName . '="' . $paramValue . '"';
 	}
-	
-	if(isset($params['id']))
-		$idField = ' id="' . $params['id'] . '"';
-	else
-		$idField = '';
-	
+		
 	$required = isset($params['required']) && $params['required'];
 	if($required)
 		$extraFields .= ' data-constraint="required"';
@@ -78,35 +73,35 @@ function smarty_function_input($params, &$smarty)
 		case 'text':
 		case 'submit':
 		case 'hidden':
-			return '<input type="' . $type . '"' . " $namePart $valuePart $idField $extraFields>";
+			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields>";
 			break;
 		case 'button':
 			if(isset($params['href']))
-				return '<a href="' . $params['href'] . "\" $idField $extraFields>" . (isset($params['text']) ? $params['text'] : '') . "</a>";
+				return '<a href="' . $params['href'] . "\" $extraFields>" . (isset($params['text']) ? $params['text'] : '') . "</a>";
 			else
-				return "<button $namePart $valuePart $idField $extraFields>" . (isset($params['text']) ? $params['text'] : '') . "</button>";
+				return "<button $namePart $valuePart $extraFields>" . (isset($params['text']) ? $params['text'] : '') . "</button>";
 			break;
 		case 'checkbox':
 			$checked = $value == 't' ? ' checked' : '';
 			$return = '<input value="f" type="hidden"' . " $namePart $extraFields $checked>";
-			$return .= '<input value="t" type="' . $type . '"' . " $namePart $idField $extraFields $checked>";
+			$return .= '<input value="t" type="' . $type . '"' . " $namePart $extraFields $checked>";
 			return $return;
 			break;
 		case 'password':
-			return '<input type="' . $type . '"' . " $namePart $idField $extraFields>";
+			return '<input type="' . $type . '"' . " $namePart $extraFields>";
 			break;
 		case 'radio':
 			$checked = $valueAtt == $value ? ' checked' : '';
-			return '<input type="' . $type . '"' . " $namePart $valuePart $idField $extraFields $checked>";
+			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields $checked>";
 			break;
 		case 'textarea':			
-			$return = '<textarea ' . $namePart . ' ' . $idField . ' ' . $extraFields . '>';
+			$return = '<textarea ' . $namePart . ' ' . $extraFields . '>';
 			$return .= $value;
 			$return .= '</textarea>';
 			return $return;
 			break;
 		case 'select':
-	    	require_once $smarty->_get_plugin_filepath('function','html_options');
+			require_once(SMARTY_PLUGINS_DIR . 'function.html_options.php');
 			$selectParams = $extraMap;
 			$selectParams['name'] = $name;
 			$selectParams['selected'] = $value;
