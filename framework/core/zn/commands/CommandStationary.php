@@ -55,8 +55,9 @@ class CommandStationary
 		self::gen_r($appDir, 'basic', array());
 		
 		// set up the tmp dir
-		mkdir($appDir . '/tmp/Smarty2', 0777, true);
-		_chmod($appDir . '/tmp', 0777, true);
+		mkdir($appDir . '/tmp/Smarty3', 0770, true);
+		_chmod($appDir . '/tmp', 0770, true);
+		_chgrp($appDir . '/tmp', GetWebUser(), true);
 	}
 	
 	public function handleInstance($p)
