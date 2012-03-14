@@ -17,6 +17,13 @@ class CliErrorHandler
 		if(!defined('app_status'))
 			define('app_status', 'dev');
 		
+		static $errorCount = 0;
+		$errorCount++;
+		$maxErrors = Config::get('zinc.error.maxCli');
+		
+		if($errorCount > $maxErrors)
+			die();
+		
 		switch(app_status)
 		{
 			case 'dev':
