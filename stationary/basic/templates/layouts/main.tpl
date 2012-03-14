@@ -1,31 +1,34 @@
-{capture assign="contentOutput"}{include file=$TEMPLATE_CONTENT}{/capture}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Language" content="English" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<BASE HREF="{$scriptUrl}">
+<base HREF="{$baseUrl}">
+<title>My App Name!{block name="title" hide=true} - {$smarty.block.child}{/block}</title>
+
+<!-- jquery stuff -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="public/css/basic.css" media="screen" />
 <script>
 var scriptUrl = '{$scriptUrl}';
-var virtualUrl = '{$scriptUrl}';
-var zoneUrl = '{$scriptUrl}';
+var virtualUrl = '{$virtualUrl}';
+var zoneUrl = '{$zoneUrl}';
 </script>	
-<link rel="stylesheet" type="text/css" href="public/css/basic.css" media="screen" />
+
 </head>
 <body>
-<form action="{$virtualUrl}" name="main_form" method="post">
 <div id="wrap">
 <div id="header">
-
-<h1><a href="#">Site Title</a></h1>
-<h2>Site Sub-title</h2>
-
+<h1><a href="#">My App Name!</a></h1>
+<h2>App Sub Title!</h2>
 </div>
 
-<div class="middle">
+<div id="content">
 
 <!-- Begin main content area -->
-{ $contentOutput }
+{block name=body}{/block}
 <!-- End main content area -->
 
 </div>
@@ -53,9 +56,3 @@ Built with <a target="_external" href="https://github.com/rgigger/zinc/wiki/">Zi
 </div>
 </body>
 </html>
-
-
-{*
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-*}

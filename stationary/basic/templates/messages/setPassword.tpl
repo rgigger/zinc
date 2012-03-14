@@ -1,0 +1,1 @@
+Go here to set your password: {$scriptUrl}/resetPassword/{$token->token}

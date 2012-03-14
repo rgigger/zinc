@@ -3,13 +3,20 @@ class App extends ZoneApplication
 {
 	public function init()
 	{
-		Zoop::loadLib('zone');
-		Zoop::loadLib('db');
-		// if(php_sapi_name() != "cli")
-		// 	Zoop::loadLib('session');
+		Zinc::loadLib('zone');
+		Zinc::loadLib('db');
+		//if(php_sapi_name() != "cli")
+		//	Zinc::loadLib('session');
+		Zinc::loadLib('form');
+		Zinc::loadLib('mail');
 
 		//	register classess
-		Zoop::registerClass('AppZone', __dir__ . '/domain/AppZone.php');
-		Zoop::registerClass('AppGui', __dir__ . '/domain/AppGui.php');
+		Zinc::reg('AppZone', 'domain');
+		Zinc::reg('AppGui', 'domain');
+		Zinc::reg('Person', 'domain');
+		Zinc::reg('Token', 'domain');
+		
+		//	register zones
+		Zinc::reg('ZoneUser', 'zones');
 	}
 }

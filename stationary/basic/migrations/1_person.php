@@ -1,12 +1,15 @@
 <?php
-class Migration_[[$version]] extends Migration
+class Migration_1 extends Migration
 {
 	function up()
 	{
-		$sql = "CREATE TABLE <tablename>
+		$sql = "CREATE TABLE person
 		(
 			id serial primary key,
-			<otherfield> text not null
+			username text not null unique,
+			firstname text not null,
+			lastname text not null,
+			password text
 		);";
 		SqlAlterSchema($sql, array());
 	}

@@ -40,7 +40,8 @@ a:hover {
     margin: 0 auto;
     width: 77%;
 }
-.middle {
+
+#content {
 	float: left;
 	width: 60%;
 	margin: 0 10px;
@@ -85,8 +86,26 @@ a:hover {
 	background: #eee;
 }
 
-
-
-
-
-
+.data {
+    width: 100%;
+    margin: 10px;
+	border-collapse:collapse;
+	border-spacing:0;
+}
+.data caption {
+	padding: 5px;
+	font-weight: bold;
+}
+.data caption,th {
+	text-align:center;
+}
+.data th {
+	background: rgba(129, 173, 249, .5);
+}
+.data td,th {
+	padding:5px;
+	border:1px solid #333;
+}
+.data tbody tr:nth-of-type(odd) {
+	background: rgba(129, 173, 249, .2);
+}
