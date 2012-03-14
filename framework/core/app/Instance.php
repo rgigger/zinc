@@ -1,17 +1,3 @@
 <?php
-class Instance
-{
-	private $app;
-	
-	function __construct()
-	{
-		include app_dir . '/App.php';
-		$this->app = new App();
-		$this->app->init();
-	}
-	
-	public function handleRequest()
-	{
-		$this->app->handleRequest();
-	}
-}
+# we need to depricate this. it's too generic a work to claim for this usage
+class Instance extends ApplicationInstance {}
