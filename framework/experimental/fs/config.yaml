@@ -1,0 +1,4 @@
+default:
+    driver: local
+    root: '~'          # ~ = instance_dir . '/var'
+    cwd: /
