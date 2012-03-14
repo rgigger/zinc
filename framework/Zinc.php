@@ -116,7 +116,46 @@ class Zinc
 		return Config::getFilePath('zinc.tmpDir');;
 	}
 	
-	//	deprecated stuff
+	static public function scan($dirs)
+	{
+		foreach($dirs as $dir)
+		{
+			$fullDir = app_dir . '/' . $dir;
+			
+			// get the timestamp on reg.php
+			$regStat = stat(app_dir . '/' . $dir . '/reg.php');
+			// echo_r($regStat);
+			
+			// check the timestamp on the dir
+			// ------- you should also be checking any sub directories
+			$dirStat = stat(app_dir . '/' . $dir);
+			
+			// the directory was changed after reg.php then recreate reg.php
+			if($dirStat['mtime'] > $regStat['mtime'])
+			{
+				$classes = array();
+				dir_r($fullDir, function($it, $cur) use (&$classes, $dir) {
+					$info = pathinfo($cur->getPathName());
+					if($info['extension'] == 'php' && $info['basename'] != 'reg.php')
+					{
+						$subPath = $it->getSubPath() ? "/" . $it->getSubPath() : '';
+						$classes[$info['filename']] = "$dir$subPath";
+					}
+				});
+				// echo_r($classes);
+				
+				$regString = '<?php' . "\n";
+				$regString .= 'Zinc::registerClasses(array(' . "\n";
+				foreach($classes as $name => $dir)
+					$regString .= "\t'$name' => '$dir',\n";
+				$regString .= '));' . "\n";
+				
+				file_put_contents("$fullDir/reg.php", $regString);
+			}
+			
+			include("$fullDir/reg.php");
+		}
+	}
 	
 	/**
 	 * static -- Register a class for auto-loading with the name of the class
