@@ -14,8 +14,10 @@ class ZoneEntry extends AppZone
 		$name = $p[4];
 		
 		$date = "$year-$month-$day";
-		$entry = DbObject::_findOne('Entry', array('published_date' => $date, 'name' => $name));
-		
+		$entry = Entry::findBySql("SELECT * from entry where name = :name and cast(published_date as date) = :date", array(
+			'name' => $name,
+			'date' => $date
+		));
 		$this->assign('isList', false);
 		$this->assign('entry', $entry);
 	}

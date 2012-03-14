@@ -14,6 +14,9 @@ class ZoneDefault extends AppZone
 	
 	public function pageHome($p)
 	{
+		// file_put_contents('/tmp/rewrite_log', 'asdf');
+		// echo_r($_SERVER);
+		// var_dump(apache_getenv('RewriteEngine'));
 		$page = $p[1];
 		$maxPage = Content::getMaxPages();
 		$this->assign('pages', array_reverse(range(0, $maxPage)));

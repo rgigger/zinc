@@ -12,4 +12,4 @@ app:
 zinc:
     gui:
         default:
-            driver: smarty3
+            driver: smarty2
