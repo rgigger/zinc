@@ -3,3 +3,4 @@ debug:
     echorShowBacktrace: false
 error:
     reportStatus: test
+    maxCli: 1
