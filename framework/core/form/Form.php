@@ -70,7 +70,7 @@ class Form
 		self::$setters[$class] = $setter;
 	}
 	
-	static public function save()
+	static public function getObjects()
 	{
 		if(!isset($_POST['_zinc_form_id']) || !$_POST['_zinc_form_id'])
 			return;
@@ -85,7 +85,7 @@ class Form
 		
 		if(!$fieldString)
 			trigger_error("session_form row $formId not found.  Possible attempt to spoof session data.");
-		
+			
 		$objects = array();
 		foreach(explode(',', $fieldString) as $thisFieldString)
 		{
@@ -105,6 +105,12 @@ class Form
 			
 			$objects[$objectId]->$field = trim($_POST['_zinc_form_element'][$class][$id][$field]);
 		}
+		return $objects;
+	}
+
+	static public function save()
+	{
+		$objects = Form::getObjects();
 		
 		foreach($objects as $thisObject)
 		{

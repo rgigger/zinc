@@ -115,6 +115,16 @@ function BaseRedirect($virtualPath)
 	Redirect(script_url . '/' . $virtualPath);
 }
 
+function sendAjaxSuccess($params = array())
+{
+	if(!isset($params['success']))
+		$params['success'] = true;
+	header('Content-type: application/json');
+	define('app_logprofile_skip_print', true);
+	echo json_encode($params);
+	die();
+}
+
 
 /**
  * Echos an HTML-formatted backtrace
