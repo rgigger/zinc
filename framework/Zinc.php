@@ -131,7 +131,7 @@ class Zinc
 			$dirStat = stat(app_dir . '/' . $dir);
 			
 			// the directory was changed after reg.php then recreate reg.php
-			if($dirStat['mtime'] > $regStat['mtime'])
+			if($dirStat['mtime'] > $regStat['mtime'] && is_writable("$fullDir/reg.php"))
 			{
 				$classes = array();
 				dir_r($fullDir, function($it, $cur) use (&$classes, $dir) {
@@ -143,7 +143,7 @@ class Zinc
 					}
 				});
 				// echo_r($classes);
-				
+				ksort($classes);
 				$regString = '<?php' . "\n";
 				$regString .= 'Zinc::registerClasses(array(' . "\n";
 				foreach($classes as $name => $dir)
