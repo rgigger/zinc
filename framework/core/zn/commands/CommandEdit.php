@@ -1,6 +1,14 @@
 <?php
 class CommandEdit
 {
+	static function usage()
+	{
+		if(defined('instance_dir'))
+			return array('edit [instance|application|zinc]');
+		else
+			return array();
+	}
+	
 	public function handleRequest($p)
 	{
 		$methodName = "handle" . $p[2];
