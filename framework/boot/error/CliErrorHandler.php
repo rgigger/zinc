@@ -14,16 +14,15 @@ class CliErrorHandler
 	
 	static function handleError($errno, $errstr, $errfile, $errline, $context, $backtrace = NULL)
 	{
+		
 		if(!defined('app_status'))
 			define('app_status', 'dev');
 		
 		static $errorCount = 0;
 		$errorCount++;
 		$maxErrors = Config::get('zinc.error.maxCli');
-		
-		if($errorCount > $maxErrors)
+		if($maxErrors !== false && $errorCount > $maxErrors)
 			die();
-		
 		switch(app_status)
 		{
 			case 'dev':
@@ -110,6 +109,7 @@ class CliErrorHandler
 	
 	function exceptionHandler($exception)
 	{
+		
 //		print_r($exception->getCode());die();
 		$backtrace = $exception->getTrace();
 		$file = $exception->getFile();

@@ -1,6 +1,14 @@
 <?php
 class CommandScript
 {
+	function usage()
+	{
+		if(defined('instance_dir'))
+			return array('ex APP_COMMAND');
+		else
+			return array();
+	}	
+	
 	public function handleRequest($p)
 	{
 		global $argv; // this is so it will be available within the included script file
