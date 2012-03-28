@@ -24,15 +24,23 @@ function smarty_function_input($params, &$smarty)
 			Form::appendBindings(array($binding));
 			$name = $binding->getName();
 		}
-		if(isset($params['default']) && ($object->$field === '' || $object->$field === NULL))
-			$value = $params['default'];
-		else
-			$value = isset($params['value']) ? $params['value'] : $object->$field;
 		$namePart = ' name="' . $name . '"';
 		if($type == 'radio')
+		{
+			if(isset($params['default']) && ($object->$field === '' || $object->$field === NULL))
+				$value = $params['default'];
+			else
+				$value = $object->$field;
 			$valuePart = ' value="' . $valueAtt . '"';
+		}
 		else
+		{
+			if(isset($params['default']) && ($object->$field === '' || $object->$field === NULL))
+				$value = $params['default'];
+			else
+				$value = isset($params['value']) ? $params['value'] : $object->$field;
 			$valuePart = ' value="' . $value . '"';
+		}
 	}
 	else
 	{
@@ -50,7 +58,9 @@ function smarty_function_input($params, &$smarty)
 		// if($paramName == 'name' && !isset($params['id']))
 		// 	$params['id'] = $paramValue;
 		
-		if(in_array($paramName, array('type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append')))
+		if(in_array($paramName, array(
+			'type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append', 'required'
+		)))
 			continue;
 		
 		$extraMap[$paramName] = $paramValue;
@@ -58,8 +68,8 @@ function smarty_function_input($params, &$smarty)
 	}
 	
 	$required = isset($params['required']) && $params['required'];
-	if($required)
-		$extraFields .= ' data-constraint="required"';
+	if($required && $type != 'checkbox')
+		$extraFields .= ' data-constraint="required" required="required"';
 	
 	if(isset($params['sameas']))
 		$extraFields .= ' data-constraint="sameas" data-sameas="' . $params['sameas'] . '"';
@@ -87,7 +97,10 @@ function smarty_function_input($params, &$smarty)
 			return '<input type="' . $type . '"' . " $namePart $extraFields>";
 			break;
 		case 'radio':
-			$checked = $valueAtt == $value ? ' checked' : '';
+			if(isset($params['data_object']))
+				$checked = $valueAtt == $value ? ' checked' : '';
+			else
+				$checked = isset($params['checked']) && $params['checked'] ? ' checked' : '';
 			return '<input type="' . $type . '"' . " $namePart $valuePart $extraFields $checked>";
 			break;
 		case 'textarea':			
