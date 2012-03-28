@@ -1,6 +1,14 @@
 <?php
 class CommandMigrations
 {
+	public function usage()
+	{
+		if(defined('instance_dir'))
+			return array('[apply|redo] [migration|migrations]');
+		else
+			return array();
+	}
+	
 	public function handleRequest($p)
 	{
 		Zinc::loadLib('migration');
@@ -46,7 +54,6 @@ class CommandMigrations
 		Migration::apply($filename, $version);
 		SqlCommitTransaction();
 		
-		print_r($p);
 		die();
 	}
 }

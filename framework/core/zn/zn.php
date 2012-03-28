@@ -61,12 +61,20 @@ if($highestCommand)
 }
 
 // if we didn't match the command args up with a class just give the usage info
-if(defined('instance_dir'))
+//if(defined('instance_dir'))
+{
 	echo "zn COMMAND [ARGS]\n";
-else
+	foreach(Config::get('zn.commands') as $commandClass => $commands)
+	{
+		include __dir__ . "/commands/Command{$commandClass}.php";
+		foreach(call_user_func(array('Command'.$commandClass, 'usage')) as $usage)
+			echo "zn " . $usage . "\n";
+	}
+}
+/*else
 {
 	echo "usage: zn create app APP_NAME\n";
 	echo "       zn create instance INSTANCE_NAME APP_DIR\n";
 	echo "       zn create pub PUB_NAME INSTANCE_DIR\n";
 	echo "\n";
-}
+}*/

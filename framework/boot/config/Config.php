@@ -102,7 +102,24 @@ class Config
 				return false;
 		
 		return $cur;
-	}	
+	}
+	
+	static function set($path, $val)
+	{
+		$parts = explode('.', $path);
+		$cur = &self::$info;
+		
+		foreach($parts as $thisPart)
+			if(isset($cur[$thisPart]))
+				$cur = &$cur[$thisPart];
+			else
+			{
+				$cur[$thisPart] = array();
+				$cur = &$cur[$thisPart];
+			}
+		$cur = $val;
+		return $cur;
+	}
 	
 	static function &getReference($path)
 	{

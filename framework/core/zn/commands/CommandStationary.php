@@ -1,9 +1,17 @@
 <?php
 class CommandStationary
 {
-	public function usage($p)
+	public function usage()
 	{
-		trigger_error("consolidate the usage code here somehow");
+		$answer = array(
+			'create app APP_NAME',
+			'create instance INSTANCE_NAME APP_DIR',
+			'create pub PUB_NAME INSTANCE_DIR'
+		);
+		if(defined('app_dir'))
+			$answer[] = 'create migration MIGRATION_NAME';
+		return $answer;
+		///trigger_error("consolidate the usage code here somehow");
 	}
 	
 	public function handleRequest($p)
@@ -19,7 +27,7 @@ class CommandStationary
 			$this->$methodName($p);
 		else
 		{
-			if(defined('instance_dir'))
+			if(defined('app_dir'))
 			{
 				echo "usage: zn create migration MIGRATION_NAME\n";
 			}

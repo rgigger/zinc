@@ -3,4 +3,4 @@ zn:
         Script: [ex]
         Migrations: [migration, migrations, apply, redo]
         Stationary: [create, migration, app, instance, pub, update, stationary, config]
-        Edit: [edit]
+        Edit: [edit, instance, application, zinc]
