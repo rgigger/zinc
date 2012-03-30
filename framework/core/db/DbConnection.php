@@ -244,6 +244,22 @@ abstract class DbConnection
 			case 'identifier':
 				$replaceString = $this->escapeIdentifier($this->queryParams[$name]);
 				break;
+			case 'inInts':
+				assert(is_array($this->queryParams[$name]));
+				foreach($this->queryParams[$name] as $key => $int)
+				{
+					$this->queryParams[$name][$key] = (int)$int;
+				}
+				$replaceString = implode(', ', $this->queryParams[$name]);
+				break;
+			case 'inStrings':
+				assert(is_array($this->queryParams[$name]));
+				foreach($this->queryParams[$name] as $key => $string)
+				{
+					$this->queryParams[$name][$key] = $this->escapeString($string);
+				}
+				$replaceString = implode(', ', $this->queryParams[$name]);
+				break;
 			default:
 				trigger_error("unknown param type: " . $type);
 				break;
