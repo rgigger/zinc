@@ -37,6 +37,19 @@ class Config
 	
 	static public function _mergeArray(&$suggested, &$insisted)
 	{
+		// if(is_array($suggested))
+		// {
+		// 	foreach($suggested as $key => $val)
+		// 	{
+		// 		if(is_array($val))
+		// 			self::_mergeArray($suggested[$key], $insisted[$key]);
+		// 		else
+		// 			$insisted[$key] = $val;
+		// 	}
+		// }
+		// 
+		// return $insisted;
+		
 		if(is_array($insisted))
 		{
 			foreach($insisted as $key => $val)
@@ -104,6 +117,10 @@ class Config
 		return $cur;
 	}
 	
+	/*
+	 * John, I left the other one in because it uses existing code. I don't know 100% though that they
+	 * are totally interchangable though so I am leaving this one in here in case this breaks anything.
+	 * 
 	static function set($path, $val)
 	{
 		$parts = explode('.', $path);
@@ -120,8 +137,15 @@ class Config
 		$cur = $val;
 		return $cur;
 	}
+	*/
 	
-	static function &getReference($path)
+	static public function set($path, $value)
+	{
+		$ref = &self::getReference($path, false);
+		$ref = $value;
+	}
+	
+	static function &getReference($path, $lastIsArray = true)
 	{
 		$parts = explode('.', $path);
 		$cur = &self::$info;
@@ -132,12 +156,23 @@ class Config
 				$cur = &$cur[$thisPart];
 			else
 			{
-				$cur[$thisPart] = array();
+				if($lastIsArray)
+					$cur[$thisPart] = array();
+				else
+					$cur[$thisPart] = null;
 				$cur = &$cur[$thisPart];
 			}
 		}
 		
 		return $cur;
+	}
+	
+	static public function reset($path)
+	{
+		// I made this, then didn't use or test it, but I left it in in case we want it in the future sometime
+		assert(false);
+		$node = &self::getReference($path);
+		$node = null;
 	}
 	
 	//	functions for getting scalar values and then formatting them
