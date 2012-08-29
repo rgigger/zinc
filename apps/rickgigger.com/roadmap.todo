@@ -1,42 +1,71 @@
--	add in support for different ways to push out your content
-	-	use ssh and rsync to just push your changes to a server
-	-	git based
-		-	commit locally and push the changes out
-		-	request the changes on the server
-		-	create a bin command to do the refresh
-		-	run that command remotely
-+	add the ability to only show part of the blog entry on the home page
-	+	add in a marker to the entry
-	+	only display that part on the home page with a "read more..." link
-	+	keep showing the whole thing on the entry page
-+	pageinate the home page
-	+	count the total number of relevant entries, and divide it by 10
-	+	the oldest page is page 0 and it counts up from there
-	+	each entry is always on the same page
-	+	when you go to the home page always redirect to the real page number
-+	move blog content out of the code
-	+	allow you to specify the content directory
-		+	config: app.blog.contentDir
-		+	create the directory structure
-			+	contentDir
-				+	entries
-				+	asssets
-		+	scan the entries directory
-			+	do a gui::fetch on it
-			+	get the metadata
-			+	insert or update it in the database
-			+	cache the results
-			+	metadata
-				+	done or not (publish it or not)
-+	stabalize the home page list order.  right now if entries are on the same day the order can change
--	implement a permissions system
-	-	if an entry hasn't been published yet, verify that you are an admin before you can see it
--	blocks
-	-	twitter favorites
-	-	rss feeds from select blogs
-		-	maybe just favorites from these blogs?
-	-	maybe have a bookmarklet for favorite/sharable stuff that doesn't end up making it into having a regular entry
--	make it so you can watch youtube videos without using youtube
-	-	try modifying this extention to run on your site and convert all youtube videos to H.264
-		-	http://www.verticalforest.com/2010/10/27/youtube5-version-2/
-		-	https://github.com/greneholt/youtube5
+-	dropbox syncing
+	-	write a script to sync the dropbox folder with the content to a folder on the server
+	-	use the dropbox API
+	-	have an admin URL that will trigger the syncing
+	-	every time you sync also do a refresh
+	-	put a web shortcut on your home screen to a page that will
+		-	do the sync
+		-	do the frefresh
+		-	redirect the browser to your the web home page
+	-	every time a file is changed through the web interface
+		-	sync it up to dropbox
+		-	commit it to the backend
+-	version histories
+	-	use a version control system, probably git
+	-	every time changes are made to the files commit everything
+	-	run a nightly cron job to push everything out to a backup server if the VCS is distributed
+	-	all versions committed after the first published versions should be available to view
+		-	have a page that shows a list of version
+		-	let you choose any version to diff with the latest file
+		-	let you choose any version to diff with the previous version
+		-	let you choose any version to diff with any other version
+-	allow you to update and create new posts from the web interface
+	-	"+" button for making new posts
+	-	edit button on existing posts
+	-	special feature for making link posts quickly
+-	presentation
+	-	fix image embedding to work on mobile devices
+	-	fix the fonts and background
+-	old
+	-	add in support for different ways to push out your content
+		-	use ssh and rsync to just push your changes to a server
+		-	git based
+			-	commit locally and push the changes out
+			-	request the changes on the server
+			-	create a bin command to do the refresh
+			-	run that command remotely
+	+	add the ability to only show part of the blog entry on the home page
+		+	add in a marker to the entry
+		+	only display that part on the home page with a "read more..." link
+		+	keep showing the whole thing on the entry page
+	+	pageinate the home page
+		+	count the total number of relevant entries, and divide it by 10
+		+	the oldest page is page 0 and it counts up from there
+		+	each entry is always on the same page
+		+	when you go to the home page always redirect to the real page number
+	+	move blog content out of the code
+		+	allow you to specify the content directory
+			+	config: app.blog.contentDir
+			+	create the directory structure
+				+	contentDir
+					+	entries
+					+	asssets
+			+	scan the entries directory
+				+	do a gui::fetch on it
+				+	get the metadata
+				+	insert or update it in the database
+				+	cache the results
+				+	metadata
+					+	done or not (publish it or not)
+	+	stabalize the home page list order.  right now if entries are on the same day the order can change
+	-	implement a permissions system
+		-	if an entry hasn't been published yet, verify that you are an admin before you can see it
+	-	blocks
+		-	twitter favorites
+		-	rss feeds from select blogs
+			-	maybe just favorites from these blogs?
+		-	maybe have a bookmarklet for favorite/sharable stuff that doesn't end up making it into having a regular entry
+	-	make it so you can watch youtube videos without using youtube
+		-	try modifying this extention to run on your site and convert all youtube videos to H.264
+			-	http://www.verticalforest.com/2010/10/27/youtube5-version-2/
+			-	https://github.com/greneholt/youtube5
