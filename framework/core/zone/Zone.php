@@ -37,6 +37,8 @@ abstract class Zone extends Object
 		$originalPart = array_shift($pathParts);
 		$thisPart = ucfirst($originalPart);
 		
+		// put in hooks here to let them determine how these are named
+		
 		$zoneName = "Zone$thisPart";
 		$pageName = "page$thisPart";
 		$postName = "post$thisPart";

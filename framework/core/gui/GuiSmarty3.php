@@ -124,8 +124,6 @@ class GuiSmarty3 extends GuiDriver
 			foreach($this->assigns as $name => $value)
 				$tpl->assign($name, $value);
 			return $tpl->fetch();
-		
-		// return $this->smarty->fetch("extends:layouts/{$this->layout}.tpl|$tpl_file", $cache_id, $compile_id, null, $display);
 		}
 		else
 		{

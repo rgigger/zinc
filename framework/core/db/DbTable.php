@@ -18,15 +18,13 @@ class DbTable extends Object implements Iterator
 	}
 	
 	//	change this to getColumns
-	public function getFields()
+	public function &getFields()
 	{
 		if(!$this->fields)
 		{
 			$this->fields = array();
 			foreach($this->conn->getTableFieldInfo($this->name) as $fieldInfo)
-			{
-				$this->fields[] = new DbField($fieldInfo);
-			}
+				$this->fields[$fieldInfo['name']] = new DbField($fieldInfo);
 		}
 		
 		return $this->fields;
