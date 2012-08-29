@@ -41,7 +41,7 @@ class GuiSmarty2 extends GuiDriver
 		$this->setConfigDir(app_dir . "/guiconfig");
 		
 		//	set the plugin directories
-		$this->addPluginDir(zoop_dir . '/vendor/smarty2/plugins');	//	one for plugins added into gui
+		$this->addPluginDir(zinc_dir . '/vendor/smarty2/plugins');	//	one for plugins added into gui
 		$this->addPluginDir(app_dir . "/guiplugins");			//	one or plugins specific to the app
 		
 //		$this->smarty->default_modifiers = array('escape:"htmlall"');
