@@ -3,6 +3,7 @@ class ExperimentalLibrary extends ZoopLibrary
 {
 	protected function init()
 	{
+		$this->registerMod('fs');
 		$this->registerMod('auth');
 		$this->registerMod('couch');
 		$this->registerMod('doc');
