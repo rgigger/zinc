@@ -105,7 +105,7 @@ function smarty_function_input($params, &$smarty)
 			$selectParams = $extraMap;
 			$selectParams['name'] = $name;
 			$selectParams['selected'] = $value;
-			$nameField = 'name';
+			$nameField = isset($selectParams['name_field']) ? $selectParams['name_field'] : 'name';
 			if(isset($extraMap['option_table']) && $extraMap['option_table'])
 			{
 				$tableName = $extraMap['option_table'];
