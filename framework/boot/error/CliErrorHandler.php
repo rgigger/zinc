@@ -14,6 +14,8 @@ class CliErrorHandler
 	
 	static function handleError($errno, $errstr, $errfile, $errline, $context, $backtrace = NULL)
 	{
+		if((error_reporting() & $errno) !== $errno)
+			return true;
 		
 		if(!defined('app_status'))
 			define('app_status', 'dev');
