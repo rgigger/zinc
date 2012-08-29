@@ -515,6 +515,12 @@ abstract class DbConnection
 		if($affected == 0 || $affected > 1)
 			trigger_error("attempting to update one row, $affected altered");
 	}
+	
+	public function updateArray($tableName, $conditions, $values)
+	{
+		$updateInfo = DbConnection::generateUpdateInfo($tableName, $conditions, $values);
+		return $this->updateRow($updateInfo['sql'], $updateInfo['params']);
+	}
 
 	/**
 	 * Executes the given update SQL statement
