@@ -1,0 +1,3 @@
+-	create an asset pipeline
+	-	check out what they have done in rails: https://github.com/rails/sprockets-rails
+	-	check out this PHP clone of the rails stuff: https://github.com/Nami-Doc/Sprockets-PHP/tree/1.2.1
