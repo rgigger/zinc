@@ -180,6 +180,11 @@ function SqlInsertArray($tableName, $values, $serial = true)
 	return DbModule::getDefaultConnection()->insertArray($tableName, $values, $serial);
 }
 
+function SqlUpdateArray($tableName, $conditions, $values)
+{
+	return DbModule::getDefaultConnection()->updateArray($tableName, $conditions, $values);
+}
+
 /**
  * Executes an update statement on the database (identical to SqlUpdateRow)
  *
@@ -217,27 +222,27 @@ function SqlModifyRowValues($tableName, $values)
  * @param array($key=>$value) $params ($key => value) array of parameters to substitute into the SQL query. If you are not passing parameters in, params should be an empty array()
  * @return number Number of affected rows (not all database engines support this)
  */
-function SqlInsertRow($sql, $params)
+function SqlInsertRow($sql, $params, $serial = true)
 {
-	return DbModule::getDefaultConnection()->insertRow($sql, $params);
+	return DbModule::getDefaultConnection()->insertRow($sql, $params, $serial);
 }
 
-function SqlInsertRows($sql, $params)
+function SqlInsertRows($sql, $params, $serial = true)
 {
-	return DbModule::getDefaultConnection()->insertRows($sql, $params);
+	return DbModule::getDefaultConnection()->insertRows($sql, $params, $serial);
 }
 
-/**
- * This function has not yet been implemented
- *
- * @param string $sql SQL query with parameters in the format ":variablename" or ":variablename:datatype"
- * @param array($key=>$value) $params ($key => value) array of parameters to substitute into the SQL query. If you are not passing parameters in, params should be an empty array()
- * @return unknown
- */
-function SqlInsertRowValues($tableName, $values)
-{
-	return DbModule::getDefaultConnection()->insertRowValues($tableName, $values);
-}
+// /**
+//  * This function has not yet been implemented
+//  *
+//  * @param string $sql SQL query with parameters in the format ":variablename" or ":variablename:datatype"
+//  * @param array($key=>$value) $params ($key => value) array of parameters to substitute into the SQL query. If you are not passing parameters in, params should be an empty array()
+//  * @return unknown
+//  */
+// function SqlInsertRowValues($tableName, $values)
+// {
+// 	return DbModule::getDefaultConnection()->insertRowValues($tableName, $values);
+// }
 
 /**
  * Executes an update statement on the database
