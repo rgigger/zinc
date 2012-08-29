@@ -46,7 +46,7 @@ class WebErrorHandler
 		}
 	}
 	
-	function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
+	static function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
 	{
 		$errorLine = self::formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context, $backtraceInfo);
 		echo '<p>' . $errorLine . '</p>';
@@ -55,7 +55,7 @@ class WebErrorHandler
 		$backtrace->display();
 	}
 	
-	function handleTestError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
+	static function handleTestError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
 	{
 		// generate a unique id for this entry in the error log
 		$errorId = uniqid();
@@ -78,7 +78,7 @@ class WebErrorHandler
 		die();
 	}
 	
-	function formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context)
+	static function formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context)
 	{
 		$line = '';
 		switch ($errno)
@@ -128,7 +128,7 @@ class WebErrorHandler
 		return $line;
 	}
 	
-	function exceptionHandler($exception)
+	static function exceptionHandler($exception)
 	{
 		self::handleError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), NULL, $exception->getTrace());
 	}
