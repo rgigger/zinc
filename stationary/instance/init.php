@@ -3,4 +3,4 @@ include 'const.php';
 include '[[$zincDir]]/Zinc.php';
 Zinc::loadLib('app');
 Zinc::loadLib('zone');
-$i = new Instance();
+$i = new ApplicationInstance();
