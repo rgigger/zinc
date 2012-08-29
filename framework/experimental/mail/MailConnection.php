@@ -38,6 +38,14 @@ abstract class MailConnection
 	protected function init()
 	{
 	}
+	
+	protected function getDefaultFrom()
+	{
+		if(isset($this->params['defaultFrom']) && $this->params['defaultFrom'])
+			return $this->params['defaultFrom'];
+		
+		return false;
+	}
 
 	protected function getRequireds()
 	{

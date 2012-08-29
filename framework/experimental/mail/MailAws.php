@@ -23,6 +23,12 @@ class MailAws extends MailConnection
 	{
 		// handle the from
 		$oldFrom = $message->getFrom();
+		if(!$oldFrom)
+			$oldFrom = $this->getDefaultFrom();
+		
+		if(!$oldFrom)
+			trigger_error("no from address specified");
+		
 		if($oldFrom['name'])
 			$newFrom = $oldFrom['name'] . ' <' . $oldFrom['address'] . '>';
 		else

@@ -34,6 +34,12 @@ class MailSwift extends MailConnection
 		
 		// handle the from
 		$from = $message->getFrom();
+		if(!$from)
+			$from = $this->getDefaultFrom();
+		
+		if(!$from)
+			trigger_error("no from address specified");
+		
 		$swiftMessage->setFrom(array($from['address'] => $from['name']));
 		
 		// handle the tos
