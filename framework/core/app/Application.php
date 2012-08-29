@@ -9,7 +9,8 @@ class Application
 {
 	function __construct()
 	{
-		$this->init();
+		// the instance now calls $app->init()
+		// $this->init();
 	}
 	
 	public function init() {}	
