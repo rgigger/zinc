@@ -1,0 +1,1 @@
+windowTitle = "$TM_DISPLAYNAME — ${CWD/^.*\///}"
