@@ -1,0 +1,12 @@
+zinc:
+    gui:
+        default:
+            driver: smarty3
+    error:
+        reportStatus: live
+    # db:
+    #     default:
+    #         driver: php_pgsql
+    #         database: somedatabase
+    #         username: someusername
+    #         host: somehost
