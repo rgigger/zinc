@@ -1,6 +1,9 @@
 <?php
 
-define('_n', "\n");
+if(php_sapi_name() == 'cli')
+	define('_n', "\n");
+else
+	define('_n', "<br>\n");
 
 function _en()
 {
