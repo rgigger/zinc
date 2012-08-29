@@ -16,7 +16,7 @@ abstract class DbConnection
 	{
 		$this->params = $params;
 		$this->validateParams($connectionName);
-		$echo = false;
+		$this->echo = false;
 		$this->init();
 	}
 
