@@ -1,0 +1,7 @@
+# <IfModule mod_rewrite.c>
+#   DirectoryIndex index.html
+#   RewriteEngine On
+#   RewriteBase /url/from/domain/root/ # ex /~username/apps/appname/
+#   RewriteCond %{REQUEST_FILENAME} !-f
+#   RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L,E=REWRITE:ON]
+# </IfModule>
