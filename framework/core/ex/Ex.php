@@ -32,7 +32,7 @@ class ex
 		$commandEscaped = self::prepareCommand($command, $params);
 		if(self::$echo)
 			echo "$commandEscaped\n";
-		passthru($commandEscaped, $returnValue);		
+		passthru($commandEscaped, $returnValue);
 		return $returnValue;
 	}
 	
