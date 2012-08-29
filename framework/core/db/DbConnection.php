@@ -233,7 +233,10 @@ abstract class DbConnection
 		switch($type)
 		{
 			case 'string':
-				$replaceString = $this->escapeString($this->queryParams[$name]);
+				if(is_bool($this->queryParams[$name]))
+					$replaceString = $this->queryParams[$name] ? "'t'" : "'f'";
+				else
+					$replaceString = $this->escapeString($this->queryParams[$name]);
 				break;
 			case 'int':
 				$replaceString = (int)$this->queryParams[$name];
