@@ -243,26 +243,6 @@ function UniqueId($prefix = "")
 	return str_replace('.', '', uniqid($prefix, true));
 }
 
-function RandString($chars)
-{
-	$final = '';
-	$charsLeft = $chars;
-	
-	do {
-		$readChars = $chars;
-		$handle = fopen('/dev/random', "r");
-		$contents = fread($handle, $charsLeft);
-		fclose($handle);
-		
-		$contents = preg_replace('/[^a-zA-Z0-9]+/', '', base64_encode($contents));
-		$final .= substr($contents, 0, $charsLeft);
-		$charsLeft = $chars - strlen($final);
-	}
-	while($charsLeft);
-	
-	return $final;
-}
-
 /**
  * Given a filename, outputs the contents of the file to the client
  *
@@ -415,6 +395,24 @@ function GetRandomBytes($count, $allowFallback = false)
 	return $output;
 }
 
+function RandString($chars)
+{
+	$final = '';
+	$charsLeft = $chars;
+	
+	do {
+		$readChars = $chars;
+		$contents = GetRandomBytes($charsLeft);
+		
+		$contents = preg_replace('/[^a-zA-Z0-9]+/', '', base64_encode($contents));
+		$final .= substr($contents, 0, $charsLeft);
+		$charsLeft = $chars - strlen($final);
+	}
+	while($charsLeft);
+	
+	return $final;
+}
+
 function GetNonEmptyLines($text)
 {
 	$lines = array();
@@ -445,4 +443,44 @@ function IsSSL()
 {
 	return true;
 	return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on";
+}
+
+if(!function_exists('password_hash'))
+{
+	define('PASSWORD_BCRYPT', 1);
+	
+	function password_hash($password, $method = PASSWORD_BCRYPT)
+	{
+		switch($method)
+		{
+			case PASSWORD_BCRYPT:
+				// make sure blowfish is available
+				if(!defined('CRYPT_BLOWFISH') || CRYPT_BLOWFISH !== 1)
+					trigger_error('blowfish encryption not supported');
+				
+				// create the salt
+				if(version_compare(PHP_VERSION, '5.3.7') >= 0)
+					$salt = '$2y$08$';
+				else
+					$salt = '$2a$08$';
+				$salt .= RandString(22);
+				
+				// get the hash
+				$hash = crypt($password, $salt);
+				
+				// make sure it returned a valid hash
+				if(strlen($hash) !== 60)
+					trigger_error("invalid salt caused crypt to fail");
+				break;
+			default:
+				trigger_error("unknown hash method");
+		}
+		
+		return $hash;
+	}
+	
+	function password_verify($password, $hash)
+	{
+		return crypt($password, $hash) === $hash ? true : false;
+	}
 }
