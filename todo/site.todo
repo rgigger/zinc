@@ -7,6 +7,8 @@
 			-	browse it's code
 			-	same for apps
 			-	apps will require a build script to get them all set up though
+	-	for code samples do something like how github does embedded gists as on the following page
+		-	http://enlightsolutions.com/articles/whats-new-in-edge-scoped-mass-assignment-in-rails-3-1
 -	old
 	-	google code site
 		-	update the site to reflect the new roadmap and relationship with old zoop

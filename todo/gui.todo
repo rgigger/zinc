@@ -13,6 +13,9 @@ new
 			-	http://code.google.com/p/phamlp/
 		-	css scaffolding
 			-	http://github.com/anthonyshort/csscaffold
+		-	jade
+			-	https://github.com/superjimpupcake/PHPNativeJadeRenderer ; used the node.js command
+			-	https://github.com/everzet/jade.php ; native PHP
 	-	make them configurable (zoop.gui)
 	-	dom based engines
 		-	http://code.google.com/p/querytemplates/

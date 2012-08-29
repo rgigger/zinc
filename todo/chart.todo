@@ -8,6 +8,7 @@
 		-	http://www.phpclasses.org/browse/package/2613.html (LGPL)
 		-	plchart (http://www.plchart.net/index.php/Main_Page) (LGPL)
 		-	advgraph (http://code.google.com/p/advgraph/) (BSD)
+		-	gdchart (http://pecl.php.net/package/gdchart/)
 	-	client side (html, css, js)
 		-	JavaScript InfoVis Toolkit (http://thejit.org/demos/)
 		-	js-mindmap (http://code.google.com/p/js-mindmap/)
@@ -18,6 +19,9 @@
 		-	Raphael (http://raphaeljs.com/)
 		-	RGraph (http://www.rgraph.net/)
 		-	Protovis svg graphs (http://vis.stanford.edu/protovis/)
+		-	d3.js SVG (http://mbostock.github.com/d3/)
+		-	morris.js (http://oesmith.github.com/morris.js/)
+		-	subism: time series (http://square.github.com/cubism/)
 	-	GPL
 		-	pChart (http://pchart.sourceforge.net/) (GPL)
 		-	libchart (http://naku.dohcrew.com/libchart/pages/introduction/)

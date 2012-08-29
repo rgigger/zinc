@@ -1,3 +1,5 @@
 -	base functions for handling arguments, switches, options etc
 -	zone structure for handling objects and operations on those objects
--	interactive application that includes a whole bunch of zoop stuff and let you experiment
+-	interactive application that includes a whole bunch of zoop zinc and let you experiment
+
+-	check this outhttps://github.com/thebra/php-cli
