@@ -78,3 +78,18 @@ if($highestCommand)
 	echo "       zn create pub PUB_NAME INSTANCE_DIR\n";
 	echo "\n";
 }*/
+
+//
+// some basic utility functions for use in zn
+//
+
+function GetWebUser()
+{
+	// this will basically only work as-is if you are using the default apache config on Mac OSX and Ubuntu 
+	//	since there is no way for the command link to actually know what web server you are using and how it is
+	//	configured this should also draw from a user defined configuration and use the following only as a fallback
+	if(PHP_OS == 'Darwin')
+		return 'www';
+	else if(PHP_OS == 'Linux')
+		return 'www-data';
+}
