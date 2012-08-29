@@ -20,6 +20,7 @@ class DbObject extends Object implements Iterator
 	private $persisted;
 	private $scalars;
 	protected $relationships;
+	const fixBools = false;
 
 	const keyAssignedBy_db = 1;
 	const keyAssignedBy_dev = 2;
@@ -82,7 +83,7 @@ class DbObject extends Object implements Iterator
 	 *
 	 * @return string
 	 */
-	private function getDefaultTableName()
+	protected function getDefaultTableName()
 	{
 		$name = get_class($this);
 
@@ -313,12 +314,12 @@ class DbObject extends Object implements Iterator
 	}
 	*/
 	
-	public function phpBoolToPostgres($curval)
+	static public function phpBoolToPostgres($curval)
 	{
 		return $curval && $curval != 'f' ? 't' : 'f';
 	}
 	
-	public function postgresBoolToPhp($curval)
+	static public function postgresBoolToPhp($curval)
 	{
 		return $curval !== 'f' && $curval !== false ? true : false;
 	}
@@ -330,6 +331,9 @@ class DbObject extends Object implements Iterator
 	 */
 	private function assignScalars($data)
 	{
+		if(static::fixBools)
+			$fields = $this->getSchema()->fields;
+		
 		foreach($data as $member => $value)
 		{
 			if(!isset($this->scalars[$member]) && in_array($member, $this->primaryKey))
@@ -338,8 +342,11 @@ class DbObject extends Object implements Iterator
 				if($this->missingKeyFields == 0)
 					$this->bound = 1;
 			}
-
-			$this->scalars[$member] = $value;
+			
+			if(static::fixBools && $fields[$member]->type == 'boolean')
+				$this->scalars[$member] = $value !== 'f' && $value !== false ? true : false;
+			else
+				$this->scalars[$member] = $value;
 		}
 	}
 
@@ -356,11 +363,19 @@ class DbObject extends Object implements Iterator
 
 	private function assignPersisted($row)
 	{
+		if(static::fixBools)
+			$fields = $this->getSchema()->fields;
+		
 		//	if they manually set a field don't write over it just because they loaded one scalar
 		foreach($row as $field => $value)
 		{
 			if(!isset($this->scalars[$field]))
-				$this->scalars[$field] = $value;
+			{
+				if(static::fixBools && $fields[$field]->type == 'boolean')
+					$this->scalars[$field] = $value !== 'f' && $value !== false ? true : false; 
+				else
+					$this->scalars[$field] = $value;
+			}
 		}
 	}
 
@@ -755,6 +770,8 @@ class DbObject extends Object implements Iterator
 	static public function find($conditions = NULL, $params = NULL)
 	{
 		$className = get_called_class();
+		if($className == 'DbObject')
+			trigger_error("find should always be called with a subclass");
 		return self::_find($className, $conditions, $params);
 	}
 	
@@ -794,6 +811,10 @@ class DbObject extends Object implements Iterator
 			return false;
 
 		assert(is_array($a));
+		
+		if(count($a) < 1)
+			return false;
+		
 		assert(count($a) == 1);
 
 		return current($a);
