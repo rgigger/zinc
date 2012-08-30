@@ -1,44 +1,87 @@
 <?php
-class BacktraceViewCli
+class BacktraceViewCli extends Object
 {
-	private $info, $padding, $formatted;
+	private $info;
+	const padding = 4;
 	
 	function __construct($info)
 	{
 		$this->info = $info;
-		$this->padding = 4;
+		$this->addStatic('padSide', array('file' => STR_PAD_LEFT, 'line' => STR_PAD_RIGHT));
+		$this->addStatic('fields', array('file', 'line', 'function'));
+		$this->addStatic('padString', str_pad('', self::padding, ' '));
 	}
 	
-	function display()
+	public function display()
 	{
-		$this->formatFields();
-		$maxLengths = $this->getMaxLengths();
+		$formattedFields = $this->formatFields();
+		$allocatedColumnWidths = $this->allocateColumnWidths($formattedFields);
 		
-		$fields = array('file', 'line', 'function');
-		foreach($this->formatted as $thisRow)
+		foreach($formattedFields as $thisRow)
+			self::renderBacktraceRow($thisRow, $allocatedColumnWidths);
+	}
+	
+	private function renderBacktraceRow($formattedBacktraceRow, $allocatedColumnWidths)
+	{
+		$map = new CharMap(GetTerminalCols());
+		$colStarts = array(
+			'file' => 0,
+			'line' => $allocatedColumnWidths['file'] + self::padding,
+			'function' => $allocatedColumnWidths['file'] + $allocatedColumnWidths['line'] + (2 * self::padding)
+		);
+		
+		$map->wrapLines($colStarts['file'] + $allocatedColumnWidths['file'] - 1, 0, $allocatedColumnWidths['file'], $formattedBacktraceRow['file'], CharMap::alignRight);
+		$map->writeString($colStarts['line'], 0, $formattedBacktraceRow['line']);
+		$map->wrapLines($colStarts['function'], 0, $allocatedColumnWidths['function'], $formattedBacktraceRow['function']);
+		
+		$map->render();
+	}
+	
+	static private function allocateColumnWidths($formattedFields)
+	{
+		$maxLengths = self::getMaxLengths($formattedFields);
+		$maxTermCols = GetTerminalCols();
+		
+		// if there is not enough space for the biggest line possible line then we need to calculate how much
+		//  space each column should actually get
+		if(array_sum($maxLengths) + (self::padding * 2) > $maxTermCols)
 		{
-			$parts = array();
-			foreach($fields as $thisField)
+			// the line field is short, just give it all the space it needs
+			$alloced['line'] = $maxLengths['line'];
+			
+			// now substract the line and buffer space space anddivide the rest between function and file
+			$remainingCols = $maxTermCols - ($alloced['line'] + (self::padding * 2));
+			
+			// experiment with different buffer spaces till you find one that seems "more optimal"
+			// currently it assumes that it's the function column that's goign to run us over. 
+			// If that's true this needs to be tweaked
+			$allocMethod = "50/50";
+			if($allocMethod == "50/50")
 			{
-				$padside = $thisField == 'file' ? STR_PAD_LEFT : STR_PAD_RIGHT;
-				$padding = $thisField == 'function' ? '' : str_pad('', $this->padding, ' ');
-				if(isset($thisRow[$thisField]))
+				$half = (int)$remainingCols/2;
+				if($maxLengths['file'] >= $half)
 				{
-					if($thisField == 'function')
-						$parts[] = $thisRow[$thisField];
-					else
-						$parts[] = str_pad($thisRow[$thisField], $maxLengths[$thisField], ' ', $padside) . $padding;
+					$alloced['function'] = $half;
+					$alloced['file'] = $remainingCols - $alloced['function'];
+				}
+				else
+				{
+					$alloced['file'] = $maxLengths['file'];
+					$alloced['function'] = $remainingCols - $alloced['file'];
 				}
 			}
-			
-			echo implode('', $parts) . "\n";
 		}
+		else
+			$alloced = $maxLengths;
+		
+		return $alloced;
 	}
 	
-	function getMaxLengths()
+	// get the maximum line lengths for each field: file, line, and function
+	static private function getMaxLengths($formattedLines)
 	{
 		$maxLengths = array('file' => 0, 'line' => 0, 'function' => 0);
-		foreach($this->formatted as $thisRow)
+		foreach($formattedLines as $thisRow)
 		{
 			foreach($maxLengths as $field => $max)
 			{
@@ -50,14 +93,17 @@ class BacktraceViewCli
 		return $maxLengths;
 	}
 	
-	function formatFields()
+	// organice the data from the backtrace info into distinct file, line, and function fields
+	private function formatFields()
 	{
-		$this->formatted = array();
+		$formatted = array();
 		foreach($this->info as $thisRow)
 		{
 			$lineInfo = $this->formatLine($thisRow);
-			$this->formatted[] = $lineInfo;
+			$formatted[] = $lineInfo;
 		}
+		
+		return $formatted;
 	}
 	
 	function formatLine($lineInfo)
