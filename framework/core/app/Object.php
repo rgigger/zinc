@@ -24,6 +24,13 @@ class Object
 		$this->addSetter($name);
 	}
 	
+	protected function addStatic($name, $value)
+	{
+		$this->addGetter($name, function() use ($value) {
+			return $value;
+		});
+	}
+	
 	public function __isset($name)
 	{
 		if(isset($this->getters[$name]))
