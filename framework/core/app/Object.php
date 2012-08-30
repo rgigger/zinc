@@ -8,9 +8,9 @@ class Object
 	protected $allowAdhocAttributes = true;
 	private $adhocAttributes = array();
 	
-	protected function addGetter($name)
+	protected function addGetter($name, $function = 0)
 	{
-		$this->getters[$name] = $name;
+		$this->getters[$name] = $function;
 	}
 	
 	protected function addSetter($name)
@@ -47,8 +47,24 @@ class Object
 	{
 		if(isset($this->getters[$name]))
 		{
-			$funcName = "get$name";
-			return $this->$funcName();
+			if(is_string($this->getters[$name]))
+			{
+				$funcName = $this->getters[$name];
+				$tmp = $this->$funcName();
+				return $tmp;
+			}
+			else if(is_callable($this->getters[$name]))
+			{
+				$function = $this->getters[$name];
+				$tmp = $function();
+				return $tmp;
+			}
+			else
+			{
+				$funcName = "get$name";
+				$tmp = $this->$funcName();
+				return $tmp;
+			}
 		}
 		
 		if($this->mixinOwner && property_exists($this->mixinOwner, $name))
