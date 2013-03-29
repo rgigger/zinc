@@ -753,6 +753,14 @@ class DbObject extends Object implements Iterator
 		return $objects;
 	}
 
+	static public function findByWhere($where, $params = NULL)
+	{
+		$className = get_called_class();
+		if($className == 'DbObject')
+			trigger_error("find should always be called with a subclass");
+		return self::_findByWhere($className, $where, $params);
+	}
+	
 	/**
 	 * Returns an array of DbObjects each representing a row in the database returned by selecting on the DbObject specified with the given WHERE clause
 	 *

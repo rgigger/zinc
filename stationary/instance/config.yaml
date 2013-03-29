@@ -1,12 +1,9 @@
 zinc:
-    gui:
+    db:
         default:
-            driver: smarty3
+            driver: php_pgsql
+            database: somedatabase
+            username: someusername
+            host: somehost
     error:
         reportStatus: live
-    # db:
-    #     default:
-    #         driver: php_pgsql
-    #         database: somedatabase
-    #         username: someusername
-    #         host: somehost

@@ -1,7 +1,11 @@
 <?php
-include('config.php');
-include(zoop_dir . '/Zoop.php');
-Zoop::loadLib('db');
+// include('config.php');
+
+define('app_dir', __dir__);
+include(dirname(dirname(__dir__)) . '/framework/Zinc.php');
+
+Zinc::loadLib('app');
+Zinc::loadLib('db');
 
 $map = SqlFetchSimpleMap('select * from test', 'one', 'two', array());
 echo_r($map);

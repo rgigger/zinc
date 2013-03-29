@@ -22,13 +22,21 @@ class DbRelationshipOptions extends DbRelationship
 		}
 		else
 		{
+			// for uniformity and backwards compatibility
 			if(isset($params['local_field']))
-				$this->localFieldName = $params['local_field'];
+				$params['localField'] = $params['local_field'];
+			
+			if(isset($params['localField']))
+				$this->localFieldName = $params['localField'];
 			else
 				$this->localFieldName = $name . '_id';
 			
+			// for uniformity and backwards compatibility
 			if(isset($params['option_table']))
-				$this->remoteTable = $params['option_table'];
+				$params['optionTable'] = $params['option_table'];
+			
+			if(isset($params['optionTable']))
+				$this->remoteTable = $params['optionTable'];
 			else
 				$this->remoteTable = $name;
 			
@@ -62,6 +70,8 @@ class DbRelationshipOptions extends DbRelationship
 	{
 		$options = $this->getOptions();
 		$field = $this->localFieldName;
+		if(is_null($this->dbObject->$field) || !isset($options[$this->dbObject->$field]))
+			return null;
 		return $options[$this->dbObject->$field];
 	}
 }

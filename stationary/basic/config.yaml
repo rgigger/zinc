@@ -1,9 +1,4 @@
 zinc:
-    db:
-        default:
-            driver: php_pgsql
-            database: newapp
-            username: postgres
     gui:
         default:
             driver: smarty3
