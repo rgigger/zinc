@@ -51,7 +51,11 @@ function smarty_function_input($params, &$smarty)
 		// if($paramName == 'name' && !isset($params['id']))
 		// 	$params['id'] = $paramValue;
 		
-		if(in_array($paramName, array('type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append')))
+		if(in_array($paramName, array(
+			'type', 'name', 'type', 'value', 'default', 'data_object', 'data_field', 'append',
+			'minlen', 'sameas', 'required', 'requireOther', 'otherValue', 'otherField', 'message',
+			'intrange'
+		)))
 			continue;
 		
 		if(substr($paramName, 0, 5) == 'data_')
@@ -60,13 +64,66 @@ function smarty_function_input($params, &$smarty)
 		$extraMap[$paramName] = $paramValue;
 		$extraFields .= ' ' . $paramName . '="' . $paramValue . '"';
 	}
-		
+	
+	if(isset($params['class']))
+	{
+		$classes = array_flip(explode(' ', trim($params['class'])));
+	}
+	else
+		$classes = array();
+	
 	$required = isset($params['required']) && $params['required'];
 	if($required)
+	{
 		$extraFields .= ' data-constraint="required"';
+		$classes['constraint'] = 1;
+	}
 	
 	if(isset($params['sameas']))
+	{
 		$extraFields .= ' data-constraint="sameas" data-sameas="' . $params['sameas'] . '"';
+		$classes['constraint'] = 1;
+	}
+
+	if(isset($params['minlen']))
+	{
+		$extraFields .= ' data-constraint="minlen" data-minlen="' . $params['minlen'] . '" data-message="' . $params['message'] . '"';
+		$classes['constraint'] = 1;
+	}
+	
+	if(isset($params['required']))
+	{
+		$extraFields .= ' data-constraint="required" data-required="true" data-message="' . $params['message'] . '"';
+		$classes['constraint'] = 1;
+	}
+	
+	// if(isset($params['requireOther']))
+	// {
+	// 	$extraSelectFields = array(
+	// 		'data-constraint' => 'requireOther',
+	// 		'data-other-value' => $params['otherValue'],
+	// 		'data-other-field' => $params['otherField']
+	// 	);
+	// 	$classes['constraint'] = 1;
+	// }
+	
+	if(isset($params['requireOther']))
+	{
+		$extraFields .= ' data-constraint="requireOther" data-other-value="' . $params['otherValue'] . '" data-other-field="' . $params['otherField'] . '"' . ' data-message="' . $params['message'] . '"';
+		$classes['constraint'] = 1;
+	}
+	
+	
+	if(isset($params['intrange']))
+	{
+		$parts = explode(',', $params['intrange']);
+		assert(count($parts) == 2);
+		$extraFields .= ' data-constraint="intrange" data-range-min="' . $parts[0] . '" data-range-max="' . $parts[1] . '"' . ' data-message="' . $params['message'] . '"';
+		$classes['constraint'] = 1;
+	}
+	
+	$classClause = 'class="' . implode(' ', array_keys($classes)) . '"';
+	$extraFields .= " $classClause";
 	
 	switch($type)
 	{
@@ -102,12 +159,10 @@ function smarty_function_input($params, &$smarty)
 			break;
 		case 'select':
 			require_once(SMARTY_PLUGINS_DIR . 'function.html_options.php');
-			$selectParams = $extraMap;
-			$selectParams['name'] = $name;
 			$selectParams['selected'] = $value;
-			$nameField = isset($selectParams['name_field']) ? $selectParams['name_field'] : 'name';
 			if(isset($extraMap['option_table']) && $extraMap['option_table'])
 			{
+				$nameField = isset($selectParams['name_field']) ? $selectParams['name_field'] : 'name';
 				$tableName = $extraMap['option_table'];
 				$selectParams['options'] = SqlFetchSimpleMap("SELECT id, :nameField AS name FROM :tableName:identifier order by id", 'id', 'name', 
 												array('nameField:identifier' => $nameField, 'tableName' => $tableName));
@@ -115,7 +170,10 @@ function smarty_function_input($params, &$smarty)
 			else if($extraMap['options'])
 				$selectParams['options'] = $extraMap['options'];
 			
-			return smarty_function_html_options($selectParams, $smarty);
+			$markup = '<select' . " $namePart $valuePart $extraFields>";
+			$markup .= smarty_function_html_options($selectParams, $smarty);
+			$markup .= '</select>';
+			return $markup;
 			break;
 		default:
 			trigger_error("unknown input type: $type");
