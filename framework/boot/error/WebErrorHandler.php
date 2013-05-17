@@ -130,6 +130,7 @@ class WebErrorHandler
 	
 	static function exceptionHandler($exception)
 	{
+		echo '<b>' . get_class($exception) . "</b><br>\n";
 		self::handleError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), NULL, $exception->getTrace());
 	}
 }
