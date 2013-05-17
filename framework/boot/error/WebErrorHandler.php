@@ -134,3 +134,4 @@ class WebErrorHandler
 		self::handleError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), NULL, $exception->getTrace());
 	}
 }
+
