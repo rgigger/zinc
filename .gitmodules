@@ -1,3 +1,6 @@
 [submodule "framework/vendor/pest"]
 	path = framework/vendor/pest
 	url = git://github.com/educoder/pest.git
+[submodule "framework/vendor/guzzle"]
+	path = framework/vendor/guzzle
+	url = git://github.com/guzzle/guzzle.git
