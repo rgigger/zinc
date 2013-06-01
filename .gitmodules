@@ -4,3 +4,6 @@
 [submodule "framework/vendor/guzzle"]
 	path = framework/vendor/guzzle
 	url = git://github.com/guzzle/guzzle.git
+[submodule "framework/vendor/requests"]
+	path = framework/vendor/requests
+	url = git://github.com/rmccue/Requests.git
