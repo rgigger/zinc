@@ -5,6 +5,8 @@
 	-	allow you to run zn instance commands in the appliction (such as apply migrations) with the option to
 		-	run the command on any specific instance or list of instances that are registered
 		-	run the command on all instances that are registered
+	-	have a global registry for all instances by name
+		-	allow you to switch that instance by name (zn use projectA-instanceX) or something like that
 +	each module registers keywords
 	+	if any keyword is found as a paramter then that module
 		+	that module is executed
