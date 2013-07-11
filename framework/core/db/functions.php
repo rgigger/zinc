@@ -277,3 +277,8 @@ function SqlDeleteRows($sql, $params)
 {
 	return DbModule::getDefaultConnection()->deleteRows($sql, $params);
 }
+
+function SqlBumpTableSequenceToEnd($tableName)
+{
+	return DbModule::getDefaultConnection()->bumpTableSequenceToEnd($tableName);
+}

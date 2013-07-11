@@ -828,4 +828,15 @@ abstract class DbConnection
 	//
 	//	End combo functions
 	//
+	
+	public function bumpTableSequenceToEnd($tableName)
+	{
+		$nextVal = SqlFetchCell("SELECT max(id) from :tableName:identifier", array(
+			'tableName' => $tableName
+		)) + 1;
+		$this->query("ALTER SEQUENCE :sequenceName:identifier RESTART WITH :nextVal:int", array(
+			'sequenceName' => "{$tableName}_id_seq",
+			'nextVal' => $nextVal
+		));
+	}
 }
