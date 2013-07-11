@@ -45,7 +45,7 @@ class CliErrorHandler
 		}
 	}
 	
-	function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtrace)
+	static function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtrace)
 	{
 		$errorLine = self::formatErrorLine($errno, $errstr, $errfile, $errline, $context, $backtrace);
 		echo $errorLine . "\n";
@@ -56,7 +56,7 @@ class CliErrorHandler
 		$backtraceView->display();
 	}
 	
-	function formatErrorLine($errno, $errstr, $errfile, $errline, $context)
+	static function formatErrorLine($errno, $errstr, $errfile, $errline, $context)
 	{
 		$line = "\n";
 		switch ($errno)
@@ -109,7 +109,7 @@ class CliErrorHandler
 		return $line;
 	}
 	
-	function exceptionHandler($exception)
+	static function exceptionHandler($exception)
 	{
 		
 //		print_r($exception->getCode());die();
