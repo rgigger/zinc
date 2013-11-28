@@ -2,5 +2,5 @@ zn:
     commands:
         Script: [ex]
         Migrations: [migration, migrations, apply, redo]
-        Stationary: [create, migration, app, instance, pub, update, stationary, config]
+        Stationary: [create, migration, domain, app, instance, pub, update, stationary, config]
         Edit: [edit, instance, application, zinc]

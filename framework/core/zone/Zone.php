@@ -109,7 +109,7 @@ abstract class Zone extends Object
 			if( $this->_methodExists('initPages') )
 				$this->initPages($pageParams, $this->params);
 			
-			$this->$foundPage($pageParams, $this->params);
+			$this->runPage($foundPage, $pageParams, $this->params);
 			
 			if( RequestIsGet() && $this->_methodExists('closePages') )
 				$this->closePages($pageParams, $this->params);
@@ -119,6 +119,10 @@ abstract class Zone extends Object
 		}
 	}
 	
+	public function runPage($pageName, $pageParams, $zoneParams)
+	{
+		$this->$pageName($pageParams, $this->params);
+	}
 	
 	//
 	//	path manipulation functions

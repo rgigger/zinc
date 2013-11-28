@@ -8,5 +8,6 @@ class ZoneModule extends ZoopModule
 		$this->addClass('Zone');
 		$this->addClass('ZoneApplication');
 		$this->addClass('GuiZone');
+		$this->addClass('ServiceZone');
 	}
 }

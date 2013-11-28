@@ -1,5 +1,5 @@
 <?php
-class SfYamlModule extends ZoopModule
+class SfYamlModule extends ZincModule
 {
 	public function init()
 	{

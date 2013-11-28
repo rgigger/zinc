@@ -127,6 +127,38 @@ class CommandStationary
 		self::gen($stationaryFilename, $newFilename, $params);
 	}
 	
+	public function handleDomain($p)
+	{
+		Zinc::loadLib('utils');
+		
+		// print_r($p);
+		// die();
+		$name = $p[3];
+		
+		$stationaryFilename = 'domain.tpl';
+		$stationaryFilename = app_dir . "/stationary/$stationaryFilename";
+		
+		if(!file_exists($stationaryFilename))
+		{
+			echo "stationary file at $stationaryFilename does not exist\n";
+			return;
+		}
+		
+		$params = array();
+		$params['className'] = $name;
+		
+		$dir = app_dir . '/domain';
+		$newFilename = $dir . '/' . $name . '.php';
+		
+		if(file_exists($newFilename))
+		{
+			echo "file at $newFilename already exists\n";
+			return;
+		}
+		
+		self::gen($stationaryFilename, $newFilename, $params);
+	}
+	
 	/**
 	 * gen handles processing one template file at $src and stores the result in at $dst
 	 */

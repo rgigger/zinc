@@ -8,7 +8,7 @@ class Session
 	
 	static function get($key = '__default__')
 	{
-		SessionModule::getEngine()->get($key);
+		return SessionModule::getEngine()->get($key);
 	}
 	
 	static function getWithLock($key = '__default__')
