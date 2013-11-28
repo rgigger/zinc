@@ -10,6 +10,7 @@ abstract class DbConnection
 	 * @var unknown_type
 	 */
 	private $conn;
+	private $log;
 	private $echo;
 
 	function __construct($params, $connectionName)
@@ -17,6 +18,7 @@ abstract class DbConnection
 		$this->params = $params;
 		$this->validateParams($connectionName);
 		$this->echo = false;
+		$this->log = false;
 		$this->init();
 	}
 
@@ -77,6 +79,16 @@ abstract class DbConnection
 		$this->echo = false;
 	}
 
+	public function logOn()
+	{
+		$this->log = true;
+	}
+
+	public function logOff()
+	{
+		$this->log = false;
+	}
+
 	function escapeString($string)
 	{
 		trigger_error("escapeString must be defined in each individual database driver");
@@ -119,6 +131,9 @@ abstract class DbConnection
 			else
 				echo $sql . '<br>';
 		}
+		
+		if($this->log)
+			error_write_to_log($sql);
 		
 		return $this->_query($sql);
 	}
@@ -247,6 +262,7 @@ abstract class DbConnection
 			case 'identifier':
 				$replaceString = $this->escapeIdentifier($this->queryParams[$name]);
 				break;
+			case 'intArray':
 			case 'inInts':
 				assert(is_array($this->queryParams[$name]));
 				foreach($this->queryParams[$name] as $key => $int)
@@ -255,6 +271,7 @@ abstract class DbConnection
 				}
 				$replaceString = implode(', ', $this->queryParams[$name]);
 				break;
+			case 'stringArray':
 			case 'inStrings':
 				assert(is_array($this->queryParams[$name]));
 				foreach($this->queryParams[$name] as $key => $string)
@@ -475,6 +492,7 @@ abstract class DbConnection
 
 	public function insertRows($sql, $params, $serial = false)
 	{
+		trigger_error("is this being used? this doesn't look right at all");
 		$ids = array();
 		foreach($params as $thisRow)
 		{
@@ -578,20 +596,33 @@ abstract class DbConnection
 	{
 		// echo_r($params);
 		$selectParams = array();
-
+		// error_print_r($params);
 		//	create the field clause
 		//	This first option will allow a "*" or a comma separated list of fields in case an array was not passed in
 		if(is_string($fieldsNames))
 			$fieldClause = $fieldsNames;
 		else
 		{
+			
 			$fieldList = array();
-			foreach ($fieldsNames as $fieldName)
+			foreach($fieldsNames as $fieldName)
 			{
 				$fieldList[] = ":fld_$fieldName:identifier";
 				$selectParams["fld_$fieldName"] = $fieldName;
 			}
+			// error_print_r($fieldList);
+			// error_print_r($params['safeFields']);
+			if(isset($params['safeFields']) && $params['safeFields'])
+			{
+				foreach($params['safeFields'] as $fieldContent)
+				{
+					$fieldList[] = $fieldContent;
+				}
+			}
+			// error_print_r($fieldList);
+			
 			$fieldClause = implode(', ', $fieldList);
+			// error_print_r($fieldClause);
 		}
 
 		//	create the condition clause
@@ -795,10 +826,10 @@ abstract class DbConnection
 		}
 	}
 
-	public function selsertRow($tableName, $fieldNames, $conditions, $defaults = NULL, $lock = 0)
+	public function selsertRow($tableName, $fieldNames, $conditions, $defaults = NULL, $params = NULL)
 	{
 		//	generate the sqlect query info
-		$selectInfo = self::generateSelectInfo($tableName, $fieldNames, $conditions, $lock);
+		$selectInfo = self::generateSelectInfo($tableName, $fieldNames, $conditions, $params);
 
 		//	select the row if it's there
 		$row = $this->fetchRow($selectInfo['sql'], $selectInfo['params']);

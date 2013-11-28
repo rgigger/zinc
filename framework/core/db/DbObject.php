@@ -231,7 +231,7 @@ class DbObject extends Object implements Iterator
 	{
 		return $this->scalars;
 	}
-
+	
 	/**
 	 * Accepts a $field => $value array containing fields and their values to be set in this DbObject
 	 *
