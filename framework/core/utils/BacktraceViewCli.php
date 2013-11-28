@@ -25,7 +25,7 @@ class BacktraceViewCli extends Object
 	
 	private function renderBacktraceRow($formattedBacktraceRow, $allocatedColumnWidths)
 	{
-		$map = new CharMap(GetTerminalCols());
+		$map = new CharMap(self::getMaxColumns());
 		$colStarts = array(
 			'file' => 0,
 			'line' => $allocatedColumnWidths['file'] + self::padding,
@@ -39,10 +39,18 @@ class BacktraceViewCli extends Object
 		$map->render();
 	}
 	
+	static private function getMaxColumns()
+	{
+		if(php_sapi_name() == "cli")
+			return GetTerminalCols();
+		else
+			return "200";
+	}
+	
 	static private function allocateColumnWidths($formattedFields)
 	{
 		$maxLengths = self::getMaxLengths($formattedFields);
-		$maxTermCols = GetTerminalCols();
+		$maxTermCols = self::getMaxColumns();
 		
 		// if there is not enough space for the biggest line possible line then we need to calculate how much
 		//  space each column should actually get
