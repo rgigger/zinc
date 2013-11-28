@@ -18,6 +18,16 @@ function SqlEchoOff()
 	return DbModule::getDefaultConnection()->echoOff();
 }
 
+function SqlLogOn()
+{
+	return DbModule::getDefaultConnection()->logOn();
+}
+
+function SqlLogOff()
+{
+	return DbModule::getDefaultConnection()->logOff();
+}
+
 /**
  * Begin a transaction (not all database engines support transactions)
  *
