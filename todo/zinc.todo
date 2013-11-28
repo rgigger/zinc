@@ -1,1 +1,25 @@
--	get rid of the zoop*.todo files and take anything worth keeping and put it in here
+-	zn
+	-	instance discovery
+		-	create a .zn config yaml file for saving zn data
+		-	allow you to set a flag (maybe -D, -i or -I) to indicate the instance to use
+		-	create "zn use <INSTANCE_DIR> <INSTANCE_NAME>" to set a variable that will indicate the current instance
+			- 	record each one in a list for future reference
+			- 	use the leaf directory name if they don't give an explicit name
+			- 	if there are name conflicts include upline directories until they are all unique
+			- 	maybe include the app name in there for clarity somehow
+		-	priorities
+			- 	explicit -I flag given
+			- 	you are currently in an instance directory
+			- 	the global variable
+		-	create "zn use" to list any previously saved instance directories
+			-	list a number, and name, the directory of the instance and the directory of the application
+			-	allow "zn use ..." to allow for either the number or the name
+		-	when you create an instance register it with the application
+			- 	put it in a folder that defaults to being ignored by git
+			- 	if you are in the app folder and there is only one instance treat it as being in the instance
+			- 	configure an instance directory and allow you to create the instance from right in the app
+			- 	same for pub
+			- 	have a command to open a browser right from the app menu
+			- 	zn commands to jump to instance and pub directories, and edit the instnace config
+-	db
+	- update the migratoin tool to include leading zeros in the file names

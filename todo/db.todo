@@ -1,3 +1,5 @@
+-	new caseMap escapable variable type for making making case statements easier
+
 +	lazy connections to the database
 -	schemaless objects (exotic)
 	-	have one table for objects with just (id, type) where type could be a class name
