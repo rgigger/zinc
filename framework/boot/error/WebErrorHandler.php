@@ -51,8 +51,11 @@ class WebErrorHandler
 		$errorLine = self::formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context, $backtraceInfo);
 		echo '<p>' . $errorLine . '</p>';
 		$backtraceInfo = $backtraceInfo ? $backtraceInfo : debug_backtrace();
-		$backtrace = new Backtrace($backtraceInfo);
-		$backtrace->display();
+		if(ErrorSettings::getDisplayMode() == 'web')
+			$backtraceView = new Backtrace($backtraceInfo);
+		else
+			$backtraceView = new BacktraceViewCli($backtraceInfo);
+		$backtraceView->display();
 	}
 	
 	static function handleTestError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
