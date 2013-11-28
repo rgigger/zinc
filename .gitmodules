@@ -1,9 +1,9 @@
 [submodule "framework/vendor/pest"]
-	path = framework/vendor/pest
+	path = framework/vendor/pest/lib
 	url = git://github.com/educoder/pest.git
 [submodule "framework/vendor/guzzle"]
-	path = framework/vendor/guzzle
+	path = framework/vendor/guzzle/lib
 	url = git://github.com/guzzle/guzzle.git
 [submodule "framework/vendor/requests"]
-	path = framework/vendor/requests
+	path = framework/vendor/requests/lib
 	url = git://github.com/rmccue/Requests.git
