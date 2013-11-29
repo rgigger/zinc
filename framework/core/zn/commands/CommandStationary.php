@@ -1,7 +1,7 @@
 <?php
 class CommandStationary
 {
-	public function usage()
+	static public function usage()
 	{
 		$answer = array(
 			'create app APP_NAME',
@@ -165,10 +165,10 @@ class CommandStationary
 	static function gen($src, $dst, $params)
 	{
 		// set up the smarty object using /tmp
-		$gui = new Smarty2();
+		$gui = new Smarty();
 		$gui->left_delimiter = '[[';
 		$gui->right_delimiter = ']]';
-		$tmpDir = '/tmp/zn/smarty2';
+		$tmpDir = '/tmp/zn/smarty';
 		if(!file_exists($tmpDir))
 			mkdir($tmpDir, 0770, true);
 		$gui->compile_dir = $tmpDir;

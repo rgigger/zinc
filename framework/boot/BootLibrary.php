@@ -1,5 +1,5 @@
 <?php
-class BootLibrary extends ZoopLibrary
+class BootLibrary extends ZincLibrary
 {
 	protected function init()
 	{

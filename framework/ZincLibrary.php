@@ -1,4 +1,8 @@
 <?php
+
+// for backwards compatibility
+include_once __dir__ . '/ZoopLibrary.php';
+
 abstract class ZincLibrary
 {
 	/**

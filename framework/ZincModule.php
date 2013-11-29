@@ -1,4 +1,8 @@
 <?php
+
+//	for backwards compatibility
+include_once __dir__ . '/ZoopModule.php';
+
 abstract class ZincModule
 {
 	private $name, $lib;

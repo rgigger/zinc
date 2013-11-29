@@ -17,11 +17,12 @@ function define_once($name, $value)
 	if(!defined($name))
 		define($name, $value);
 }
+
 //	now we load the default config for zoop
 // include(zoop_dir . '/config.php');	//	this file is now obsolete and depricated, in favor of the new config module
-include(zoop_dir . '/ZoopLibrary.php');
-include(zoop_dir . '/ZoopModule.php');
-include(zoop_dir . '/ZoopLoader.php');
+include(zinc_dir . '/ZincLibrary.php');
+include(zinc_dir . '/ZincModule.php');
+include(zinc_dir . '/ZincLoader.php');
 
 //	we want to load this before we do anything else so that everything else is easier to debug
 // include(zoop_dir . '/core/app/Error.php');

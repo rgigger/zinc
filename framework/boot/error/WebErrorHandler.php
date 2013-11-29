@@ -32,12 +32,9 @@ class WebErrorHandler
 				break;
 			
 			case 'test':
+			case 'live':
 				self::handleTestError($errno, $errstr, $errfile, $errline, $context, $backtrace);
 				// trigger_error('status not handled:' . app_status);
-				break;
-			
-			case 'live':
-				trigger_error('status not handled:' . app_status);
 				break;
 			
 			default:

@@ -1,7 +1,7 @@
 <?php
 class CommandMigrations
 {
-	public function usage()
+	static public function usage()
 	{
 		if(defined('instance_dir'))
 			return array('[apply|redo] [migration|migrations]');

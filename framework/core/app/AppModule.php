@@ -5,6 +5,6 @@ class AppModule extends ZoopModule
 	{
 		$this->depend('utils');
 		$this->addInclude('Globals.php');
-		$this->addClasses(array('Application', 'ApplicationInstance', 'Object', 'Instance'));
+		$this->addClasses(array('Application', 'ApplicationInstance', 'Instance'));
 	}
 }

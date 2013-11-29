@@ -1,7 +1,7 @@
 <?php
 class CommandScript
 {
-	function usage()
+	static public function usage()
 	{
 		if(defined('instance_dir'))
 			return array('ex APP_COMMAND');
