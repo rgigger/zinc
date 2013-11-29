@@ -5,9 +5,9 @@ class ErrorModule extends ZoopModule
 	{
 		$this->addInclude('Error.php');
 		$this->addInclude('Utils.php');
-		$this->addClasses([
+		$this->addClasses(array(
 			'Object', 'ZoopException', 'WebErrorHandler', 'CliErrorHandler', 'Backtrace',
 			'BacktraceViewCli', 'ImmutableArray', 'CharMap'
-		]);
+		));
 	}
 }
