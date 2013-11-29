@@ -28,8 +28,18 @@ class DbPgsql extends DbConnection
 		self::connect();	
 		if(version_compare(PHP_VERSION, "5.2", "<"))
 			return "'" . pg_escape_string($string) . "'";
-		else
+		else if(version_compare(PHP_VERSION, "5.4", "<"))
 			return "'" . pg_escape_string($this->connection, $string) . "'";
+		else
+			return pg_escape_literal($this->connection, $string);
+	}
+
+	function escapeIdentifier($string)
+	{
+		if(version_compare(PHP_VERSION, "5.4", "<"))
+			return '"' . $string . '"';
+		else
+			return pg_escape_identifier($this->connection, $string);
 	}
 	
 	function _query($sql)

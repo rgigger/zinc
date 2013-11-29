@@ -8,8 +8,12 @@ class CommandStationary
 			'create instance INSTANCE_NAME APP_DIR',
 			'create pub PUB_NAME INSTANCE_DIR'
 		);
+		
 		if(defined('app_dir'))
+		{
 			$answer[] = 'create migration MIGRATION_NAME';
+			$answer[] = 'create seed SEED_NAME';
+		}
 		return $answer;
 		///trigger_error("consolidate the usage code here somehow");
 	}
@@ -22,7 +26,7 @@ class CommandStationary
 		
 		if(isset($p[2]))
 			$methodName = "handle" . $p[2];
-
+		
 		if(isset($p[2]) && method_exists($this, $methodName))
 			$this->$methodName($p);
 		else
@@ -88,12 +92,24 @@ class CommandStationary
 			symlink(app_dir . '/public', "$pubName/public");
 	}
 	
+	public function handleSeed($p)
+	{
+		$this->handleMigration($p);
+	}
+	
 	public function handleMigration($p)
 	{
 		Zinc::loadLib('migration');
 		Zinc::loadLib('utils');
 		
-		$max = Migration::getMaxMigration();
+		if($p[2] == 'migration')
+			$type = 'migration';
+		else if($p[2] == 'seed')
+			$type = 'seed';
+		else
+			trigger_error("invalid migration type: " . $p[2]);
+		
+		$max = Migration::getMaxMigration($type);
 		
 		$version = $max + 1;
 		$moduleName = false;
@@ -119,11 +135,23 @@ class CommandStationary
 			return;
 		}
 		
-		$params = array();
-		$params['version'] = str_replace('.', '_', $version);
+		$versionString = str_pad($version, 4, "0", STR_PAD_LEFT);
 		
-		$dir = app_dir . '/migrations';
-		$newFilename = $dir . '/' . $version . '_' . $name . '.php';
+		$params = array();
+		// $params['version'] = str_replace('.', '_', $versionString);
+		$params['version'] = $versionString;
+		$params['type'] = $type;
+		
+		if($type == 'migration')
+			$dir = app_dir . '/migrations';
+		else
+		{
+			if(!($subdir = Config::get('zinc.migrations.seedName')))
+				trigger_error("configuration for seed subdirectory is missing");
+			
+			$dir = app_dir . '/seeds/' . $subdir;
+		}
+		$newFilename = $dir . '/' . $versionString . '_' . $name . '.php';
 		self::gen($stationaryFilename, $newFilename, $params);
 	}
 	

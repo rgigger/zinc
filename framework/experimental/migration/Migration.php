@@ -1,23 +1,33 @@
 <?php
 class Migration
 {
-	static function initDb()
+	static function initDb($type)
 	{
+		if($type != 'migration' && $type != 'seed')
+			trigger_error("invalid migration type: $type");
+		
 		//	create the migration table if it does not exist
 		$schema = SqlGetSchema();
-		if(!$schema->tableExists('migration'))
+		if(!$schema->tableExists($type))
 		{
-			$sql = "create table migration (
+			$sql = "create table $type (
 						id serial primary key, 
 						name text not null,
 						applied int2 not null default 0)";
-			SqlAlterSchema($sql);
+			SqlAlterSchema($sql, array());
 		}
 	}
 	
-	static function getAllMigrationNames()
+	static function getAllMigrationNames($type)
 	{
-		$filenames = ListDir(app_dir . '/migrations', array('extentions' => array('php')));
+		if($type != 'migration' && $type != 'seed')
+			trigger_error("invalid migration type: $type");
+		
+		if(!($subdir = Config::get('zinc.migrations.seedName')))
+			trigger_error("configuration for seed subdirectory is missing");
+		$dirname = $type . 's/' . $subdir;
+		
+		$filenames = ListDir(app_dir . '/' . $dirname, array('extentions' => array('php')));
 		sort($filenames);
 		$versions = array();
 		foreach($filenames as $thisFilename)
@@ -30,9 +40,9 @@ class Migration
 		return $versions;
 	}
 	
-	static public function getMaxMigration()
+	static public function getMaxMigration($type)
 	{
-		$ms = self::getAllMigrationNames();
+		$ms = self::getAllMigrationNames($type);
 		$max = 0;
 		foreach($ms as $num)
 			if($num > $max)
@@ -40,9 +50,15 @@ class Migration
 		return $max;
 	}
 	
-	static function filenameFromVersion($version)
+	static function filenameFromVersion($version, $type)
 	{
-		$filenames = ListDir(app_dir . '/migrations', array('extentions' => array('php')));
+		if($type != 'migration' && $type != 'seed')
+			trigger_error("invalid migration type: $type");
+		if(!($subdir = Config::get('zinc.migrations.seedName')))
+			trigger_error("configuration for seed subdirectory is missing");
+		$dirname = $type . 's/' . $subdir;
+		
+		$filenames = ListDir(app_dir . '/' . $dirname, array('extentions' => array('php')));
 		
 		foreach($filenames as $thisFilename)
 		{
@@ -55,34 +71,50 @@ class Migration
 		trigger_error("version not found: " . $version);
 	}
 	
-	static function getAllAppiedMigrationNames()
+	static function getAllAppiedMigrationNames($type)
 	{
-		return SqlFetchColumn("select name from migration where applied = 1", array());
+		if($type != 'migration' && $type != 'seed')
+			trigger_error("invalid migration type: $type");
+		return SqlFetchColumn("select name from $type where applied = 1", array());
 	}
 	
-	static function apply($filename, $name)
+	static function apply($filename, $name, $type)
 	{
-		include_once(app_dir . '/migrations/' . $filename);
+		if($type != 'migration' && $type != 'seed')
+			trigger_error("invalid migration type: $type");
+		if(!($subdir = Config::get('zinc.migrations.seedName')))
+			trigger_error("configuration for seed subdirectory is missing");
+		$dirname = $type . 's/' . $subdir;
+		$classname = ucfirst($type);
 		
-		$className = 'Migration_' . str_replace('.', '_', $name);
+		include_once(app_dir . '/' . $dirname . '/' . $filename);
+		
+		$className = $classname . '_' . str_replace('.', '_', $name);
 		$migration = new $className();
 		$migration->up();
 		
 		//	mark it as applied
-		SqlUpsertRow('migration', array('name' => $name), array('applied' => 1));
+		SqlUpsertRow($type, array('name' => $name), array('applied' => 1));
 		
 		print_r($migration);
 	}
 	
-	static function undo($filename, $name)
+	static function undo($filename, $name, $type)
 	{
-		include_once(app_dir . '/migrations/' . $filename);
-		$className = 'Migration_' . str_replace('.', '_', $name);
+		if($type != 'migration' && $type != 'seed')
+			trigger_error("invalid migration type: $type");
+		if(!($subdir = Config::get('zinc.migrations.seedName')))
+			trigger_error("configuration for seed subdirectory is missing");
+		$dirname = $type . 's/' . $subdir;
+		$classname = ucfirst($type);
+		
+		include_once(app_dir . '/' . $dirname . '/' . $filename);
+		$className = $className . '_' . str_replace('.', '_', $name);
 		$migration = new $className();
 		$migration->down();
 		
 		//	mark it as applied
-		SqlUpsertRow('migration', array('name' => $name), array('applied' => 0));
+		SqlUpsertRow($type, array('name' => $name), array('applied' => 0));
 		
 		print_r($migration);
 	}
