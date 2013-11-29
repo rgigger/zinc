@@ -14,11 +14,11 @@ class WebErrorHandler
 	
 	static function handleError($errno, $errstr, $errfile, $errline, $context, $backtrace = NULL)
 	{
-		header('HTTP/1.1 500 Internal Server Error');
-		
 		if((error_reporting() & $errno) !== $errno)
 			return true;
-			
+		
+		header('HTTP/1.1 500 Internal Server Error');
+		
 		if(!defined('app_status'))
 			define('app_status', 'dev');
 		
