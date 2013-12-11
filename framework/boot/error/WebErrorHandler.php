@@ -74,7 +74,10 @@ class WebErrorHandler
 		}
 		
 		// display the error code 
-		echo "error #{$errorId}";
+		//echo "error #{$errorId}";
+		$scriptUrl = script_url;
+		$baseUrl = base_url;
+		include(app_dir . "/error.html");
 		die();
 	}
 	
