@@ -6,11 +6,13 @@ class SessionDb
 	var $saveChanges;
 	var $sessionName;
 	var $sessionId;
+	var $lifetime;
 	
 	public function __construct($params)
 	{
 		$this->db = DbModule::getConnection($params['db_connection']);
 		$this->style = $params['style'];
+		$this->lifetime = $params['lifetime'];
 	}
 	
 	//	user functions
@@ -18,6 +20,7 @@ class SessionDb
 	{
 		$this->saveChanges = 0;
 		session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
+		session_set_cookie_params($this->lifetime); // we should also implement path, domain, secure, and httponly here
 		session_start();
 	}
 	

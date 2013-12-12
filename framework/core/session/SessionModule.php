@@ -21,6 +21,12 @@ class SessionModule extends ZoopModule
 	protected function configure()
 	{
 		$params = $this->getConfig();
+		
+		if(!isset($params['lifetime']))
+			$params['lifetime'] = ini_get('session.cookie_lifetime');
+		
+		// we should also implement path, domain, secure, and httponly here
+		
 		self::$engine = SessionFactory::getEngine($params);
 		Session::start();
 	}

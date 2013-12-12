@@ -2,3 +2,8 @@
 # but right now there is only 'write_manual'
 style: write_manual
 db_connection: default
+# lifetime: defaults to php.ini setting
+# path: defaults to php.ini setting - also not implemented yet
+# domain: defaults to php.ini setting - also not implemented yet
+# secure: defaults to php.ini setting - also not implemented yet
+# httponly: defaults to php.ini setting - also not implemented yet
