@@ -490,9 +490,17 @@ abstract class DbConnection
 			return false;
 	}
 
-	public function insertRows($sql, $params, $serial = false)
+	public function insertRows($sql, $params, $errorTest = NULL)
 	{
-		trigger_error("is this being used? this doesn't look right at all");
+		if(!is_null($errorTest))
+			trigger_error("I think you want to call insertRowsOnAtATime");
+		
+		$res = $this->query($sql, $params);
+		return $res->affectedRows();		
+	}
+
+	public function insertRowsOnAtATime($sql, $params, $serial = false)
+	{
 		$ids = array();
 		foreach($params as $thisRow)
 		{

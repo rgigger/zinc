@@ -237,9 +237,9 @@ function SqlInsertRow($sql, $params, $serial = true)
 	return DbModule::getDefaultConnection()->insertRow($sql, $params, $serial);
 }
 
-function SqlInsertRows($sql, $params, $serial = true)
+function SqlInsertRows($sql, $params, $errorTest = NULL)
 {
-	return DbModule::getDefaultConnection()->insertRows($sql, $params, $serial);
+	return DbModule::getDefaultConnection()->insertRows($sql, $params, $errorTest);
 }
 
 // /**
