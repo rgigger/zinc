@@ -19,8 +19,6 @@ class BacktraceViewCli extends Object
 		
 		foreach($formattedFields as $thisRow)
 			self::renderBacktraceRow($thisRow, $allocatedColumnWidths);
-		echo "\n\n";
-		die("\n\nhere\n\n");
 	}
 	
 	private function renderBacktraceRow($formattedBacktraceRow, $allocatedColumnWidths)
