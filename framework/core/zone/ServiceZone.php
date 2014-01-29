@@ -4,7 +4,7 @@ class ServiceZone extends Zone
 	public function initPages()
 	{
 		ErrorSettings::setDisplayMode('cli');
-		header('Content-Type: application/json');
+		WrapHeader('Content-Type: application/json');
 	}
 	
 	public function runPage($pageName, $pageParams, $zoneParams)

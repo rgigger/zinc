@@ -23,10 +23,7 @@ class Migration
 		if($type != 'migration' && $type != 'seed')
 			trigger_error("invalid migration type: $type");
 		
-		if(!($subdir = Config::get('zinc.migrations.seedName')))
-			trigger_error("configuration for seed subdirectory is missing");
-		$dirname = $type . 's/' . $subdir;
-		
+		$dirname = self::getDirName($type);
 		$filenames = ListDir(app_dir . '/' . $dirname, array('extentions' => array('php')));
 		sort($filenames);
 		$versions = array();
@@ -54,9 +51,8 @@ class Migration
 	{
 		if($type != 'migration' && $type != 'seed')
 			trigger_error("invalid migration type: $type");
-		if(!($subdir = Config::get('zinc.migrations.seedName')))
-			trigger_error("configuration for seed subdirectory is missing");
-		$dirname = $type . 's/' . $subdir;
+		
+		$dirname = self::getDirName($type);
 		
 		$filenames = ListDir(app_dir . '/' . $dirname, array('extentions' => array('php')));
 		
@@ -71,6 +67,18 @@ class Migration
 		trigger_error("version not found: " . $version);
 	}
 	
+	static function getDirName($type)
+	{
+		if($type == 'seed')
+		{	
+			if(!($subdir = Config::get('zinc.migrations.seedName')))
+				trigger_error("configuration for seed subdirectory is missing");
+			return $type . 's/' . $subdir;
+		}
+		else
+			return 'migrations';
+	}
+	
 	static function getAllAppiedMigrationNames($type)
 	{
 		if($type != 'migration' && $type != 'seed')
@@ -82,14 +90,13 @@ class Migration
 	{
 		if($type != 'migration' && $type != 'seed')
 			trigger_error("invalid migration type: $type");
-		if(!($subdir = Config::get('zinc.migrations.seedName')))
-			trigger_error("configuration for seed subdirectory is missing");
-		$dirname = $type . 's/' . $subdir;
-		$classname = ucfirst($type);
+		
+		$dirname = self::getDirName($type);
 		
 		include_once(app_dir . '/' . $dirname . '/' . $filename);
 		
-		$className = $classname . '_' . str_replace('.', '_', $name);
+		$className = ucfirst($type);
+		$className = $className . '_' . str_replace('.', '_', $name);
 		$migration = new $className();
 		$migration->up();
 		
@@ -103,12 +110,12 @@ class Migration
 	{
 		if($type != 'migration' && $type != 'seed')
 			trigger_error("invalid migration type: $type");
-		if(!($subdir = Config::get('zinc.migrations.seedName')))
-			trigger_error("configuration for seed subdirectory is missing");
-		$dirname = $type . 's/' . $subdir;
-		$classname = ucfirst($type);
+		
+		$dirname = self::getDirName($type);
 		
 		include_once(app_dir . '/' . $dirname . '/' . $filename);
+		
+		$className = ucfirst($type);
 		$className = $className . '_' . str_replace('.', '_', $name);
 		$migration = new $className();
 		$migration->down();

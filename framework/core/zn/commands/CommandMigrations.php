@@ -13,8 +13,8 @@ class CommandMigrations
 	{
 		Zinc::loadLib('migration');
 		$methodName = "handle" . $p[1];
-		var_dump($methodName);
-		die();
+		// var_dump($methodName);
+		// die();
 		if(method_exists($this, $methodName))
 			$this->$methodName($p);
 		else
@@ -56,9 +56,9 @@ class CommandMigrations
 	{
 		$version = $p[3];
 		SqlBeginTransaction();
-		$filename = Migration::filenameFromVersion($version);
-		Migration::undo($filename, $version);
-		Migration::apply($filename, $version);
+		$filename = Migration::filenameFromVersion($version, 'migration');
+		Migration::undo($filename, $version, 'migration');
+		Migration::apply($filename, $version, 'migration');
 		SqlCommitTransaction();
 		
 		die();

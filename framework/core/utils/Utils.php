@@ -19,6 +19,14 @@ function RequestIsPost()
 	return $_SERVER['REQUEST_METHOD'] == 'POST' ? 1 : 0;
 }
 
+function WrapHeader($header)
+{
+	if(php_sapi_name() == "cli")
+		echo  "header => $header\n";
+	else
+		header($header);
+}
+
 /**
  * Evaluates the POST variables and creates a standard "year-month-day Hour24:minute:second -7:00" date from a POSTed form
  * The fields in the form should be as follows:
