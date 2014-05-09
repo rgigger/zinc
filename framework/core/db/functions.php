@@ -177,6 +177,11 @@ function SqlFetchSimpleMap($sql, $keyFields, $valueField, $params)
 	return DbModule::getDefaultConnection()->fetchSimpleMap($sql, $keyFields, $valueField, $params);
 }
 
+function SqlFetchComplexMap($sql, $mapFields, $params)
+{
+	return DbModule::getDefaultConnection()->fetchComplexMap($sql, $mapFields, $params);
+}
+
 /**
  * Enter description here...
  *
