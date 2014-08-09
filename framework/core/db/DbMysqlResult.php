@@ -16,7 +16,7 @@ class DbMysqlResult extends DbResultSet
 		else
 		{
 			$this->cur = 0;
-			$this->max = mysql_num_rows($this->res) - 1;
+			$this->max = mysqli_num_rows($this->res) - 1;
 		}
 	}
 
@@ -34,8 +34,8 @@ class DbMysqlResult extends DbResultSet
 	{
 		if($this->max == -1)
 			return false;
-		mysql_data_seek($this->res, $this->cur);
-		return mysql_fetch_assoc($this->res);
+		mysqli_data_seek($this->res, $this->cur);
+		return mysqli_fetch_assoc($this->res);
 	}
 
 	function key()
@@ -48,8 +48,8 @@ class DbMysqlResult extends DbResultSet
 		$this->cur++;
 		if($this->cur > $this->max)
 			return false;
-		mysql_data_seek($this->res, $this->cur);
-		return mysql_fetch_assoc($this->res);
+		mysqli_data_seek($this->res, $this->cur);
+		return mysqli_fetch_assoc($this->res);
 	}
 
 	function valid()
@@ -65,6 +65,6 @@ class DbMysqlResult extends DbResultSet
 		if ($this->res == null)
 			return -1;
 		else
-			return mysql_affected_rows($this->link);
+			return mysqli_affected_rows($this->link);
 	}
 }
