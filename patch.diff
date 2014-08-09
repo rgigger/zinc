@@ -1,0 +1,46 @@
+diff --git a/framework/core/db/DbConnection.php b/framework/core/db/DbConnection.php
+index d9d8b7b..55a86ae 100644
+--- a/framework/core/db/DbConnection.php
++++ b/framework/core/db/DbConnection.php
+@@ -170,6 +170,8 @@ abstract class DbConnection
+         * - :<varname>:int             -- the variable is escaped as a number and replaces this entry
+         * - :<varname>:keyword -- the variable replaces this entry with no change
+         * - :<varname>:identifier      -- the variable is escaped as a SQL identifier (table, field name, etc) and replaces this entry
++        * - :<varname>:inStrings       -- the variable is escaped as an array of strings for use in an in-clause
++        * - :<varname>:inInts  -- the variable is escaped as an array of ints for use in an in-clause
+         * - :<varname>                 -- if no type is specified, variable is treated as a string.
+         *
+         * @param string $sql SQL statement to execute
+@@ -209,6 +211,8 @@ abstract class DbConnection
+         * - :<varname>:int             -- the variable is escaped as a number and replaces this entry
+         * - :<varname>:keyword -- the variable replaces this entry with no change
+         * - :<varname>:identifier      -- the variable is escaped as a SQL identifier (table, field name, etc) and replaces this entry
++        * - :<varname>:inStrings       -- the variable is escaped as an array of strings for use in an in-clause
++        * - :<varname>:inInts  -- the variable is escaped as an array of ints for use in an in-clause
+         * - :<varname>                 -- if no type is specified, variable is treated as a string.
+         *
+         * @param array $matches array of matches provided by preg_replace_callback
+@@ -244,6 +248,22 @@ abstract class DbConnection
+                        case 'identifier':
+                                $replaceString = $this->escapeIdentifier($this->queryParams[$name]);
+                                break;
++                       case 'inInts':
++                               assert(is_array($this->queryParams[$name]));
++                               foreach($this->queryParams[$name] as $key => $int)
++                               {
++                                       $this->queryParams[$name][$key] = (int)$int;
++                               }
++                               $replaceString = implode(', ', $this->queryParams[$name]);
++                               break;
++                       case 'inStrings':
++                               assert(is_array($this->queryParams[$name]));
++                               foreach($this->queryParams[$name] as $key => $string)
++                               {
++                                       $this->queryParams[$name][$key] = $this->escapeString($string);
++                               }
++                               $replaceString = implode(', ', $this->queryParams[$name]);
++                               break;
+                        default:
+                                trigger_error("unknown param type: " . $type);
+                                break;
+
