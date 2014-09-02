@@ -419,7 +419,7 @@ abstract class DbConnection
 				foreach($mapFields as $val)
 				{
 					$curKey = $row[$val];
-
+					
 					if(!isset($cur[$curKey]))
 						$cur[$curKey] = array();
 
