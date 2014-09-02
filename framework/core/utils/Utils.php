@@ -1,4 +1,23 @@
 <?php
+
+function fileLines($filename)
+{
+	$handle = fopen($filename, "r");
+	
+	if($handle)
+	{
+		while(($buffer = fgets($handle, 4096)) !== false)
+		{
+			yield $buffer;
+		}
+		
+		fclose($handle);
+	}
+	else
+		trigger_error("file $filename could not be opened");
+}
+
+
 /**
  * Returns true if the current page was requested with the GET method
  *
