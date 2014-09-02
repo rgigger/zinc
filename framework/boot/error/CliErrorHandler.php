@@ -20,11 +20,6 @@ class CliErrorHandler
 		if(!defined('app_status'))
 			define('app_status', 'dev');
 		
-		static $errorCount = 0;
-		$errorCount++;
-		$maxErrors = Config::get('zinc.error.maxCli');
-		if($maxErrors !== false && $errorCount > $maxErrors)
-			die();
 		switch(app_status)
 		{
 			case 'dev':
@@ -43,6 +38,12 @@ class CliErrorHandler
 				trigger_error('status not handled:' . app_status);
 				break;
 		}
+        
+		static $errorCount = 0;
+		$errorCount++;
+		$maxErrors = Config::get('zinc.error.maxCli');
+		if($maxErrors !== false && $errorCount >= $maxErrors)
+			die();
 	}
 	
 	static function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtrace)
