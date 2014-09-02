@@ -58,14 +58,14 @@ class DbMysql extends DbConnection
 	function escapeString($string)
 	{
 		self::connect();
-		return "'" . mysql_real_escape_string($string, $this->connection) . "'";
+		return "'" . mysqli_real_escape_string($this->connection, $string) . "'";
 	}
 
 	function _query($sql)
 	{
 		self::connect();
-		$result = mysql_query($sql, $this->connection)
-			or trigger_error(mysql_error());
+		$result = mysqli_query($this->connection, $sql)
+			or trigger_error(mysqli_error());
 
 		if(gettype($result) == 'boolean')
 			return $result;
@@ -76,7 +76,7 @@ class DbMysql extends DbConnection
 	function getLastInsertId()
 	{
 		self::connect();
-		return mysql_insert_id($this->connection);
+		return mysqli_insert_id($this->connection);
 	}
 
 	private function connect()
@@ -84,10 +84,10 @@ class DbMysql extends DbConnection
 		//	lazy connection to the database
 		if(!$this->connection)
 		{
-			$this->connection = mysql_connect($this->params['host'], $this->params['username'], $this->params['password'])
-				or trigger_error(mysql_error());
-			mysql_select_db($this->params['database'], $this->connection)
-				or trigger_error(mysql_error());
+			$this->connection = mysqli_connect($this->params['host'], $this->params['username'], $this->params['password'])
+				or trigger_error(mysqli_error());
+			mysqli_select_db($this->connection, $this->params['database'])
+				or trigger_error(mysqli_error());
 		}
 	}
 }
