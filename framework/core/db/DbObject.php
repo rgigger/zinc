@@ -18,7 +18,7 @@ class DbObject extends Object implements Iterator
 	private $missingKeyFields;
 	private $bound;
 	private $persisted;
-	private $scalars;
+	public $scalars;
 	protected $relationships;
 	const fixBools = false;
 
@@ -261,7 +261,8 @@ class DbObject extends Object implements Iterator
 	 */
 	private function getScalar($field)
 	{
-		if(!isset($this->scalars[$field]))
+		// if(!isset($this->scalars[$field]))
+		if(!array_key_exists($field, $this->scalars))
 		{
 			if(!$this->bound)
 			{
@@ -823,7 +824,9 @@ class DbObject extends Object implements Iterator
 		if(count($a) < 1)
 			return false;
 		
-		assert(count($a) == 1);
+		if(count($a) > 1)
+			trigger_error("one row was requested but " . count($a) . " were returned");
+		
 
 		return current($a);
 	}
