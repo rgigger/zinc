@@ -17,7 +17,10 @@ function GetTerminalLines()
 
 function error_print_r($var)
 {
-	error_write_to_log(print_r($var, true));
+	if(is_null($var))
+		error_var_dump($var);
+	else
+		error_write_to_log(print_r($var, true));
 }
 
 function error_var_dump($var)

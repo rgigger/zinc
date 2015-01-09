@@ -41,6 +41,8 @@ class WebErrorHandler
 				trigger_error('status not handled:' . app_status);
 				break;
 		}
+		
+		die();
 	}
 	
 	static function handleDevError($errno, $errstr, $errfile, $errline, $context, $backtraceInfo)
@@ -74,11 +76,11 @@ class WebErrorHandler
 		}
 		
 		// display the error code 
-		//echo "error #{$errorId}";
-		$scriptUrl = script_url;
-		$baseUrl = base_url;
-		include(app_dir . "/error.html");
-		die();
+        echo "error #{$errorId}";
+        // $scriptUrl = script_url;
+        // $baseUrl = base_url;
+        // include(app_dir . "/error.html");
+        die();
 	}
 	
 	static function formatErrorLineHtml($errno, $errstr, $errfile, $errline, $context)
@@ -133,7 +135,7 @@ class WebErrorHandler
 	
 	static function exceptionHandler($exception)
 	{
-		echo '<b>' . get_class($exception) . "</b><br>\n";
+        // echo '<b>' . get_class($exception) . "</b><br>\n";
 		self::handleError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), NULL, $exception->getTrace());
 	}
 }
