@@ -288,6 +288,11 @@ function SqlUpsertRow($tableName, $conditions, $values)
 	return DbModule::getDefaultConnection()->upsertRow($tableName, $conditions, $values);
 }
 
+function SqlDeleteRow($sql, $params)
+{
+	return DbModule::getDefaultConnection()->deleteRow($sql, $params);
+}
+
 function SqlDeleteRows($sql, $params)
 {
 	return DbModule::getDefaultConnection()->deleteRows($sql, $params);
