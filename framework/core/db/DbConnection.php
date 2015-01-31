@@ -274,11 +274,15 @@ abstract class DbConnection
 			case 'stringArray':
 			case 'inStrings':
 				assert(is_array($this->queryParams[$name]));
+				// we don't actually want to modify the original paramaters. if we do then
+				// each time this gets called it will escape it over and over again
+				$tempStringArray = [];
 				foreach($this->queryParams[$name] as $key => $string)
 				{
-					$this->queryParams[$name][$key] = $this->escapeString($string);
+					$tempStringArray[$key] = $this->escapeString($string);
+					// $this->queryParams[$name][$key] = $this->escapeString($string);
 				}
-				$replaceString = implode(', ', $this->queryParams[$name]);
+				$replaceString = implode(', ', $tempStringArray);
 				break;
 			default:
 				trigger_error("unknown param type: " . $type);
