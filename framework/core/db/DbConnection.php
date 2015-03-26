@@ -156,12 +156,17 @@ abstract class DbConnection
 
 	public function beginTransaction()
 	{
-		$this->_queryWrapper('begin');
+		if($this->transactionLevel == 0)
+			$this->_queryWrapper('begin');
+		$this->transactionLevel++;
+		
 	}
 
 	public function commitTransaction()
 	{
-		$this->_queryWrapper('commit');
+		$this->transactionLevel--;
+		if($this->transactionLevel == 0)
+			$this->_queryWrapper('commit');
 	}
 
 	public function rollbackTransaction()
