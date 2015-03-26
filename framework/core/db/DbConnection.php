@@ -4,14 +4,10 @@ abstract class DbConnection
 	protected $params;
 	private $queryParams;
 	private $types;
-	/**
-	 * Actual connection to the database
-	 *
-	 * @var unknown_type
-	 */
 	private $conn;
 	private $log;
 	private $echo;
+	private $transactionLevel = 0;
 
 	function __construct($params, $connectionName)
 	{
