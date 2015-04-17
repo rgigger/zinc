@@ -25,7 +25,7 @@ abstract class MailConnection
 		}
 
 		if(!empty($missing))
-			throw new ConfigException('db', $missing, "for connection $connectionName");
+			throw new ConfigException('mail', $missing, "for connection $connectionName");
 
 		//	handle the defaults
 		foreach($this->getDefaults() as $name => $value)
