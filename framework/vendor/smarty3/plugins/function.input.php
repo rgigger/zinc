@@ -84,16 +84,22 @@ function smarty_function_input($params, &$smarty)
 		$extraFields .= ' data-constraint="sameas" data-sameas="' . $params['sameas'] . '"';
 		$classes['constraint'] = 1;
 	}
-
+	
+	if(isset($params['message']))
+		$messageClause = '" data-message="' . $params['message'] . '"';
+	else
+		$messageClause = '';
+	
+	
 	if(isset($params['minlen']))
 	{
-		$extraFields .= ' data-constraint="minlen" data-minlen="' . $params['minlen'] . '" data-message="' . $params['message'] . '"';
+		$extraFields .= ' data-constraint="minlen" data-minlen="' . $params['minlen'] . $messageClause;
 		$classes['constraint'] = 1;
 	}
 	
 	if(isset($params['required']))
 	{
-		$extraFields .= ' data-constraint="required" data-required="true" data-message="' . $params['message'] . '"';
+		$extraFields .= ' data-constraint="required" data-required="true" ' . $messageClause;
 		$classes['constraint'] = 1;
 	}
 	
@@ -109,7 +115,7 @@ function smarty_function_input($params, &$smarty)
 	
 	if(isset($params['requireOther']))
 	{
-		$extraFields .= ' data-constraint="requireOther" data-other-value="' . $params['otherValue'] . '" data-other-field="' . $params['otherField'] . '"' . ' data-message="' . $params['message'] . '"';
+		$extraFields .= ' data-constraint="requireOther" data-other-value="' . $params['otherValue'] . '" data-other-field="' . $params['otherField'] . '"' . $messageClause;
 		$classes['constraint'] = 1;
 	}
 	
@@ -118,7 +124,7 @@ function smarty_function_input($params, &$smarty)
 	{
 		$parts = explode(',', $params['intrange']);
 		assert(count($parts) == 2);
-		$extraFields .= ' data-constraint="intrange" data-range-min="' . $parts[0] . '" data-range-max="' . $parts[1] . '"' . ' data-message="' . $params['message'] . '"';
+		$extraFields .= ' data-constraint="intrange" data-range-min="' . $parts[0] . '" data-range-max="' . $parts[1] . '"' . $messageClause;
 		$classes['constraint'] = 1;
 	}
 	
