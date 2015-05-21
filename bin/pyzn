@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+directory = os.path.dirname(__file__)
+filename =  directory + '/../py/pyzn.py'
+exec(open(filename).read())
