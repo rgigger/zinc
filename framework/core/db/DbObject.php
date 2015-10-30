@@ -15,9 +15,11 @@ class DbObject extends Object implements Iterator
 	 */
 	protected $primaryKey;
 	protected $keyAssignedBy;
+    protected $useUuidPrimaryKey;
 	private $missingKeyFields;
 	private $bound;
 	private $persisted;
+	// private $unboundAsyncInsertOccured;
 	public $scalars;
 	protected $relationships;
 	const fixBools = false;
@@ -44,9 +46,11 @@ class DbObject extends Object implements Iterator
 		$this->tableName = $this->getDefaultTableName();
 		$this->bound = false;
 		$this->keyAssignedBy = self::keyAssignedBy_db;
+        $this->useUuidPrimaryKey = false;
 		$this->scalars = array();
 		$this->relationships = array();
 		$this->persisted = NULL;
+		// $this->unboundAsyncInsertOccured = false;
 		
 		$this->init($init);
 
@@ -266,6 +270,12 @@ class DbObject extends Object implements Iterator
 		{
 			if(!$this->bound)
 			{
+				// if(in_array($field, $this->primaryKey))
+				// {
+				// 	trigger_error("the primary key may have been set but it is trapped in an async query somewhere");
+				// }
+				
+				
 				/* TODO: Handle "getScalar" calls to unbound DbObject instances
 				Different possibilities on how to handle this situation.  Maybe we could use some flags.
 				1. check the metadata.  (alwaysCheckMeta)
@@ -273,7 +283,7 @@ class DbObject extends Object implements Iterator
 						1. return the default value
 						2. return NULL
 					2. if its not there
-						1. throw and error
+						1. throw an error
 				2.	dont check the metadata (useDummyNulls requires !alwaysCheckMeta)
 					1.	return null
 					2.	throw an error
@@ -447,17 +457,42 @@ class DbObject extends Object implements Iterator
 	 * Saves the record in memory
 	 *
 	 */
-	public function save()
+	public function save($async = false)
 	{
+		if($async)
+			trigger_error("not yet implemented");
+		
 		if(!$this->bound)
 		{
 			if($this->keyAssignedBy == self::keyAssignedBy_db)
-				$this->setScalar($this->primaryKey[0], self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars));
+			{
+				if($async)
+				{
+					$this->unboundAsyncInsertOccured = true;
+					self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars, $serial = true, $async = true);
+				}
+				else
+				{
+                    if($this->useUuidPrimaryKey)
+                    {
+                        $uuid = self::_getConnection(get_class($this))->getUUID();
+                        $this->setScalar($this->primaryKey[0], $uuid);
+                        self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars, $serial = false);
+                    }
+                    else
+                    {
+                        $this->setScalar($this->primaryKey[0], self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars));
+                    }
+				}
+			}
 			else
 				trigger_error("you must define all foreign key fields in order by save this object");
 		}
 		else
 		{
+			if($async)
+				trigger_error('async case not handled');
+			
 			if($this->keyAssignedBy == self::keyAssignedBy_db)
 			{
 				$updateInfo = DbConnection::generateUpdateInfo($this->tableName, $this->getKeyConditions(), $this->scalars);
