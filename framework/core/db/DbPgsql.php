@@ -45,17 +45,28 @@ class DbPgsql extends DbConnection
 		}
 	}
 	
-	function _query($sql)
+	public function _query($sql)
 	{
 		self::connect();
 		$result = pg_query($this->connection, $sql);
 		return new DbPgResult($this->connection, $result);
 	}
 	
+	// public function _queryAsync($sql)
+	// {
+	// 	self::connect();
+	// 	pg_send_query($this->connection, $sql);
+	// }
+	
 	function getLastInsertId()
 	{
 		return $this->fetchCell("select lastval()", array());
 	}
+    
+    public function getUUID()
+    {
+        return $this->fetchCell("select uuid_generate_v4()", array());
+    }
 	
 	private function connect()
 	{
