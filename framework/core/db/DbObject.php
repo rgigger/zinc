@@ -15,18 +15,18 @@ class DbObject extends Object implements Iterator
 	 */
 	protected $primaryKey;
 	protected $keyAssignedBy;
-    protected $useUuidPrimaryKey;
+    // protected $useUuidPrimaryKey;
 	private $missingKeyFields;
 	private $bound;
 	private $persisted;
-	// private $unboundAsyncInsertOccured;
 	public $scalars;
+	public $modifiers = [];
 	protected $relationships;
 	const fixBools = false;
 
 	const keyAssignedBy_db = 1;
 	const keyAssignedBy_dev = 2;
-	const keyAssignedBy_auto = 3;
+	// const keyAssignedBy_auto = 3;
 
 	/**
 	 * This is the constructor.  (honest, I swear)
@@ -46,11 +46,10 @@ class DbObject extends Object implements Iterator
 		$this->tableName = $this->getDefaultTableName();
 		$this->bound = false;
 		$this->keyAssignedBy = self::keyAssignedBy_db;
-        $this->useUuidPrimaryKey = false;
+        // $this->useUuidPrimaryKey = false;
 		$this->scalars = array();
 		$this->relationships = array();
 		$this->persisted = NULL;
-		// $this->unboundAsyncInsertOccured = false;
 		
 		$this->init($init);
 
@@ -270,12 +269,6 @@ class DbObject extends Object implements Iterator
 		{
 			if(!$this->bound)
 			{
-				// if(in_array($field, $this->primaryKey))
-				// {
-				// 	trigger_error("the primary key may have been set but it is trapped in an async query somewhere");
-				// }
-				
-				
 				/* TODO: Handle "getScalar" calls to unbound DbObject instances
 				Different possibilities on how to handle this situation.  Maybe we could use some flags.
 				1. check the metadata.  (alwaysCheckMeta)
@@ -457,60 +450,80 @@ class DbObject extends Object implements Iterator
 	 * Saves the record in memory
 	 *
 	 */
-	public function save($async = false)
+	public function save()
 	{
-		if($async)
-			trigger_error("not yet implemented");
-		
 		if(!$this->bound)
 		{
 			if($this->keyAssignedBy == self::keyAssignedBy_db)
 			{
-				if($async)
-				{
-					$this->unboundAsyncInsertOccured = true;
-					self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars, $serial = true, $async = true);
+                // if($this->useUuidPrimaryKey)
+                // {
+                //     $uuid = self::_getConnection(get_class($this))->getUUID();
+                //     $this->setScalar($this->primaryKey[0], $uuid);
+                //     self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars, $serial = false);
+                // }
+                // else
+                // {
+				$this->setScalar($this->primaryKey[0], self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars));
+                // }
+			}
+			else if($this->keyAssignedBy == self::keyAssignedBy_dev)
+			{
+				if(method_exists($this, 'getPrimaryKeyValuesForNewObject')) {
+	                $uuid = self::_getConnection(get_class($this))->getUUID();
+					$primaryKeyValues = $this->getPrimaryKeyValuesForNewObject();
+					
+					if(count($this->primaryKey) == 1 && !is_array($primaryKeyValues)) {
+						$this->setScalar($this->primaryKey[0], $uuid);
+					} else {
+						assert(is_array($primaryKeyValues) && count($primaryKeyValues) == count($this->primaryKey));
+						foreach($primaryKeyValues as $key => $value)
+							$this->setScalar($key, $value);
+					}
+					
+	                self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars, $serial = false);
 				}
-				else
-				{
-                    if($this->useUuidPrimaryKey)
-                    {
-                        $uuid = self::_getConnection(get_class($this))->getUUID();
-                        $this->setScalar($this->primaryKey[0], $uuid);
-                        self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars, $serial = false);
-                    }
-                    else
-                    {
-                        $this->setScalar($this->primaryKey[0], self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars));
-                    }
+				else {
+					trigger_error("you must define all primary key fields in order by save this object");
 				}
+				
 			}
 			else
-				trigger_error("you must define all foreign key fields in order by save this object");
+				trigger_error("you must define all primary key fields in order by save this object");
 		}
 		else
 		{
-			if($async)
-				trigger_error('async case not handled');
-			
 			if($this->keyAssignedBy == self::keyAssignedBy_db)
 			{
-				$updateInfo = DbConnection::generateUpdateInfo($this->tableName, $this->getKeyConditions(), $this->scalars);
+				$updateInfo = DbConnection::generateUpdateInfo($this->tableName, $this->getKeyConditions(), $this->getScalarsWithModifiers());
 				self::_getConnection(get_class($this))->updateRow($updateInfo['sql'], $updateInfo['params']);
 			}
 			else
 			{
-				if(!$this->persisted())
-					self::_getConnection(get_class($this))->insertArray($this->tableName, $this->scalars, false);
+				if(!$this->persisted()) {
+					self::_getConnection(get_class($this))->insertArray($this->tableName, $this->getScalarsWithModifiers(), false);
+				}
 				else
 				{
-					$updateInfo = DbConnection::generateUpdateInfo($this->tableName, $this->getKeyConditions(), $this->scalars);
+					$updateInfo = DbConnection::generateUpdateInfo($this->tableName, $this->getKeyConditions(), $this->getScalarsWithModifiers());
 					self::_getConnection(get_class($this))->updateRow($updateInfo['sql'], $updateInfo['params']);
 				}
 			}
 		}
 	}
-
+	
+	private function getScalarsWithModifiers() {
+		$modified = [];
+		foreach($this->scalars as $field => $value) {
+			if(isset($this->modifiers[$field]))
+				$modified[$field . ':' . $this->modifiers[$field]] = $value;
+			else
+				$modified[$field] = $value;
+		}
+		
+		return $modified;
+	}
+	
 	/**
 	 * Returns an array containing all primary key fields that have a value assigned to them in this DbObject instance
 	 *
