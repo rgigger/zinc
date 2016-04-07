@@ -19,6 +19,8 @@ function error_print_r($var)
 {
 	if(is_null($var))
 		error_var_dump($var);
+    else if(is_bool($var))
+        error_var_dump($var);
 	else
 		error_write_to_log(print_r($var, true));
 }
