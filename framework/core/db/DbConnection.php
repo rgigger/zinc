@@ -134,6 +134,30 @@ abstract class DbConnection
 		return $this->_query($sql);
 	}
 	
+	public function _printWrapper($sql)
+	{
+		if(php_sapi_name() == "cli")
+			echo $sql . "\n";
+		else
+			echo $sql . '<br>';
+	}
+	
+	public function _queryAsyncWrapper($sql)
+	{
+		if($this->echo)
+		{
+			if(php_sapi_name() == "cli")
+				echo $sql . "\n";
+			else
+				echo $sql . '<br>';
+		}
+		
+		if($this->log)
+			error_write_to_log($sql);
+		
+		return $this->_queryAsync($sql);
+	}
+	
 	/**
 	 * Executes the passed in SQL statement on the database and returns a result set
 	 *
@@ -141,6 +165,17 @@ abstract class DbConnection
 	 * @return DbResultSet object
 	 */
 	abstract public function _query($sql);
+	
+	/**
+	 * Begins executing the passed in SQL statement on the database and returns immediately
+	 *
+	 * @param string $sql SQL statement to execute
+	 */
+	public function _queryAsync($sql)
+	{
+		trigger_error("no implemented for this database");
+	}
+	
 
 	//
 	//	End Schema functions
@@ -199,6 +234,20 @@ abstract class DbConnection
 		
 		//	actually do the query
 		return $this->_queryWrapper($sql);
+	}
+
+	public function printQuery($sql, $params)
+	{
+		echo $this->subinVars($sql, $params);
+	}
+
+	public function queryAsync($sql, $params)
+	{
+		//	get the vars into the sql string
+		$sql = $this->subinVars($sql, $params);
+		
+		//	actually do the query
+		return $this->_queryAsyncWrapper($sql);
 	}
 	
 	public function subinVars($sql, $params)
@@ -262,6 +311,9 @@ abstract class DbConnection
 				break;
 			case 'identifier':
 				$replaceString = $this->escapeIdentifier($this->queryParams[$name]);
+				break;
+			case 'epoch':
+				$replaceString = 'to_timestamp(' . (int)$this->queryParams[$name] . ')';
 				break;
 			case 'intArray':
 			case 'inInts':
@@ -790,7 +842,7 @@ abstract class DbConnection
 			{
 				$fieldNameParts = explode(':', $fieldName);
 				$realFieldName = $fieldNameParts[0];
-				$fieldParts[] = ':fld_' . $realFieldName . ":identifier" ;
+				$fieldParts[] = ':fld_' . $realFieldName . ":identifier";
 				$valuesParts[] = ':' . $fieldName;
 				$insertParams[$realFieldName] = $value;
 				$insertParams["fld_" . $realFieldName] = $realFieldName;
@@ -810,7 +862,7 @@ abstract class DbConnection
 
 		return array('sql' => $insertSql, 'params' => $insertParams);
 	}
-
+	
 	public function upsertRow($tableName, $conditions, $values)
 	{
 		//	generate the update query info
@@ -872,6 +924,16 @@ abstract class DbConnection
 	//
 	//	End combo functions
 	//
+	
+	// public function generateCaseCode($variable, $cases)
+	// {
+	//  		$code = "CASE $variable";
+	// 	foreach($cases as $value => $result)
+	// 		$code .= "when $value then $result\n";
+	// 	$code .= 'end';
+	//
+	// 	return $code;
+	// }
 	
 	public function bumpTableSequenceToEnd($tableName)
 	{
